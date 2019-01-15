@@ -1,0 +1,100 @@
+#!/usr/bin/python
+#Simple Text Editor 
+#Python Version: 2.7
+
+import os
+os.system('clear')
+import time
+import datetime
+import platform
+
+#main window with texting abilities
+import Tkinter
+from Tkinter import *
+from ScrolledText import *
+import tkFileDialog
+import tkMessageBox
+
+root = Tkinter.Tk(className = " Texpert - Text Editor")
+textPad = ScrolledText(root, width=90, height=26)
+
+#add menu/define functions
+#def new_command():
+
+def open_command():
+    file = tkFileDialog.askopenfile(parent=root, mode='rb', title='Select File')
+    if file != None:
+  	contents = file.read()
+	textPad.insert('1.0', contents)
+	file.close()
+
+def save_command():
+    file = tkFileDialog.asksaveasfile(mode='w')
+    if file != None:
+	data = textPad.get('1.0', END+'-1c')
+	file.write(data)
+ 	file.close()
+
+def exit_command():
+    if tkMessageBox.askokcancel("Exit", "Do you really want to exit?"):
+	root.destroy()
+
+def about_command():
+    label = tkMessageBox.showinfo("About", "Texpert \nText Editor \nVersion 2.0")
+
+def abort_command():
+    if tkMessageBox.askokcancel("Abort", "Do you really want to exit?"):
+	root.destroy()
+
+
+
+def dummy():
+    print ""
+menu = Menu(root)
+root.config(menu=menu)
+filemenu = Menu(menu)
+menu.add_cascade(label="File", menu=filemenu)
+filemenu.add_command(label="New", command=dummy)
+filemenu.add_command(label="Open", command=open_command)
+filemenu.add_command(label="Save", command=save_command)
+filemenu.add_separator()
+filemenu.add_command(label="Exit", command=exit_command)
+
+helpmenu = Menu(menu)
+menu.add_cascade(label="Help", menu=helpmenu)
+helpmenu.add_command(label="About", command=about_command)
+
+helpmenu = Menu(menu)
+menu.add_cascade(label="Abort", menu=helpmenu)
+helpmenu.add_command(label="Abort", command=abort_command)
+
+textPad.pack()
+
+#image
+text1 = Text(root, height=12, width=23)
+photo=PhotoImage(file='/images/redhat.png') #change accordingly
+text1.insert(END,'\n')
+text1.image_create(END, image=photo)
+
+text1.pack(side=LEFT)
+
+text2 = Text(root, height=12, width=66)
+scroll = Scrollbar(root, command=text2.yview)
+text2.configure(yscrollcommand=scroll.set)
+text2.tag_configure('bold_italics', font=('Arial', 12, 'bold', 'italic'))
+text2.tag_configure('big', font=('Verdana', 18, 'bold'))
+text2.tag_configure('color', foreground='#476042', 
+						font=('Tempus Sans ITC', 12, 'bold'))
+text2.tag_bind('follow', '<1>', lambda e, t=text2: t.insert(END, " Ghost"))
+text2.insert(END,'\n Redhat\n', 'big')
+quote = """
+ Where there's a shell, there's a way_
+"""
+text2.insert(END, quote, 'color')
+text2.insert(END, '\n\n Linux\n', 'follow')
+text2.pack(side=LEFT)
+scroll.pack(side=RIGHT, fill=Y)
+#endImage
+
+root.mainloop()
+ 
