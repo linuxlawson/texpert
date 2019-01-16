@@ -71,27 +71,26 @@ helpmenu.add_command(label="Abort", command=abort_command)
 textPad.pack()
 
 #image
-text1 = Text(root, height=12, width=23)
-photo=PhotoImage(file='/images/redhat.png') #change accordingly
+text1 = Text(root, height=12, width=23, background='black')
+photo=PhotoImage(file='/home/user/Pictures/images/redhat2.png') #change accordingly
 text1.insert(END,'\n')
 text1.image_create(END, image=photo)
-
 text1.pack(side=LEFT)
 
-text2 = Text(root, height=12, width=66)
+text2 = Text(root, height=12, width=66, background='black') #added bg
 scroll = Scrollbar(root, command=text2.yview)
 text2.configure(yscrollcommand=scroll.set)
 text2.tag_configure('bold_italics', font=('Arial', 12, 'bold', 'italic'))
-text2.tag_configure('big', font=('Verdana', 18, 'bold'))
-text2.tag_configure('color', foreground='#476042', 
+text2.tag_configure('big', foreground='red', font=('Verdana', 18, 'bold'))
+text2.tag_configure('color', foreground='green', 
 						font=('Tempus Sans ITC', 12, 'bold'))
-text2.tag_bind('follow', '<1>', lambda e, t=text2: t.insert(END, " Ghost"))
-text2.insert(END,'\n Redhat\n', 'big')
+#text2.tag_bind('follow', '<1>', lambda e, t=text2: t.insert(END, " easter egg"))
+text2.insert(END,'\n redhat \n', 'big')
 quote = """
- Where there's a shell, there's a way_
+ where there's a shell, there's a way_
 """
 text2.insert(END, quote, 'color')
-text2.insert(END, '\n\n Linux\n', 'follow')
+text2.insert(END, '\n\n Linux\n') #, 'follow')
 text2.pack(side=LEFT)
 scroll.pack(side=RIGHT, fill=Y)
 #endImage
