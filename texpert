@@ -80,16 +80,16 @@ text1.pack(side=LEFT)
 text2 = Text(root, height=12, width=66, background='black') #added bg
 scroll = Scrollbar(root, command=text2.yview)
 text2.configure(yscrollcommand=scroll.set)
-text2.tag_configure('normal', foreground='white', font=('Arial', 10))
-text2.tag_configure('big', foreground='red', font=('Verdana', 18, 'bold'))
+text2.tag_configure('normal', foreground='red', font=('Arial', 10))
+text2.tag_configure('big', foreground='white', font=('Verdana', 18, 'bold'))
 text2.tag_configure('color', foreground='green', font=('Tempus Sans ITC', 12, 'bold'))
 #text2.tag_bind('follow', '<1>', lambda e, t=text2: t.insert(END, " There"))
-text2.insert(END,'\n redhat \n', 'big')
+text2.insert(END,'\n Linux\n', 'big')
 quote = """
  where there's a shell, there's a way_
 """
 text2.insert(END, quote, 'color')
-text2.insert(END, '\n\n\n  Linux\n', 'normal') #, 'follow')
+text2.insert(END, '\n\n  redhat\n', 'normal') #, 'follow')
 text2.pack(side=LEFT)
 scroll.pack(side=RIGHT, fill=Y)
 #endImage
