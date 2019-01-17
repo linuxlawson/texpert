@@ -19,7 +19,10 @@ root = Tkinter.Tk(className = " texpert ")
 textPad = ScrolledText(root, width=90, height=26)
 
 #add menu/define functions
-#def new_command():
+def newFile(): 
+    root.title("Untitled ") 
+    file = None
+    textPad.delete(1.0,END) 
 
 def open_command():
     file = tkFileDialog.askopenfile(parent=root, mode='rb', title='Select File')
@@ -39,36 +42,40 @@ def exit_command():
     if tkMessageBox.askokcancel("Exit", "Do you really want to exit?"):
 	root.destroy()
 
-def about_command():
-    label = tkMessageBox.showinfo("About", "Texpert \nText Editor \nVersion 2.0")
-
 def abort_command():
-    if tkMessageBox.askokcancel("Abort", "Do you really want to exit?"):
+    if tkMessageBox.askokcancel("Abort", "Do you really want to abort?"):
 	root.destroy()
 
+def about_command():
+    label = tkMessageBox.showinfo("About", "texpert \ntext editor \nversion 2.0")
+
+def support_command():
+    label = tkMessageBox.showinfo("Support", "\nNo\n")
 
 
+#labels for menu
 def dummy():
     print ""
 menu = Menu(root)
 root.config(menu=menu)
 filemenu = Menu(menu)
 menu.add_cascade(label="File", menu=filemenu)
-filemenu.add_command(label="New", command=dummy)
+filemenu.add_command(label = "New", command = newFile) 
 filemenu.add_command(label="Open", command=open_command)
 filemenu.add_command(label="Save", command=save_command)
 filemenu.add_separator()
 filemenu.add_command(label="Exit", command=exit_command)
 
+abortmenu = Menu(menu)
+menu.add_cascade(label="Abort", menu=abortmenu)
+abortmenu.add_command(label="Abort", command=abort_command)
+
 helpmenu = Menu(menu)
 menu.add_cascade(label="Help", menu=helpmenu)
 helpmenu.add_command(label="About", command=about_command)
-
-helpmenu = Menu(menu)
-menu.add_cascade(label="Abort", menu=helpmenu)
-helpmenu.add_command(label="Abort", command=abort_command)
-
+helpmenu.add_command(label="Support", command=support_command)
 textPad.pack()
+
 
 #image/quote
 text1 = Text(root, height=12, width=23, background='black')
