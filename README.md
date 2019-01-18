@@ -1,4 +1,6 @@
 # texpert
-Simple text editor made with Python/Tkinter  
+Text editor made in Python with Tkinter  
 
-Change image path accordingly
+Change image path accordingly  
+
+
