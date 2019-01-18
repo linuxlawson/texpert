@@ -1,5 +1,5 @@
 #!/usr/bin/python
-#Simple Text Editor 
+#Text Editor 
 #Python Version: 2.7
 
 import os
@@ -8,18 +8,18 @@ import time
 import datetime
 import platform
 
-#main window with texting abilities
 import Tkinter
 from Tkinter import *
 from ScrolledText import *
 import tkFileDialog
 import tkMessageBox
 
+#main window
 root = Tkinter.Tk(className = " texpert ")
 textPad = ScrolledText(root, width=90, height=26)
 
 #add menu/define functions
-def newFile(): 
+def new_command(): 
     root.title("Untitled ") 
     file = None
     textPad.delete(1.0,END) 
@@ -42,40 +42,69 @@ def exit_command():
     if tkMessageBox.askokcancel("Exit", "Do you really want to exit?"):
 	root.destroy()
 
-def abort_command():
-    if tkMessageBox.askokcancel("Abort", "Do you really want to abort?"):
+def edit_command():
+    if tkMessageBox.askokcancel("Edit", "edit mode"):
 	root.destroy()
 
+def cut(): 
+    textPad.event_generate("<<Cut>>")
+
+def copy(): 
+    textPad.event_generate("<<Copy>>") 
+
+def paste(): 
+    textPad.event_generate("<<Paste>>")  
+
+
 def about_command():
-    label = tkMessageBox.showinfo("About", "texpert \ntext editor \nversion 2.0")
+    label = tkMessageBox.showinfo("About", "Texpert \nText Editor \nVersion 2.0 ")
+
+def info_command():
+    label = tkMessageBox.showinfo("Info", "Text Editor \nMade in Python \nwith Tkinter ")
 
 def support_command():
-    label = tkMessageBox.showinfo("Support", "\nNo\n")
+    label = tkMessageBox.showinfo("Support", "None available \nat the moment. \nPlease try again \nin twenty years. \n\n('>\n//)\n|\\ ")
 
 
-#labels for menu
-def dummy():
-    print ""
+#edit/select all
+def select_all():
+    textPad.tag_add(SEL, "1.0", END)
+    textPad.mark_set(INSERT, "1.0")
+    textPad.see(INSERT)
+    return 'break'
+
+textPad.bind("<Control-Key-a>", select_all)
+textPad.bind("<Control-Key-A>", select_all) #for caps
+
+
+#menu\labels
 menu = Menu(root)
 root.config(menu=menu)
 filemenu = Menu(menu)
-menu.add_cascade(label="File", menu=filemenu)
-filemenu.add_command(label = "New", command = newFile) 
-filemenu.add_command(label="Open", command=open_command)
-filemenu.add_command(label="Save", command=save_command)
+menu.add_cascade(label="File ", menu=filemenu)
+filemenu.add_command(label="New ", command=new_command) 
+filemenu.add_command(label="Open ", command=open_command)
 filemenu.add_separator()
-filemenu.add_command(label="Exit", command=exit_command)
+filemenu.add_command(label="Save ", command=save_command)
+filemenu.add_separator()
+filemenu.add_command(label="Exit ", command=exit_command)
 
-abortmenu = Menu(menu)
-menu.add_cascade(label="Abort", menu=abortmenu)
-abortmenu.add_command(label="Abort", command=abort_command)
+editmenu = Menu(menu)
+menu.add_cascade(label="Edit", menu=editmenu)
+editmenu.add_command(label="Cut", command=cut)
+editmenu.add_command(label="Copy", command=copy)  
+editmenu.add_command(label="Paste", command=paste) 
+editmenu.add_separator()
+editmenu.add_command(label="Select All        Ctrl+a", command=select_all) 
+
 
 helpmenu = Menu(menu)
 menu.add_cascade(label="Help", menu=helpmenu)
 helpmenu.add_command(label="About", command=about_command)
+helpmenu.add_command(label="Info", command=info_command)
 helpmenu.add_command(label="Support", command=support_command)
-textPad.pack()
 
+textPad.pack()
 
 #image/quote
 text1 = Text(root, height=12, width=23, background='black')
@@ -84,7 +113,7 @@ text1.insert(END,'\n')
 text1.image_create(END, image=photo)
 text1.pack(side=LEFT)
 
-text2 = Text(root, height=12, width=66, background='black') #added bg
+text2 = Text(root, height=12, width=66, background='black')
 scroll = Scrollbar(root, command=text2.yview)
 text2.configure(yscrollcommand=scroll.set)
 text2.tag_configure('normal', foreground='red', font=('Arial', 10))
@@ -99,7 +128,6 @@ text2.insert(END, quote, 'color')
 text2.insert(END, '\n\n  redhat\n', 'normal') #, 'follow')
 text2.pack(side=LEFT)
 scroll.pack(side=RIGHT, fill=Y)
-#endImage
 
 root.mainloop()
  
