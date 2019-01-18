@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #Text Editor 
-#Python Version: 2.7
+#Python 2.7
 
 import os
 os.system('clear')
@@ -18,7 +18,7 @@ import tkMessageBox
 root = Tkinter.Tk(className = " texpert ")
 textPad = ScrolledText(root, width=90, height=26)
 
-#add menu/define functions
+#define functions
 def new_command(): 
     root.title("Untitled ") 
     file = None
@@ -42,10 +42,6 @@ def exit_command():
     if tkMessageBox.askokcancel("Exit", "Do you really want to exit?"):
 	root.destroy()
 
-def edit_command():
-    if tkMessageBox.askokcancel("Edit", "edit mode"):
-	root.destroy()
-
 def cut(): 
     textPad.event_generate("<<Cut>>")
 
@@ -57,13 +53,10 @@ def paste():
 
 
 def about_command():
-    label = tkMessageBox.showinfo("About", "Texpert \nText Editor \nVersion 2.0 ")
+    label = tkMessageBox.showinfo("About", "Texpert \n\nText Editor \nVersion 2.0 ")
 
 def info_command():
     label = tkMessageBox.showinfo("Info", "Text Editor \nMade in Python \nwith Tkinter ")
-
-def support_command():
-    label = tkMessageBox.showinfo("Support", "None available \nat the moment. \nPlease try again \nin twenty years. \n\n('>\n//)\n|\\ ")
 
 
 #edit/select all
@@ -80,6 +73,7 @@ textPad.bind("<Control-Key-A>", select_all) #for caps
 #menu\labels
 menu = Menu(root)
 root.config(menu=menu)
+
 filemenu = Menu(menu)
 menu.add_cascade(label="File ", menu=filemenu)
 filemenu.add_command(label="New ", command=new_command) 
@@ -97,12 +91,10 @@ editmenu.add_command(label="Paste", command=paste)
 editmenu.add_separator()
 editmenu.add_command(label="Select All        Ctrl+a", command=select_all) 
 
-
 helpmenu = Menu(menu)
 menu.add_cascade(label="Help", menu=helpmenu)
 helpmenu.add_command(label="About", command=about_command)
 helpmenu.add_command(label="Info", command=info_command)
-helpmenu.add_command(label="Support", command=support_command)
 
 textPad.pack()
 
@@ -119,13 +111,12 @@ text2.configure(yscrollcommand=scroll.set)
 text2.tag_configure('normal', foreground='red', font=('Arial', 10))
 text2.tag_configure('big', foreground='white', font=('Verdana', 18, 'bold'))
 text2.tag_configure('color', foreground='green', font=('Tempus Sans ITC', 12, 'bold'))
-#text2.tag_bind('follow', '<1>', lambda e, t=text2: t.insert(END, " There"))
 text2.insert(END,'\n Linux\n', 'big')
 quote = """
  where there's a shell, there's a way_
 """
 text2.insert(END, quote, 'color')
-text2.insert(END, '\n\n  redhat\n', 'normal') #, 'follow')
+text2.insert(END, '\n\n  redhat\n', 'normal')
 text2.pack(side=LEFT)
 scroll.pack(side=RIGHT, fill=Y)
 
