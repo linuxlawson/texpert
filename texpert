@@ -1,6 +1,5 @@
 #!/usr/bin/python
-#Text Editor 
-#Python 2.7
+#Texpert Text Editor 
 
 import os
 os.system('clear')
@@ -16,50 +15,50 @@ import tkMessageBox
 
 #main window
 root = Tkinter.Tk(className = " texpert ")
-textPad = ScrolledText(root, width=90, height=26)
+textPad = ScrolledText(root, width=90, height=26, undo=True)
 
 #define functions
-def new_command(): 
+#file menu
+def new_com(): 
     root.title("Untitled ") 
     file = None
     textPad.delete(1.0,END) 
 
-def open_command():
+def open_com():
     file = tkFileDialog.askopenfile(parent=root, mode='rb', title='Select File')
     if file != None:
   	contents = file.read()
 	textPad.insert('1.0', contents)
 	file.close()
 
-def save_command():
+def save_com():
     file = tkFileDialog.asksaveasfile(mode='w')
     if file != None:
 	data = textPad.get('1.0', END+'-1c')
 	file.write(data)
  	file.close()
 
-def exit_command():
+def exit_com():
     if tkMessageBox.askokcancel("Exit", "Do you really want to exit?"):
 	root.destroy()
 
-def cut(): 
+#edit menu
+
+def undo_com():
+    textPad.edit_undo()
+
+def redo_com():
+    textPad.edit_redo()
+
+def cut_com(): 
     textPad.event_generate("<<Cut>>")
 
-def copy(): 
+def copy_com(): 
     textPad.event_generate("<<Copy>>") 
 
-def paste(): 
+def paste_com(): 
     textPad.event_generate("<<Paste>>")  
 
-
-def about_command():
-    label = tkMessageBox.showinfo("About", "Texpert \n\nText Editor \nVersion 2.0 ")
-
-def info_command():
-    label = tkMessageBox.showinfo("Info", "Text Editor \nMade in Python \nwith Tkinter ")
-
-
-#edit/select all
 def select_all():
     textPad.tag_add(SEL, "1.0", END)
     textPad.mark_set(INSERT, "1.0")
@@ -69,6 +68,13 @@ def select_all():
 textPad.bind("<Control-Key-a>", select_all)
 textPad.bind("<Control-Key-A>", select_all) #for caps
 
+#help menu
+def about_com():
+    label = tkMessageBox.showinfo("About", "Texpert \nText Editor \nVersion 2.0 ")
+
+def info_com():
+    label = tkMessageBox.showinfo("Info", "Text Editor \nMade in Python \nwith Tkinter ")
+
 
 #menu\labels
 menu = Menu(root)
@@ -76,25 +82,29 @@ root.config(menu=menu)
 
 filemenu = Menu(menu)
 menu.add_cascade(label="File ", menu=filemenu)
-filemenu.add_command(label="New ", command=new_command) 
-filemenu.add_command(label="Open ", command=open_command)
+filemenu.add_command(label="New ", command=new_com) 
+filemenu.add_command(label="Open ", command=open_com)
 filemenu.add_separator()
-filemenu.add_command(label="Save ", command=save_command)
+filemenu.add_command(label="Save ", command=save_com)
+filemenu.add_command(label="Save as ", command=save_com)
 filemenu.add_separator()
-filemenu.add_command(label="Exit ", command=exit_command)
+filemenu.add_command(label="Exit ", command=exit_com)
 
 editmenu = Menu(menu)
 menu.add_cascade(label="Edit", menu=editmenu)
-editmenu.add_command(label="Cut", command=cut)
-editmenu.add_command(label="Copy", command=copy)  
-editmenu.add_command(label="Paste", command=paste) 
+editmenu.add_command(label="Undo", command=undo_com)
+editmenu.add_command(label="Redo", command=redo_com)
+editmenu.add_separator()
+editmenu.add_command(label="Cut", command=cut_com)
+editmenu.add_command(label="Copy", command=copy_com)  
+editmenu.add_command(label="Paste", command=paste_com) 
 editmenu.add_separator()
 editmenu.add_command(label="Select All        Ctrl+a", command=select_all) 
 
 helpmenu = Menu(menu)
 menu.add_cascade(label="Help", menu=helpmenu)
-helpmenu.add_command(label="About", command=about_command)
-helpmenu.add_command(label="Info", command=info_command)
+helpmenu.add_command(label="About", command=about_com)
+helpmenu.add_command(label="Info", command=info_com)
 
 textPad.pack()
 
