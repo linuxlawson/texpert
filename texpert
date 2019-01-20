@@ -120,30 +120,26 @@ menu.add_cascade(label="Help ", menu=helpmenu)
 helpmenu.add_command(label="About", command=about_com)
 helpmenu.add_command(label="Info", command=info_com)
 
-
-
 textPad.pack()
 
-#image/quote
-text1 = Text(root, height=12, width=23, background='black')
+#imageBox (lower left)
+imageBox = Text(root, height=12, width=23, background='black')
 photo=PhotoImage(file='/home/ravid/Pictures/icons/redhat.png') #change accordingly
-text1.insert(END,'\n')
-text1.image_create(END, image=photo)
-text1.pack(side=LEFT)
+imageBox.insert(END,'\n')
+imageBox.image_create(END, image=photo)
+imageBox.pack(side=LEFT)
 
-text2 = Text(root, height=12, width=66, background='black')
-scroll = Scrollbar(root, command=text2.yview)
-text2.configure(yscrollcommand=scroll.set)
-text2.tag_configure('big', foreground='white', font=('Verdana', 18, 'bold'))
-text2.tag_configure('color', foreground='green', font=('Tempus Sans ITC', 12, 'bold'))
-text2.tag_configure('normal', foreground='red', font=('Arial', 10))
-text2.insert(END,'\n Linux\n', 'big') 
-quote = """
- where there's a shell, there's a way_
-"""
-text2.insert(END, quote, 'color')
-text2.insert(END, '\n\n  redhat\n', 'normal')
-text2.pack(side=LEFT)
+#textBox (lower right)
+textBox = Text(root, height=12, width=66, background='black')
+scroll = Scrollbar(root, command=textBox.yview)
+textBox.configure(yscrollcommand=scroll.set)
+textBox.tag_configure('big', foreground='white', font=('Verdana', 18, 'bold'))
+textBox.tag_configure('color', foreground='green', font=('Tempus Sans ITC', 12, 'bold'))
+textBox.tag_configure('normal', foreground='red', font=('Arial', 10))
+textBox.insert(END, '\n Linux\n', 'big') 
+textBox.insert(END, '\n where there\'s a shell, there\'s a way_ \n', 'color')
+textBox.insert(END, '\n\n  redhat\n', 'normal')
+textBox.pack(side=LEFT)
 scroll.pack(side=RIGHT, fill=Y)
 
 root.mainloop()
