@@ -14,10 +14,12 @@ import tkFileDialog
 import tkMessageBox
 
 #main window
-root = Tkinter.Tk(className = " texpert ")
+root = Tkinter.Tk(className = "texpert")
 textPad = ScrolledText(root, width=90, height=26, undo=True)
+root.resizable(width=False, height=False)
 
-#define functions
+
+#define menu functions
 #file menu
 def new_com(): 
     root.title("Untitled ") 
@@ -43,7 +45,6 @@ def exit_com():
 	root.destroy()
 
 #edit menu
-
 def undo_com():
     textPad.edit_undo()
 
@@ -68,6 +69,15 @@ def select_all():
 textPad.bind("<Control-Key-a>", select_all)
 textPad.bind("<Control-Key-A>", select_all) #for caps
 
+#tools menu
+def date_com():
+    full_date = time.localtime()
+    day = str(full_date.tm_mday)
+    month = str(full_date.tm_mon)
+    year = str(full_date.tm_year)
+    date = ""+month+'/'+day+'/'+year
+    textPad.insert(INSERT, date, "a")
+
 #help menu
 def about_com():
     label = tkMessageBox.showinfo("About", "Texpert \nText Editor \nVersion 2.0 ")
@@ -76,7 +86,7 @@ def info_com():
     label = tkMessageBox.showinfo("Info", "Text Editor \nMade in Python \nwith Tkinter ")
 
 
-#menu\labels
+#add menu (labels)
 menu = Menu(root)
 root.config(menu=menu)
 
@@ -101,10 +111,16 @@ editmenu.add_command(label="Paste", command=paste_com)
 editmenu.add_separator()
 editmenu.add_command(label="Select All        Ctrl+a", command=select_all) 
 
+toolmenu = Menu(menu)
+menu.add_cascade(label="Tools ", menu=toolmenu)
+toolmenu.add_command(label="Insert Date", command=date_com)
+
 helpmenu = Menu(menu)
 menu.add_cascade(label="Help ", menu=helpmenu)
 helpmenu.add_command(label="About", command=about_com)
 helpmenu.add_command(label="Info", command=info_com)
+
+
 
 textPad.pack()
 
@@ -118,10 +134,10 @@ text1.pack(side=LEFT)
 text2 = Text(root, height=12, width=66, background='black')
 scroll = Scrollbar(root, command=text2.yview)
 text2.configure(yscrollcommand=scroll.set)
-text2.tag_configure('normal', foreground='red', font=('Arial', 10))
 text2.tag_configure('big', foreground='white', font=('Verdana', 18, 'bold'))
 text2.tag_configure('color', foreground='green', font=('Tempus Sans ITC', 12, 'bold'))
-text2.insert(END,'\n Linux\n', 'big')
+text2.tag_configure('normal', foreground='red', font=('Arial', 10))
+text2.insert(END,'\n Linux\n', 'big') 
 quote = """
  where there's a shell, there's a way_
 """
