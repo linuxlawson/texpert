@@ -14,13 +14,13 @@ import tkFileDialog
 import tkMessageBox
 
 #main window
-root = Tkinter.Tk(className = "texpert")
-textPad = ScrolledText(root, width=90, height=26, undo=True)
+root = Tkinter.Tk(className = "Texpert")
+textPad = ScrolledText(root, width=98, height=26, undo=True)
 root.resizable(width=False, height=False)
 
 
 #define menu functions
-#file menu
+# file menu
 def new_com(): 
     root.title("Untitled ") 
     file = None
@@ -44,7 +44,7 @@ def exit_com():
     if tkMessageBox.askokcancel("Exit", "Do you really want to exit?"):
 	root.destroy()
 
-#edit menu
+# edit menu
 def undo_com():
     textPad.edit_undo()
 
@@ -69,7 +69,7 @@ def select_all():
 textPad.bind("<Control-Key-a>", select_all)
 textPad.bind("<Control-Key-A>", select_all) #for caps
 
-#tools menu
+# tools menu
 def date_com():
     full_date = time.localtime()
     day = str(full_date.tm_mday)
@@ -78,12 +78,12 @@ def date_com():
     date = ""+month+'/'+day+'/'+year
     textPad.insert(INSERT, date, "a")
 
-#help menu
+# help menu
 def about_com():
-    label = tkMessageBox.showinfo("About", "Texpert \nText Editor \nVersion 2.0 ")
+    label = tkMessageBox.showinfo("About", "Texpert \n\nA small text editor \ndesigned for linux. \n\nVersion 2.4 ")
 
 def info_com():
-    label = tkMessageBox.showinfo("Info", "Text Editor \nMade in Python \nwith Tkinter ")
+    label = tkMessageBox.showinfo("Info", "Text Editor \n\nMade in Python \nwith Tkinter ")
 
 
 #add menu (labels)
@@ -123,14 +123,14 @@ helpmenu.add_command(label="Info", command=info_com)
 textPad.pack()
 
 #imageBox (lower left)
-imageBox = Text(root, height=12, width=23, background='black')
+imageBox = Text(root, height=12, width=24, background='black')
 photo=PhotoImage(file='/home/ravid/Pictures/icons/redhat.png') #change accordingly
 imageBox.insert(END,'\n')
 imageBox.image_create(END, image=photo)
 imageBox.pack(side=LEFT)
 
 #textBox (lower right)
-textBox = Text(root, height=12, width=66, background='black')
+textBox = Text(root, height=12, width=73, background='black')
 scroll = Scrollbar(root, command=textBox.yview)
 textBox.configure(yscrollcommand=scroll.set)
 textBox.tag_configure('big', foreground='white', font=('Verdana', 18, 'bold'))
