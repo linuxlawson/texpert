@@ -15,7 +15,7 @@ import tkMessageBox
 
 #main window
 root = Tkinter.Tk(className = "Texpert")
-textPad = ScrolledText(root, width=98, height=26, undo=True)
+textPad = ScrolledText(root, width=98, height=26, bg="white", undo=True)
 root.resizable(width=False, height=False)
 
 
@@ -70,6 +70,10 @@ textPad.bind("<Control-Key-a>", select_all)
 textPad.bind("<Control-Key-A>", select_all) #for caps
 
 # tools menu
+def time_com():
+    ctime = time.strftime('%H:%M:%S')
+    textPad.insert(INSERT, ctime, "a")
+
 def date_com():
     full_date = time.localtime()
     day = str(full_date.tm_mday)
@@ -113,7 +117,10 @@ editmenu.add_command(label="Select All        Ctrl+a", command=select_all)
 
 toolmenu = Menu(menu)
 menu.add_cascade(label="Tools ", menu=toolmenu)
+toolmenu.add_command(label="Insert Time", command=time_com)
 toolmenu.add_command(label="Insert Date", command=date_com)
+
+
 
 helpmenu = Menu(menu)
 menu.add_cascade(label="Help ", menu=helpmenu)
