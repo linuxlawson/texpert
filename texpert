@@ -67,11 +67,11 @@ def select_all():
     return 'break'
 
 textPad.bind("<Control-Key-a>", select_all)
-textPad.bind("<Control-Key-A>", select_all) #for caps
+textPad.bind("<Control-Key-A>", select_all)
 
 # tools menu
 def time_com():
-    ctime = time.strftime('%H:%M:%S')
+    ctime = time.strftime('%I:%M:%p')
     textPad.insert(INSERT, ctime, "a")
 
 def date_com():
@@ -84,11 +84,13 @@ def date_com():
 
 # help menu
 def about_com():
-    label = tkMessageBox.showinfo("About", "Texpert \n\nA small text editor \ndesigned for linux. \n\nVersion 2.4 ")
+    label = tkMessageBox.showinfo("About", "Texpert \n\nA small text editor \ndesigned for linux. \n\nVersion 2.4 \n")
 
 def info_com():
     label = tkMessageBox.showinfo("Info", "Text Editor \n\nMade in Python \nwith Tkinter ")
 
+def trouble_com():
+    label = tkMessageBox.showinfo("Troubleshooting", "This program was designed for linux and may or may not work on other operating systems. \n\nTexpert text editor is a work in progress and is not yet complete. \n\nA 'right click' menu has not yet been incorporated (will fix). \n\nThe 'Save' and 'Save As' options both work as 'save as'. This will be corrected. \n\n('>\n//)\n|\\ ")
 
 #add menu (labels)
 menu = Menu(root)
@@ -120,13 +122,11 @@ menu.add_cascade(label="Tools ", menu=toolmenu)
 toolmenu.add_command(label="Insert Time", command=time_com)
 toolmenu.add_command(label="Insert Date", command=date_com)
 
-
-
 helpmenu = Menu(menu)
 menu.add_cascade(label="Help ", menu=helpmenu)
 helpmenu.add_command(label="About", command=about_com)
 helpmenu.add_command(label="Info", command=info_com)
-
+helpmenu.add_command(label="Troubleshooting", command=trouble_com)
 textPad.pack()
 
 #imageBox (lower left)
