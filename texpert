@@ -90,7 +90,7 @@ def info_com():
     label = tkMessageBox.showinfo("Info", "Text Editor \n\nMade in Python \nwith Tkinter ")
 
 def trouble_com():
-    label = tkMessageBox.showinfo("Troubleshooting", "This program was designed for linux and may or may not work on other operating systems. \n\nTexpert text editor is a work in progress and is not yet complete. \n\nA 'right click' menu has not yet been incorporated (will fix). \n\nThe 'Save' and 'Save As' options both work as 'save as'. This will be corrected. \n\n('>\n//)\n|\\ ")
+    label = tkMessageBox.showinfo("Troubleshooting", "This program was designed for linux and may not work on other operating systems. \n\nTexpert text editor is a work in progress and is not yet complete. \n\nA 'right click' menu has not yet been incorporated (will fix). \n\nThe 'Save' and 'Save As' options both work as 'save as'. This will be corrected. \n\n('>\n//)\n|\\ ")
 
 #add menu (labels)
 menu = Menu(root)
@@ -127,6 +127,20 @@ menu.add_cascade(label="Help ", menu=helpmenu)
 helpmenu.add_command(label="About", command=about_com)
 helpmenu.add_command(label="Info", command=info_com)
 helpmenu.add_command(label="Troubleshooting", command=trouble_com)
+
+
+#toolbar]
+toolbar = Frame(root)
+b = Button(toolbar, text="Open", width=4, command=open_com)
+b.pack(side=LEFT, padx=2, pady=2)
+b = Button(toolbar, text="Save", width=4, command=save_com)
+b.pack(side=RIGHT, padx=2, pady=2)
+
+toolbar.pack(side=TOP, fill=X)
+
+#statusBar mess]
+status = Label(text="Dont forget to save your work. And brush your teeth! ", bd=1, relief=SUNKEN, anchor=W, border=0)
+status.pack(side=BOTTOM, fill=Y)
 textPad.pack()
 
 #imageBox (lower left)
