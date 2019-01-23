@@ -5,7 +5,8 @@ Change image path accordingly
 
 Added:  
  -Edit menu w/options: undo/redo, cut, copy, paste, select all    
- -Tool menu w/options: insert time/date      
+ -Tool menu w/options: insert time/date  
+ -Toolbar
  
  imageBox and textBox can be commented out or deleted, they're not really needed.  
  
