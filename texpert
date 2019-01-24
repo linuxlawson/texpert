@@ -1,5 +1,6 @@
 #!/usr/bin/python
-#Texpert Text Editor 
+# Texpert Text Editor 
+# David Lawson 2018
 
 import os
 os.system('clear')
@@ -39,6 +40,11 @@ def save_com():
 	data = textPad.get('1.0', END+'-1c')
 	file.write(data)
  	file.close()
+
+def close_com(): #?
+    root.title("-Untitled- ") 
+    file = None
+    textPad.delete(1.0,END) 
 
 def exit_com():
     if tkMessageBox.askokcancel("Exit", "Do you really want to exit?"):
@@ -84,13 +90,18 @@ def date_com():
 
 # help menu
 def about_com():
-    label = tkMessageBox.showinfo("About", "Texpert \n\nA small text editor \ndesigned for linux. \n\nVersion 2.4 \n")
+    label = tkMessageBox.showinfo("About", "Texpert \n\nA small text editor \ndesigned for linux. \n\nVersion 2.4 ")
 
 def info_com():
     label = tkMessageBox.showinfo("Info", "Text Editor \n\nMade in Python \nwith Tkinter ")
 
 def trouble_com():
-    label = tkMessageBox.showinfo("Troubleshooting", "This program was designed for linux and may not work on other operating systems. \n\nTexpert text editor is a work in progress and is not yet complete. \n\nA 'right click' menu has not yet been incorporated (will fix). \n\nThe 'Save' and 'Save As' options both work as 'save as'. This will be corrected. \n\n('>\n//)\n|\\ ")
+    label = tkMessageBox.showinfo("Troubleshooting", "This program was designed for Linux and may not work on other operating systems. \n\nTexpert text editor is a work in progress and is not yet complete. \n\nA 'right click' menu has not yet been incorporated (will fix). \n\nThe 'Save' and 'Save As' options both work as 'save as'. This will be corrected (eventually). \n\n('>\n//)\n|\\ ")
+
+# x_out window
+def x_out():
+    if tkMessageBox.askokcancel("Exit", "Do you really want to exit?"):
+        root.destroy()
 
 #add menu (labels)
 menu = Menu(root)
@@ -104,6 +115,7 @@ filemenu.add_separator()
 filemenu.add_command(label="Save", command=save_com)
 filemenu.add_command(label="Save As", command=save_com)
 filemenu.add_separator()
+filemenu.add_command(label="Close", command=close_com)
 filemenu.add_command(label="Exit", command=exit_com)
 
 editmenu = Menu(menu)
@@ -129,19 +141,19 @@ helpmenu.add_command(label="Info", command=info_com)
 helpmenu.add_command(label="Troubleshooting", command=trouble_com)
 
 
-#toolbar]
+#toolbar==
 toolbar = Frame(root)
 b = Button(toolbar, text="Open", width=4, command=open_com)
-b.pack(side=LEFT, padx=2, pady=2)
+b.pack(side=LEFT, padx=4, pady=2)
 b = Button(toolbar, text="Save", width=4, command=save_com)
-b.pack(side=RIGHT, padx=2, pady=2)
-
+b.pack(side=RIGHT, padx=4, pady=2)
 toolbar.pack(side=TOP, fill=X)
 
-#statusBar mess]
-status = Label(text="Dont forget to save your work. And brush your teeth! ", bd=1, relief=SUNKEN, anchor=W, border=0)
+#statusBar==
+status = Label(text="=Dont forget to save your work=", bd=1, relief=FLAT, anchor=W)
 status.pack(side=BOTTOM, fill=Y)
 textPad.pack()
+
 
 #imageBox (lower left)
 imageBox = Text(root, height=12, width=24, background='black')
@@ -163,5 +175,7 @@ textBox.insert(END, '\n\n  redhat\n', 'normal')
 textBox.pack(side=LEFT)
 scroll.pack(side=RIGHT, fill=Y)
 
+textPad.focus_set()
+root.protocol("WM_DELETE_WINDOW", x_out)
 root.mainloop()
  
