@@ -14,71 +14,71 @@ from ScrolledText import *
 import tkFileDialog
 import tkMessageBox
 
-#main window
+# main window
 root = Tkinter.Tk(className = "Texpert")
-textPad = ScrolledText(root, width=98, height=26, bg="white", undo=True)
+texpert = ScrolledText(root, width=98, height=26, bg="white", undo=True)
 root.resizable(width=False, height=False)
 
 
-#define menu functions
+# Define Menu Functions
 # file menu
 def new_com(): 
     root.title("Untitled ") 
     file = None
-    textPad.delete(1.0,END) 
+    texpert.delete(1.0,END) 
 
 def open_com():
     file = tkFileDialog.askopenfile(parent=root, mode='rb', title='Select File')
     if file != None:
   	contents = file.read()
-	textPad.insert('1.0', contents)
+	texpert.insert('1.0', contents)
 	file.close()
 
 def save_com():
     file = tkFileDialog.asksaveasfile(mode='w')
     if file != None:
-	data = textPad.get('1.0', END+'-1c')
+	data = texpert.get('1.0', END+'-1c')
 	file.write(data)
  	file.close()
 
-def close_com(): #?
-    root.title("-Untitled- ") 
+def close_com():
+    root.title("") 
     file = None
-    textPad.delete(1.0,END) 
+    texpert.delete(1.0,END) 
 
 def exit_com():
-    if tkMessageBox.askokcancel("Exit", "Do you really want to exit?"):
+    if tkMessageBox.askokcancel("Exit", "Are you sure? "):
 	root.destroy()
 
 # edit menu
 def undo_com():
-    textPad.edit_undo()
+    texpert.edit_undo()
 
 def redo_com():
-    textPad.edit_redo()
+    texpert.edit_redo()
 
 def cut_com(): 
-    textPad.event_generate("<<Cut>>")
+    texpert.event_generate("<<Cut>>")
 
 def copy_com(): 
-    textPad.event_generate("<<Copy>>") 
+    texpert.event_generate("<<Copy>>") 
 
 def paste_com(): 
-    textPad.event_generate("<<Paste>>")  
+    texpert.event_generate("<<Paste>>")  
 
 def select_all():
-    textPad.tag_add(SEL, "1.0", END)
-    textPad.mark_set(INSERT, "1.0")
-    textPad.see(INSERT)
+    texpert.tag_add(SEL, "1.0", END)
+    texpert.mark_set(INSERT, "1.0")
+    texpert.see(INSERT)
     return 'break'
 
-textPad.bind("<Control-Key-a>", select_all)
-textPad.bind("<Control-Key-A>", select_all)
+texpert.bind("<Control-Key-a>", select_all)
+texpert.bind("<Control-Key-A>", select_all)
 
 # tools menu
 def time_com():
     ctime = time.strftime('%I:%M:%p')
-    textPad.insert(INSERT, ctime, "a")
+    texpert.insert(INSERT, ctime, "a")
 
 def date_com():
     full_date = time.localtime()
@@ -86,7 +86,7 @@ def date_com():
     month = str(full_date.tm_mon)
     year = str(full_date.tm_year)
     date = ""+month+'/'+day+'/'+year
-    textPad.insert(INSERT, date, "a")
+    texpert.insert(INSERT, date, "a")
 
 # help menu
 def about_com():
@@ -96,12 +96,18 @@ def info_com():
     label = tkMessageBox.showinfo("Info", "Text Editor \n\nMade in Python \nwith Tkinter ")
 
 def trouble_com():
-    label = tkMessageBox.showinfo("Troubleshooting", "This program was designed for Linux and may not work on other operating systems. \n\nTexpert text editor is a work in progress and is not yet complete. \n\nA 'right click' menu has not yet been incorporated (will fix). \n\nThe 'Save' and 'Save As' options both work as 'save as'. This will be corrected (eventually). \n\n('>\n//)\n|\\ ")
+    label = tkMessageBox.showinfo("Troubleshooting", "This program was designed for Linux and may not work on other operating systems. \n\nTexpert text editor is a work in progress and is not yet complete. \n\nThe 'right click' menu is kind of working now (working on it). \n\nThe 'Save' and 'Save As' options both work as 'save as'. This will be corrected (eventually). \n\n('>\n//)\n|\\ ")
 
 # x_out window
 def x_out():
-    if tkMessageBox.askokcancel("Exit", "Do you really want to exit?"):
+    if tkMessageBox.askokcancel("Exit", "Are you sure? "):
         root.destroy()
+
+# right click menu==
+def r_click(event):
+    editmenu.post(event.x_root, event.y_root)
+texpert.bind("<Button-3>", r_click)
+
 
 #add menu (labels)
 menu = Menu(root)
@@ -152,7 +158,7 @@ toolbar.pack(side=TOP, fill=X)
 #statusBar==
 status = Label(text="=Dont forget to save your work=", bd=1, relief=FLAT, anchor=W)
 status.pack(side=BOTTOM, fill=Y)
-textPad.pack()
+texpert.pack()
 
 
 #imageBox (lower left)
@@ -175,7 +181,7 @@ textBox.insert(END, '\n\n  redhat\n', 'normal')
 textBox.pack(side=LEFT)
 scroll.pack(side=RIGHT, fill=Y)
 
-textPad.focus_set()
+texpert.focus_set()
 root.protocol("WM_DELETE_WINDOW", x_out)
 root.mainloop()
  
