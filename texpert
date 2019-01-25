@@ -34,7 +34,7 @@ def open_com():
 	texpert.insert('1.0', contents)
 	file.close()
 
-def save_com():
+def saveas_com():
     file = tkFileDialog.asksaveasfile(mode='w')
     if file != None:
 	data = texpert.get('1.0', END+'-1c')
@@ -96,7 +96,7 @@ def info_com():
     label = tkMessageBox.showinfo("Info", "Text Editor \n\nMade in Python \nwith Tkinter ")
 
 def trouble_com():
-    label = tkMessageBox.showinfo("Troubleshooting", "This program was designed for Linux and may not work on other operating systems. \n\nTexpert text editor is a work in progress and is not yet complete. \n\nThe 'right click' menu is kind of working now (working on it). \n\nThe 'Save' and 'Save As' options both work as 'save as'. This will be corrected (eventually). \n\n('>\n//)\n|\\ ")
+    label = tkMessageBox.showinfo("Troubleshooting", "This program was designed for Linux and may not work on other operating systems. \n\nTexpert text editor is a work in progress and is not yet complete. \n\nThe 'right click' menu is in working order now (fixed). \n\nThe 'Save' and 'Save As' options both work as 'save as'. This will be corrected (eventually). \n\n('>\n//)\n|\\ ")
 
 # x_out window
 def x_out():
@@ -105,7 +105,7 @@ def x_out():
 
 # right click menu==
 def r_click(event):
-    editmenu.post(event.x_root, event.y_root)
+    editmenu.tk_popup(event.x_root, event.y_root)
 texpert.bind("<Button-3>", r_click)
 
 
@@ -118,8 +118,8 @@ menu.add_cascade(label="File ", menu=filemenu)
 filemenu.add_command(label="New", command=new_com) 
 filemenu.add_command(label="Open", command=open_com)
 filemenu.add_separator()
-filemenu.add_command(label="Save", command=save_com)
-filemenu.add_command(label="Save As", command=save_com)
+filemenu.add_command(label="Save", command=saveas_com)
+filemenu.add_command(label="Save As", command=saveas_com)
 filemenu.add_separator()
 filemenu.add_command(label="Close", command=close_com)
 filemenu.add_command(label="Exit", command=exit_com)
@@ -151,7 +151,7 @@ helpmenu.add_command(label="Troubleshooting", command=trouble_com)
 toolbar = Frame(root)
 b = Button(toolbar, text="Open", width=4, command=open_com)
 b.pack(side=LEFT, padx=4, pady=2)
-b = Button(toolbar, text="Save", width=4, command=save_com)
+b = Button(toolbar, text="Save", width=4, command=saveas_com)
 b.pack(side=RIGHT, padx=4, pady=2)
 toolbar.pack(side=TOP, fill=X)
 
