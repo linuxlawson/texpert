@@ -18,7 +18,7 @@ import tkMessageBox
 root = Tkinter.Tk(className = "Texpert")
 texpert = ScrolledText(root, width=98, height=26, bg="white", undo=True)
 root.resizable(width=False, height=False)
-
+root.option_add("*Font", "TkDefaultFont 9")
 
 # Define Menu Functions
 # file menu
@@ -47,7 +47,7 @@ def close_com():
     texpert.delete(1.0,END) 
 
 def exit_com():
-    if tkMessageBox.askokcancel("Exit", "Are you sure? "):
+    if tkMessageBox.askokcancel("Exit", "Do you really want to exit? "):
 	root.destroy()
 
 # edit menu
@@ -90,13 +90,13 @@ def date_com():
 
 # help menu
 def about_com():
-    label = tkMessageBox.showinfo("About", "Texpert \n\nA small text editor \ndesigned for linux. \n\nVersion 2.4 ")
+    label = tkMessageBox.showinfo("About", "Texpert\n\nA small text editor\ndesigned for linux.\n\nVersion 2.4 ")
 
 def info_com():
-    label = tkMessageBox.showinfo("Info", "Text Editor \n\nMade in Python \nwith Tkinter ")
+    label = tkMessageBox.showinfo("Info", "Text Editor\n\nMade in Python\nwith Tkinter ")
 
 def trouble_com():
-    label = tkMessageBox.showinfo("Troubleshooting", "This program was designed for Linux and may not work on other operating systems. \n\nTexpert text editor is a work in progress and is not yet complete. \n\nThe 'right click' menu is in working order now (fixed). \n\nThe 'Save' and 'Save As' options both work as 'save as'. This will be corrected (eventually). \n\n('>\n//)\n|\\ ")
+    label = tkMessageBox.showinfo("Troubleshooting", "This program was designed for Linux and\nmay not work on other operating systems.\n\nTexpert text editor is a work in progress\nand is not yet complete.\n\nThe 'right click' menu is now working.\n\nThe 'Save' and 'Save As' options both work\nas 'save as'. This will be fixed (eventually).\n\n('>\n//)\n|\\ ")
 
 # x_out window
 def x_out():
@@ -113,7 +113,7 @@ texpert.bind("<Button-3>", r_click)
 menu = Menu(root)
 root.config(menu=menu)
 
-filemenu = Menu(menu)
+filemenu = Menu(menu, tearoff=0)
 menu.add_cascade(label="File ", menu=filemenu)
 filemenu.add_command(label="New", command=new_com) 
 filemenu.add_command(label="Open", command=open_com)
@@ -124,7 +124,7 @@ filemenu.add_separator()
 filemenu.add_command(label="Close", command=close_com)
 filemenu.add_command(label="Exit", command=exit_com)
 
-editmenu = Menu(menu)
+editmenu = Menu(menu, tearoff=0)
 menu.add_cascade(label="Edit ", menu=editmenu)
 editmenu.add_command(label="Undo", command=undo_com)
 editmenu.add_command(label="Redo", command=redo_com)
@@ -135,12 +135,12 @@ editmenu.add_command(label="Paste", command=paste_com)
 editmenu.add_separator()
 editmenu.add_command(label="Select All        Ctrl+a", command=select_all) 
 
-toolmenu = Menu(menu)
+toolmenu = Menu(menu, tearoff=0)
 menu.add_cascade(label="Tools ", menu=toolmenu)
 toolmenu.add_command(label="Insert Time", command=time_com)
 toolmenu.add_command(label="Insert Date", command=date_com)
 
-helpmenu = Menu(menu)
+helpmenu = Menu(menu, tearoff=0)
 menu.add_cascade(label="Help ", menu=helpmenu)
 helpmenu.add_command(label="About", command=about_com)
 helpmenu.add_command(label="Info", command=info_com)
@@ -162,14 +162,14 @@ texpert.pack()
 
 
 #imageBox (lower left)
-imageBox = Text(root, height=12, width=24, background='black')
+imageBox = Text(root, height=12, width=20, background='black')
 photo=PhotoImage(file='/home/ravid/Pictures/icons/redhat.png') #change accordingly
-imageBox.insert(END,'\n')
+imageBox.insert(END,'')
 imageBox.image_create(END, image=photo)
 imageBox.pack(side=LEFT)
 
 #textBox (lower right)
-textBox = Text(root, height=12, width=73, background='black')
+textBox = Text(root, height=12, width=65, background='black')
 scroll = Scrollbar(root, command=textBox.yview)
 textBox.configure(yscrollcommand=scroll.set)
 textBox.tag_configure('big', foreground='white', font=('Verdana', 18, 'bold'))
