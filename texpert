@@ -16,9 +16,9 @@ import tkMessageBox
 
 # main window
 root = Tkinter.Tk(className = "Texpert")
-texpert = ScrolledText(root, width=98, height=26, bg="white", undo=True)
-root.resizable(width=False, height=False)
+texpert = ScrolledText(root, width=100, height=30, bg="white", undo=True)
 root.option_add("*Font", "TkDefaultFont 9")
+
 
 # Define Menu Functions
 # file menu
@@ -96,12 +96,12 @@ def info_com():
     label = tkMessageBox.showinfo("Info", "Text Editor\n\nMade in Python\nwith Tkinter ")
 
 def trouble_com():
-    label = tkMessageBox.showinfo("Troubleshooting", "This program was designed for Linux and\nmay not work on other operating systems.\n\nTexpert text editor is a work in progress\nand is not yet complete.\n\nThe 'right click' menu is now working.\n\nThe 'Save' and 'Save As' options both work\nas 'save as'. This will be fixed (eventually).\n\n('>\n//)\n|\\ ")
+    label = tkMessageBox.showinfo("Troubleshooting", "This program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand is not yet complete.\n\nThe 'right click' menu is now working.\n\nThe 'Save' and 'Save As' options both work\nas 'save as'. This will be fixed (eventually).\n\n('>\n//)\n|\\ ")
 
 # x_out window
 def x_out():
     if tkMessageBox.askokcancel("Exit", "Are you sure? "):
-        root.destroy()
+       root.destroy()
 
 # right click menu==
 def r_click(event):
@@ -109,9 +109,9 @@ def r_click(event):
 texpert.bind("<Button-3>", r_click)
 
 
-#add menu (labels)
-menu = Menu(root)
-root.config(menu=menu)
+# add menu/labels
+menu = Menu(root, bd=1)
+root.config(menu=menu, bd=1)
 
 filemenu = Menu(menu, tearoff=0)
 menu.add_cascade(label="File ", menu=filemenu)
@@ -155,33 +155,13 @@ b = Button(toolbar, text="Save", width=4, command=saveas_com)
 b.pack(side=RIGHT, padx=4, pady=2)
 toolbar.pack(side=TOP, fill=X)
 
+
 #statusBar==
 status = Label(text="=Dont forget to save your work=", bd=1, relief=FLAT, anchor=W)
 status.pack(side=BOTTOM, fill=Y)
-texpert.pack()
+texpert.pack(fill="both", expand=True)
 
-
-#imageBox (lower left)
-imageBox = Text(root, height=12, width=20, background='black')
-photo=PhotoImage(file='/home/ravid/Pictures/icons/redhat.png') #change accordingly
-imageBox.insert(END,'')
-imageBox.image_create(END, image=photo)
-imageBox.pack(side=LEFT)
-
-#textBox (lower right)
-textBox = Text(root, height=12, width=65, background='black')
-scroll = Scrollbar(root, command=textBox.yview)
-textBox.configure(yscrollcommand=scroll.set)
-textBox.tag_configure('big', foreground='white', font=('Verdana', 18, 'bold'))
-textBox.tag_configure('color', foreground='green', font=('Tempus Sans ITC', 12, 'bold'))
-textBox.tag_configure('normal', foreground='red', font=('Arial', 10))
-textBox.insert(END, '\n Linux\n', 'big') 
-textBox.insert(END, '\n where there\'s a shell, there\'s a way_ \n', 'color')
-textBox.insert(END, '\n\n  redhat\n', 'normal')
-textBox.pack(side=LEFT)
-scroll.pack(side=RIGHT, fill=Y)
 
 texpert.focus_set()
 root.protocol("WM_DELETE_WINDOW", x_out)
 root.mainloop()
- 
