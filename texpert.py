@@ -3,10 +3,8 @@
 # David Lawson 2018
 
 import os
-os.system('clear')
 import time
 import datetime
-import platform
 
 import Tkinter
 from Tkinter import *
@@ -14,9 +12,9 @@ from ScrolledText import *
 import tkFileDialog
 import tkMessageBox
 
-# main window
+# main
 root = Tkinter.Tk(className = "Texpert")
-texpert = ScrolledText(root, width=104, height=34, bg="white", undo=True)
+texpert = ScrolledText(root, width=102, height=32, bg="white", undo=True)
 root.option_add("*Font", "TkDefaultFont 9")
 
 
@@ -86,7 +84,7 @@ def panel_com():
 
 # tools menu
 def time_com():
-    ctime = time.strftime('%I:%M:%p')
+    ctime = time.strftime('%I:%M %p')
     texpert.insert(INSERT, ctime, "a")
 
 def date_com():
@@ -106,6 +104,16 @@ def info_com():
 
 def trouble_com():
     label = tkMessageBox.showinfo("Troubleshooting", "This program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand is not yet complete.\n\nThe 'right click' menu is now working.\n\nThe 'Save' and 'Save As' options both work\nas 'save as'. This will be fixed (eventually).\n\n('>\n//)\n|\\ ")
+
+# right click menu
+def r_click(event):
+    editmenu.tk_popup(event.x_root, event.y_root)
+texpert.bind("<Button-3>", r_click)
+
+# x_out window
+def x_out():
+    if tkMessageBox.askokcancel("Exit", "Are you sure? "):
+       root.destroy()
 
 
 # add menu/labels
@@ -153,17 +161,6 @@ helpmenu.add_command(label="Info", command=info_com)
 helpmenu.add_command(label="Troubleshooting", command=trouble_com)
 
 
-# right click menu
-def r_click(event):
-    editmenu.tk_popup(event.x_root, event.y_root)
-texpert.bind("<Button-3>", r_click)
-
-# x_out window
-def x_out():
-    if tkMessageBox.askokcancel("Exit", "Are you sure? "):
-       root.destroy()
-
-
 #toolBar
 toolbar = Frame(root)
 b = Button(toolbar, text="Open", width=4, command=open_com)
@@ -172,11 +169,10 @@ b = Button(toolbar, text="Save", width=4, command=saveas_com)
 b.pack(side=RIGHT, padx=4, pady=2)
 toolbar.pack(side=TOP, fill=X)
 
-
 #statusBar
-status = Label(text="Simon says. Texpert does. You edit.", bd=1, relief=FLAT, anchor=W)
-#status = Label(text="Linux + Python = Texpert", bd=1, relief=FLAT, anchor=W)
+status = Label(text="=Dont forget to save your work=", bd=1, relief=FLAT, anchor=W, font =('helvetica 9'))
 status.pack(side=BOTTOM, fill=Y)
+
 
 texpert.pack(fill="both", expand=True)
 root.title("Texpert")
