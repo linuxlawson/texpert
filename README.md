@@ -8,7 +8,8 @@ Added:
  -View menu: fullscreen/normal  
  -Tool menu: insert time/date  
  -Toolbar: open/save  
- -Context menu (right click)
+ -Context menu (right click)  
+ -Status bar
  
  
  
