@@ -26,6 +26,9 @@ def new_com():
     texpert.delete(1.0,END) 
 
 def open_com():
+    root.title("Untitled ") 
+    file = None
+    texpert.delete(1.0,END) 
     file = tkFileDialog.askopenfile(parent=root, mode='rb', title='Select File')
     if file != None:
   	contents = file.read()
@@ -117,7 +120,7 @@ def x_out():
 
 
 # add menu/labels
-menu = Menu(root, bd=1)
+menu = Menu(root, bd=1, relief='flat')
 root.config(menu=menu, bd=1)
 
 filemenu = Menu(menu, tearoff=0)
@@ -162,7 +165,7 @@ helpmenu.add_command(label="Troubleshooting", command=trouble_com)
 
 
 #toolBar
-toolbar = Frame(root)
+toolbar = Frame(root, bd=2, relief='groove') #added border, relief
 b = Button(toolbar, text="Open", width=4, command=open_com)
 b.pack(side=LEFT, padx=4, pady=2)
 b = Button(toolbar, text="Save", width=4, command=saveas_com)
@@ -177,5 +180,5 @@ status.pack(side=BOTTOM, fill=Y)
 texpert.pack(fill="both", expand=True)
 root.title("Texpert")
 texpert.focus_set()
-root.protocol("WM_DELETE_WINDOW", x_out)
+#root.protocol("WM_DELETE_WINDOW", x_out)
 root.mainloop()
