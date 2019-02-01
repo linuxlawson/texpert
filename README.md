@@ -1,5 +1,5 @@
 # texpert  
-This is my first project using Tkinter (thought I should mention that:)  
+This is my first project using Tkinter (thought I should mention that)  
 
 Text editor made in Python with Tkinter  
 
