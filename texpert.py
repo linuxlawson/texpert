@@ -11,6 +11,8 @@ from Tkinter import *
 from ScrolledText import *
 import tkFileDialog
 import tkMessageBox
+import Tkconstants
+import ttk
 
 # main
 root = Tkinter.Tk(className = "Texpert")
@@ -26,12 +28,10 @@ def new_com():
     texpert.delete(1.0,END) 
 
 def open_com():
-    root.title("Untitled ") 
-    file = None
-    texpert.delete(1.0,END) 
     file = tkFileDialog.askopenfile(parent=root, mode='rb', title='Select File')
     if file != None:
   	contents = file.read()
+        texpert.delete(1.0,END)
 	texpert.insert('1.0', contents)
 	file.close()
 
@@ -82,8 +82,15 @@ def normal_com():
 def full_com():
     root.attributes('-zoomed', True)
 
-def panel_com():
+def tray_com():
     root.iconify()
+
+#def hide_tbar():
+#    toolbar.pack_forget()
+
+#def show_tbar():
+#    toolbar.pack(side=TOP, fill=X)
+
 
 # tools menu
 def time_com():
@@ -100,13 +107,25 @@ def date_com():
 
 # help menu
 def about_com():
-    label = tkMessageBox.showinfo("About", "Texpert\n\nA small text editor\ndesigned for linux.\n\nVersion 2.4 ")
-
-def info_com():
-    label = tkMessageBox.showinfo("Info", "Text Editor\n\nMade in Python\nwith Tkinter ")
+    label = tkMessageBox.showinfo("About", "\nTexpert\n\nA small text editor designed for linux.\n\nMade in Python with Tkinter\n")
 
 def trouble_com():
-    label = tkMessageBox.showinfo("Troubleshooting", "This program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand is not yet complete.\n\nThe 'right click' menu is now working.\n\nThe 'Save' and 'Save As' options both work\nas 'save as'. This will be fixed (eventually).\n\n('>\n//)\n|\\ ")
+    label = tkMessageBox.showinfo("Troubleshooting", "\nThis program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand is not yet complete.\n\nThe 'right click' menu is now working.\n\nThe 'Save' and 'Save As' options both work\nas 'save as'. This will be fixed (eventually).\n\n('>\n//)\n|\\ ")
+
+
+def credits_com():
+    dialog = Tkinter.Toplevel()
+    dialog.title("Credits")
+    big_frame = ttk.Frame(dialog)
+    big_frame.pack(fill='both', expand=True)
+
+    label = ttk.Label(big_frame, text="\nCreated by David Lawson")
+    label.place(relx=0.5, rely=0.3, anchor='center')
+
+    dialog.transient(root)
+    dialog.geometry('300x150')
+    dialog.wait_window()
+
 
 # right click menu
 def r_click(event):
@@ -123,6 +142,7 @@ def x_out():
 menu = Menu(root, bd=1, relief='flat')
 root.config(menu=menu, bd=1)
 
+#file
 filemenu = Menu(menu, tearoff=0)
 menu.add_cascade(label="File ", menu=filemenu)
 filemenu.add_command(label="New", command=new_com) 
@@ -134,6 +154,7 @@ filemenu.add_separator()
 filemenu.add_command(label="Close", command=close_com)
 filemenu.add_command(label="Exit", command=exit_com)
 
+#edit
 editmenu = Menu(menu, tearoff=0)
 menu.add_cascade(label="Edit ", menu=editmenu)
 editmenu.add_command(label="Undo", command=undo_com)
@@ -145,34 +166,40 @@ editmenu.add_command(label="Paste", command=paste_com)
 editmenu.add_separator()
 editmenu.add_command(label="Select All        Ctrl+a", command=select_all) 
 
+#view
 viewmenu = Menu(menu, tearoff=0)
 menu.add_cascade(label="View ", menu=viewmenu)
+#viewmenu.add_command(label="Hide Toolbar", command=hide_tbar)
+#viewmenu.add_command(label="Show Toolbar", command=show_tbar)
+#viewmenu.add_separator()
+viewmenu.add_command(label="Hide in Tray", command=tray_com)
+viewmenu.add_separator()
 viewmenu.add_command(label="Normal", command=normal_com)
 viewmenu.add_command(label="Fullscreen", command=full_com)
-viewmenu.add_separator()
-viewmenu.add_command(label="Panel/Tray", command=panel_com)
 
+#tool
 toolmenu = Menu(menu, tearoff=0)
 menu.add_cascade(label="Tools ", menu=toolmenu)
 toolmenu.add_command(label="Insert Time", command=time_com)
 toolmenu.add_command(label="Insert Date", command=date_com)
 
+#help
 helpmenu = Menu(menu, tearoff=0)
 menu.add_cascade(label="Help ", menu=helpmenu)
 helpmenu.add_command(label="About", command=about_com)
-helpmenu.add_command(label="Info", command=info_com)
-helpmenu.add_command(label="Troubleshooting", command=trouble_com)
+helpmenu.add_command(label="Credits", command=credits_com)
+helpmenu.add_command(label="Trouble", command=trouble_com)
 
 
-#toolBar
-toolbar = Frame(root, bd=2, relief='groove') #added border, relief
+# toolBar
+toolbar = Frame(root, bd=2, relief='groove')
 b = Button(toolbar, text="Open", width=4, command=open_com)
 b.pack(side=LEFT, padx=4, pady=2)
 b = Button(toolbar, text="Save", width=4, command=saveas_com)
 b.pack(side=RIGHT, padx=4, pady=2)
 toolbar.pack(side=TOP, fill=X)
 
-#statusBar
+# statusBar
 status = Label(text="=Dont forget to save your work=", bd=1, relief=FLAT, anchor=W, font =('helvetica 9'))
 status.pack(side=BOTTOM, fill=Y)
 
