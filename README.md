@@ -1,6 +1,4 @@
 # texpert  
-This is my first project using Tkinter (thought I should mention that)  
-
 Text editor made in Python with Tkinter  
 
  
@@ -15,7 +13,10 @@ Added:
  
  
  
- Designed for Linux
+ Designed for Linux  
+   
+     
+     This is my first project using Tkinter (thought I should mention that)
  
  
 
