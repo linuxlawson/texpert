@@ -77,14 +77,14 @@ texpert.bind("<Control-Key-a>", select_all)
 texpert.bind("<Control-Key-A>", select_all)
 
 # view menu
+def tray_com():
+    root.iconify()
+
 def normal_com():
     root.attributes('-zoomed', False)
 
 def full_com():
     root.attributes('-zoomed', True)
-
-def tray_com():
-    root.iconify()
 
 #def hide_tbar():
 #    toolbar.pack_forget()
@@ -124,6 +124,7 @@ def about_com():
 
 def credits_com(): #linked to about (button a)
     win = Toplevel()
+    win.wm_attributes("-topmost", 1)
     win.title("Credits")                                     
     Label(win, foreground='gray', text='\n\n\nCreated by David Lawson\n\n\nme = Person()\nwhile (me.awake()):\nme.code()\n\n').pack()   
     Button(win, text='Close', command=win.destroy).pack()   
@@ -139,7 +140,7 @@ def trouble_com():
     Button(win, text='Close', command=win.destroy).pack()   
           
     win.transient(root)
-    win.geometry('320x266')
+    win.geometry('320x268')
     win.wait_window()
 
 
