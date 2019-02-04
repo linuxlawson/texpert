@@ -16,7 +16,8 @@ import ttk
 
 # main
 root = Tkinter.Tk(className = "Texpert")
-texpert = ScrolledText(root, width=102, height=32, bg="white", undo=True)
+root.geometry("700x440")
+texpert = ScrolledText(root, bg="white", undo=True)
 root.option_add("*Font", "TkDefaultFont 9")
 
 
@@ -105,26 +106,37 @@ def date_com():
     date = ""+month+'/'+day+'/'+year
     texpert.insert(INSERT, date, "a")
 
-# help menu
-def about_com():
-    label = tkMessageBox.showinfo("About", "\nTexpert\n\nA small text editor designed for linux.\n\nMade in Python with Tkinter\n")
 
+# help menu
 def trouble_com():
     label = tkMessageBox.showinfo("Troubleshooting", "\nThis program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand is not yet complete.\n\nThe 'right click' menu is now working.\n\nThe 'Save' and 'Save As' options both work\nas 'save as'. This will be fixed (eventually).\n\n('>\n//)\n|\\ ")
 
 
+def about_com():
+    win = Toplevel()
+    win.title("About")                                     
+    Label(win, foreground='black', text='\n\n\nTexpert\n\nA small text editor designed for linux.\n\nMade in Python with Tkinter\n\n\n').pack()   
+    
+    a = Button(win, text="Credits", width=4, command=credits_com)
+    a.pack(side=LEFT, padx=8, pady=4)
+    
+    b = Button(win, text="Close", width=4, command=win.destroy)
+    b.pack(side=RIGHT, padx=8, pady=4)
+     
+    win.transient(root)
+    win.geometry('320x200')
+    win.wait_window()
+
+#linked w/about
 def credits_com():
-    dialog = Tkinter.Toplevel()
-    dialog.title("Credits")
-    big_frame = ttk.Frame(dialog)
-    big_frame.pack(fill='both', expand=True)
-
-    label = ttk.Label(big_frame, text="\nCreated by David Lawson")
-    label.place(relx=0.5, rely=0.3, anchor='center')
-
-    dialog.transient(root)
-    dialog.geometry('300x150')
-    dialog.wait_window()
+    win = Toplevel()
+    win.title("Credits")                                     
+    Label(win, foreground='gray', text='\n\n\nCreated by David Lawson\n\n\nme = Person()\nwhile (me.awake()):\nme.code()\n\n').pack()   
+    Button(win, text='Close', command=win.destroy).pack()   
+          
+    win.transient(root)
+    win.geometry('320x200')
+    win.wait_window()
 
 
 # right click menu
@@ -138,7 +150,7 @@ def x_out():
        root.destroy()
 
 
-# add menu/labels
+# menu items/labels
 menu = Menu(root, bd=1, relief='flat')
 root.config(menu=menu, bd=1)
 
@@ -187,8 +199,7 @@ toolmenu.add_command(label="Insert Date", command=date_com)
 helpmenu = Menu(menu, tearoff=0)
 menu.add_cascade(label="Help ", menu=helpmenu)
 helpmenu.add_command(label="About", command=about_com)
-helpmenu.add_command(label="Credits", command=credits_com)
-helpmenu.add_command(label="Trouble", command=trouble_com)
+helpmenu.add_command(label="Troubleshooting", command=trouble_com)
 
 
 # toolBar
