@@ -107,11 +107,7 @@ def date_com():
     texpert.insert(INSERT, date, "a")
 
 
-# help menu
-def trouble_com():
-    label = tkMessageBox.showinfo("Troubleshooting", "\nThis program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand is not yet complete.\n\nThe 'right click' menu is now working.\n\nThe 'Save' and 'Save As' options both work\nas 'save as'. This will be fixed (eventually).\n\n('>\n//)\n|\\ ")
-
-
+#help menu
 def about_com():
     win = Toplevel()
     win.title("About")                                     
@@ -119,7 +115,6 @@ def about_com():
     
     a = Button(win, text="Credits", width=4, command=credits_com)
     a.pack(side=LEFT, padx=8, pady=4)
-    
     b = Button(win, text="Close", width=4, command=win.destroy)
     b.pack(side=RIGHT, padx=8, pady=4)
      
@@ -127,8 +122,7 @@ def about_com():
     win.geometry('320x200')
     win.wait_window()
 
-#linked w/about
-def credits_com():
+def credits_com(): #linked to about (button a)
     win = Toplevel()
     win.title("Credits")                                     
     Label(win, foreground='gray', text='\n\n\nCreated by David Lawson\n\n\nme = Person()\nwhile (me.awake()):\nme.code()\n\n').pack()   
@@ -136,6 +130,16 @@ def credits_com():
           
     win.transient(root)
     win.geometry('320x200')
+    win.wait_window()
+
+def trouble_com():
+    win = Toplevel()
+    win.title("Troubleshooting")                                     
+    Label(win, foreground='black', text="\n\nThis program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand is not yet complete.\n\nThe 'right click' menu is now working.\n\nThe 'Save' and 'Save As' options both work\nas 'save as'. This will be fixed (eventually).\n\n('>\n//)\n|\\ ").pack()   
+    Button(win, text='Close', command=win.destroy).pack()   
+          
+    win.transient(root)
+    win.geometry('320x266')
     win.wait_window()
 
 
@@ -218,5 +222,5 @@ status.pack(side=BOTTOM, fill=Y)
 texpert.pack(fill="both", expand=True)
 root.title("Texpert")
 texpert.focus_set()
-#root.protocol("WM_DELETE_WINDOW", x_out)
+root.protocol("WM_DELETE_WINDOW", x_out)
 root.mainloop()
