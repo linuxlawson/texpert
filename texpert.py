@@ -80,6 +80,12 @@ texpert.bind("<Control-Key-A>", select_all)
 def tray_com():
     root.iconify()
 
+def dark_mode():
+    texpert.config(background='#181818', fg='white')
+
+def light_mode():
+    texpert.config(background='white', fg='black')
+
 def normal_com():
     root.attributes('-zoomed', False)
 
@@ -111,7 +117,7 @@ def date_com():
 def about_com():
     win = Toplevel()
     win.title("About")                                     
-    Label(win, foreground='black', text='\n\n\nTexpert\n\nA small text editor designed for linux.\n\nMade in Python with Tkinter\n\n\n').pack()   
+    Label(win, foreground='black', text='\n\n\nTexpert\n\nA small text editor designed for Linux.\n\nMade in Python with Tkinter\n\n\n').pack()   
     
     a = Button(win, text="Credits", width=4, command=credits_com)
     a.pack(side=LEFT, padx=8, pady=4)
@@ -123,11 +129,11 @@ def about_com():
     win.wait_window()
 
 def credits_com(): #linked to about (button a)
-    win = Toplevel()
+    win = Toplevel(background = '#484848')
     win.wm_attributes("-topmost", 1)
     win.title("Credits")                                     
-    Label(win, foreground='gray', text='\n\n\nCreated by David Lawson\n\n\nme = Person()\nwhile (me.awake()):\nme.code()\n\n').pack()   
-    Button(win, text='Close', command=win.destroy).pack()   
+    Label(win, foreground='#f5f5f5', background = '#484848', text='\n\n\nCreated by David Lawson\n\n\nme = Person()\nwhile (me.awake()):\nme.code()\n\n').pack()   
+    Button(win, text='Close', bd=2, relief='groove', command=win.destroy).pack()   
           
     win.transient(root)
     win.geometry('320x200')
@@ -148,6 +154,7 @@ def trouble_com():
 def r_click(event):
     editmenu.tk_popup(event.x_root, event.y_root)
 texpert.bind("<Button-3>", r_click)
+
 
 # x_out window
 def x_out():
@@ -186,13 +193,16 @@ editmenu.add_command(label="Select All        Ctrl+a", command=select_all)
 #view
 viewmenu = Menu(menu, tearoff=0)
 menu.add_cascade(label="View ", menu=viewmenu)
-#viewmenu.add_command(label="Hide Toolbar", command=hide_tbar)
-#viewmenu.add_command(label="Show Toolbar", command=show_tbar)
-#viewmenu.add_separator()
 viewmenu.add_command(label="Hide in Tray", command=tray_com)
+viewmenu.add_separator()
+viewmenu.add_command(label="Dark Mode", command=dark_mode)
+viewmenu.add_command(label="Light Mode", command=light_mode)
 viewmenu.add_separator()
 viewmenu.add_command(label="Normal", command=normal_com)
 viewmenu.add_command(label="Fullscreen", command=full_com)
+#viewmenu.add_command(label="Hide Toolbar", command=hide_tbar)
+#viewmenu.add_command(label="Show Toolbar", command=show_tbar)
+#viewmenu.add_separator()
 
 #tool
 toolmenu = Menu(menu, tearoff=0)
@@ -216,7 +226,7 @@ b.pack(side=RIGHT, padx=4, pady=2)
 toolbar.pack(side=TOP, fill=X)
 
 # statusBar
-status = Label(text="=Dont forget to save your work=", bd=1, relief=FLAT, anchor=W, font =('helvetica 9'))
+status = Label(text="=Dont forget to save your work=", anchor=W, font =('helvetica 9'))
 status.pack(side=BOTTOM, fill=Y)
 
 
