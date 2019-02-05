@@ -9,7 +9,8 @@ Added:
  -Tool menu: insert time/date  
  -Toolbar: open/save  
  -Context menu (right click)  
- -Status bar
+ -Status bar  
+ -Dark mode
  
  
  
