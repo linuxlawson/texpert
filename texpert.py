@@ -3,6 +3,7 @@
 # David Lawson 2018
 
 import os
+import sys
 import time
 import datetime
 
@@ -87,7 +88,7 @@ def light_mode():
     texpert.config(background='white', fg='black', insertbackground="black")
 
 def green_mode():
-    texpert.config(background='#181818', fg='#00FF00', insertbackground="#00FF00")
+    texpert.config(background='#181818', fg='#00FF33', insertbackground="#00FF33")
 
 def normal_com():
     root.attributes('-zoomed', False)
@@ -132,10 +133,10 @@ def about_com():
     win.wait_window()
 
 def credits_com(): #linked to about (button a)
-    win = Toplevel(background = '#181818')
+    win = Toplevel(background = '#404040')
     win.wm_attributes("-topmost", 1)
     win.title("Credits")                                     
-    Label(win, foreground='#F5F5F5', background = '#181818', text='\n\n\nCreated by David Lawson\n\n\nme = Person()\nwhile (me.awake()):\nme.code()\n\n').pack()   
+    Label(win, foreground='#F5F5F5', background = '#404040', text='\n\n\nCreated by David Lawson\n\n\nme = Person()\nwhile (me.awake()):\nme.code()\n\n').pack()   
     Button(win, text='Close', bd=2, relief='groove', command=win.destroy).pack()   
           
     win.transient(root)
@@ -200,7 +201,7 @@ viewmenu.add_command(label="Hide in Tray", command=tray_com)
 viewmenu.add_separator()
 viewmenu.add_command(label="Dark Mode", command=dark_mode, background="#181818", foreground="#F5F5F5")
 viewmenu.add_command(label="Light Mode", command=light_mode)
-viewmenu.add_command(label="Green/Black", command=green_mode, background="#181818", foreground="#00FF00")
+viewmenu.add_command(label="Green/Black", command=green_mode, background="#181818", foreground="#00FF33")
 viewmenu.add_separator()
 viewmenu.add_command(label="Normal", command=normal_com)
 viewmenu.add_command(label="Fullscreen", command=full_com)
