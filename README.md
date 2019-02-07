@@ -10,7 +10,8 @@ Added:
  -Toolbar: open/save  
  -Context menu (right click)  
  -Status bar  
- -Dark mode
+ -Dark mode  
+ -Green/black mode  
  
  
  
