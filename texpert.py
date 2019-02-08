@@ -18,11 +18,13 @@ import ttk
 # main
 root = Tkinter.Tk(className = "Texpert")
 root.geometry("700x440")
+root.title("Texpert")
 texpert = ScrolledText(root, bg="white", undo=True, font=("Arial", 11))
 root.option_add("*Font", "TkDefaultFont 9")
 
 
 # Define Menu Functions
+
 # file menu
 def new_com(): 
     root.title("Untitled ") 
@@ -81,15 +83,6 @@ texpert.bind("<Control-Key-A>", select_all)
 def tray_com():
     root.iconify()
 
-def dark_mode():
-    texpert.config(background='#181818', fg='#F5F5F5', insertbackground="#F5F5F5")
-
-def light_mode():
-    texpert.config(background='white', fg='black', insertbackground="black")
-
-def green_mode():
-    texpert.config(background='#181818', fg='#00FF33', insertbackground="#00FF33")
-
 def normal_com():
     root.attributes('-zoomed', False)
 
@@ -116,8 +109,20 @@ def date_com():
     date = ""+month+'/'+day+'/'+year
     texpert.insert(INSERT, date, "a")
 
+# mode menu
+def dark_mode():
+    texpert.config(background='#181818', fg='#F5F5F5', insertbackground="#F5F5F5")
 
-#help menu
+def light_mode():
+    texpert.config(background='white', fg='black', insertbackground="black")
+
+def legal_mode():
+    texpert.config(background='#FFFEAE', fg='black', insertbackground="black")
+
+def green_mode():
+    texpert.config(background='#181818', fg='#00FF33', insertbackground="#00FF33")
+
+# help menu
 def about_com():
     win = Toplevel()
     win.title("About")                                     
@@ -199,10 +204,6 @@ viewmenu = Menu(menu, tearoff=0)
 menu.add_cascade(label="View ", menu=viewmenu)
 viewmenu.add_command(label="Hide in Tray", command=tray_com)
 viewmenu.add_separator()
-viewmenu.add_command(label="Dark Mode", command=dark_mode, background="#181818", foreground="#F5F5F5")
-viewmenu.add_command(label="Light Mode", command=light_mode)
-viewmenu.add_command(label="Green/Black", command=green_mode, background="#181818", foreground="#00FF33")
-viewmenu.add_separator()
 viewmenu.add_command(label="Normal", command=normal_com)
 viewmenu.add_command(label="Fullscreen", command=full_com)
 #viewmenu.add_command(label="Hide Toolbar", command=hide_tbar)
@@ -214,6 +215,14 @@ toolmenu = Menu(menu, tearoff=0)
 menu.add_cascade(label="Tools ", menu=toolmenu)
 toolmenu.add_command(label="Insert Time", command=time_com)
 toolmenu.add_command(label="Insert Date", command=date_com)
+
+#mode
+modemenu = Menu(menu, tearoff=0)
+menu.add_cascade(label="Mode ", menu=modemenu)
+modemenu.add_command(label="Dark Mode", command=dark_mode, background="#181818", foreground="#F5F5F5")
+modemenu.add_command(label="Light Mode", command=light_mode)
+modemenu.add_command(label="Legal Pad", command=legal_mode, background="#FFFEAE", foreground="black")
+modemenu.add_command(label="Green/Black", command=green_mode, background="#181818", foreground="#00FF33")
 
 #help
 helpmenu = Menu(menu, tearoff=0)
@@ -236,7 +245,6 @@ status.pack(side=BOTTOM, fill=Y)
 
 
 texpert.pack(fill="both", expand=True)
-root.title("Texpert")
 texpert.focus_set()
 #root.protocol("WM_DELETE_WINDOW", x_out)
 root.mainloop()
