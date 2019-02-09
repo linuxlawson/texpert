@@ -5,7 +5,7 @@ Text editor made in Python with Tkinter
 
 Added:  
  -Edit menu: cut, copy, paste, etc.  
- -View menu: normal/fullscreen   
+ -View menu: normal/fullscreen, color modes       
  -Tool menu: insert time/date  
  -Mode sub-menu: dark, legal pad, green/black    
  -Toolbar: open/save  
