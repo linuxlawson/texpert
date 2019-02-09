@@ -7,7 +7,7 @@ Added:
  -Edit menu: cut, copy, paste, etc.  
  -View menu: normal/fullscreen   
  -Tool menu: insert time/date  
- -Mode menu: dark, legal pad, green/black    
+ -Mode sub-menu: dark, legal pad, green/black    
  -Toolbar: open/save  
  -Context menu (right click)  
  -Status bar  
