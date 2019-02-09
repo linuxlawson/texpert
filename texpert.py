@@ -83,6 +83,20 @@ texpert.bind("<Control-Key-A>", select_all)
 def tray_com():
     root.iconify()
 
+#sub-menu for: [view > mode]
+def dark_mode():
+    texpert.config(background='#181818', fg='#F5F5F5', insertbackground="#F5F5F5")
+
+def light_mode():
+    texpert.config(background='white', fg='black', insertbackground="black")
+
+def legal_mode():
+    texpert.config(background='#FFFEAE', fg='black', insertbackground="black")
+
+def green_mode():
+    texpert.config(background='#181818', fg='#00FF33', insertbackground="#00FF33")
+
+
 def normal_com():
     root.attributes('-zoomed', False)
 
@@ -94,7 +108,7 @@ def full_com():
 
 #def show_tbar():
 #    toolbar.pack(side=TOP, fill=X)
-
+#Zoom in zoom out
 
 # tools menu
 def time_com():
@@ -108,19 +122,6 @@ def date_com():
     year = str(full_date.tm_year)
     date = ""+month+'/'+day+'/'+year
     texpert.insert(INSERT, date, "a")
-
-# mode menu
-def dark_mode():
-    texpert.config(background='#181818', fg='#F5F5F5', insertbackground="#F5F5F5")
-
-def light_mode():
-    texpert.config(background='white', fg='black', insertbackground="black")
-
-def legal_mode():
-    texpert.config(background='#FFFEAE', fg='black', insertbackground="black")
-
-def green_mode():
-    texpert.config(background='#181818', fg='#00FF33', insertbackground="#00FF33")
 
 # help menu
 def about_com():
@@ -185,7 +186,7 @@ filemenu.add_command(label="Save", command=saveas_com)
 filemenu.add_command(label="Save As", command=saveas_com)
 filemenu.add_separator()
 filemenu.add_command(label="Close", command=close_com)
-filemenu.add_command(label="Exit", command=exit_com)
+filemenu.add_command(label="Exit", command=exit_com, underline=1)
 
 #edit
 editmenu = Menu(menu, tearoff=0)
@@ -204,6 +205,16 @@ viewmenu = Menu(menu, tearoff=0)
 menu.add_cascade(label="View ", menu=viewmenu)
 viewmenu.add_command(label="Hide in Tray", command=tray_com)
 viewmenu.add_separator()
+
+#sub-menu for: [view > mode]
+submenu = Menu(menu, tearoff=0)
+viewmenu.add_cascade(label="Mode ", menu=submenu)
+submenu.add_command(label="Dark Mode", command=dark_mode, background="#181818", foreground="#F5F5F5")
+submenu.add_command(label="Light Mode", command=light_mode)
+submenu.add_command(label="Legal Pad", command=legal_mode, background="#FFFEAE", foreground="black")
+submenu.add_command(label="Green/Black", command=green_mode, background="#181818", foreground="#00FF33")
+
+viewmenu.add_separator()
 viewmenu.add_command(label="Normal", command=normal_com)
 viewmenu.add_command(label="Fullscreen", command=full_com)
 #viewmenu.add_command(label="Hide Toolbar", command=hide_tbar)
@@ -215,14 +226,6 @@ toolmenu = Menu(menu, tearoff=0)
 menu.add_cascade(label="Tools ", menu=toolmenu)
 toolmenu.add_command(label="Insert Time", command=time_com)
 toolmenu.add_command(label="Insert Date", command=date_com)
-
-#mode
-modemenu = Menu(menu, tearoff=0)
-menu.add_cascade(label="Mode ", menu=modemenu)
-modemenu.add_command(label="Dark Mode", command=dark_mode, background="#181818", foreground="#F5F5F5")
-modemenu.add_command(label="Light Mode", command=light_mode)
-modemenu.add_command(label="Legal Pad", command=legal_mode, background="#FFFEAE", foreground="black")
-modemenu.add_command(label="Green/Black", command=green_mode, background="#181818", foreground="#00FF33")
 
 #help
 helpmenu = Menu(menu, tearoff=0)
