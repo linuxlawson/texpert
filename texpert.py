@@ -80,8 +80,11 @@ texpert.bind("<Control-Key-a>", select_all)
 texpert.bind("<Control-Key-A>", select_all)
 
 # view menu
-def tray_com():
-    root.iconify()
+def hide_tbar():
+    toolbar.pack_forget()
+
+def show_tbar():
+    toolbar.pack(side=TOP, fill=X)
 
 #sub-menu for: [view > mode]
 def dark_mode():
@@ -96,19 +99,14 @@ def legal_mode():
 def green_mode():
     texpert.config(background='#181818', fg='#00FF33', insertbackground="#00FF33")
 
+def tray_com():
+    root.iconify()
 
 def normal_com():
     root.attributes('-zoomed', False)
 
 def full_com():
     root.attributes('-zoomed', True)
-
-#def hide_tbar():
-#    toolbar.pack_forget()
-
-#def show_tbar():
-#    toolbar.pack(side=TOP, fill=X)
-#Zoom in zoom out
 
 # tools menu
 def time_com():
@@ -139,10 +137,10 @@ def about_com():
     win.wait_window()
 
 def credits_com(): #linked to about (button a)
-    win = Toplevel(background = '#404040')
+    win = Toplevel(background = '#606060')
     win.wm_attributes("-topmost", 1)
     win.title("Credits")                                     
-    Label(win, foreground='#F5F5F5', background = '#404040', text='\n\n\nCreated by David Lawson\n\n\nme = Person()\nwhile (me.awake()):\nme.code()\n\n').pack()   
+    Label(win, foreground='#F5F5F5', background = '#606060', text='\n\n\nCreated by David Lawson\n\n\nme = Person()\nwhile (me.awake()):\nme.code()\n\n').pack()   
     Button(win, text='Close', bd=2, relief='groove', command=win.destroy).pack()   
           
     win.transient(root)
@@ -172,7 +170,7 @@ def x_out():
        root.destroy()
 
 
-# menu items/labels
+# Menu Items/Labels
 menu = Menu(root, bd=1, relief='flat')
 root.config(menu=menu, bd=1)
 
@@ -203,23 +201,22 @@ editmenu.add_command(label="Select All        Ctrl+a", command=select_all)
 #view
 viewmenu = Menu(menu, tearoff=0)
 menu.add_cascade(label="View ", menu=viewmenu)
-viewmenu.add_command(label="Hide in Tray", command=tray_com)
+viewmenu.add_command(label="Hide Toolbar", command=hide_tbar)
+viewmenu.add_command(label="Show Toolbar", command=show_tbar, state='disabled')
 viewmenu.add_separator()
 
 #sub-menu for: [view > mode]
 submenu = Menu(menu, tearoff=0)
 viewmenu.add_cascade(label="Mode ", menu=submenu)
-submenu.add_command(label="Dark Mode", command=dark_mode, background="#181818", foreground="#F5F5F5")
-submenu.add_command(label="Light Mode", command=light_mode)
-submenu.add_command(label="Legal Pad", command=legal_mode, background="#FFFEAE", foreground="black")
-submenu.add_command(label="Green/Black", command=green_mode, background="#181818", foreground="#00FF33")
+submenu.add_command(label=" Dark Mode", command=dark_mode, activebackground="#181818", activeforeground="#F5F5F5")
+submenu.add_command(label=" Light Mode", command=light_mode)
+submenu.add_command(label=" Legal Pad", command=legal_mode, activebackground="#FFFEAE", activeforeground="black")
+submenu.add_command(label=" Green/Black", command=green_mode, activebackground="#181818", activeforeground="#00FF33")
 
 viewmenu.add_separator()
+viewmenu.add_command(label="Hide in Tray", command=tray_com)
 viewmenu.add_command(label="Normal", command=normal_com)
 viewmenu.add_command(label="Fullscreen", command=full_com)
-#viewmenu.add_command(label="Hide Toolbar", command=hide_tbar)
-#viewmenu.add_command(label="Show Toolbar", command=show_tbar)
-#viewmenu.add_separator()
 
 #tool
 toolmenu = Menu(menu, tearoff=0)
