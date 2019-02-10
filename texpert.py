@@ -15,7 +15,7 @@ import tkMessageBox
 import Tkconstants
 import ttk
 
-# main
+# Main Window
 root = Tkinter.Tk(className = "Texpert")
 root.geometry("700x440")
 root.title("Texpert")
@@ -23,8 +23,7 @@ texpert = ScrolledText(root, bg="white", undo=True, font=("Arial", 11))
 root.option_add("*Font", "TkDefaultFont 9")
 
 
-# Define Menu Functions
-
+# Menu Functions
 # file menu
 def new_com(): 
     root.title("Untitled ") 
@@ -133,10 +132,10 @@ def about_com():
     b.pack(side=RIGHT, padx=8, pady=4)
      
     win.transient(root)
-    win.geometry('320x200')
+    win.geometry('300x200')
     win.wait_window()
 
-def credits_com(): #linked to about (button a)
+def credits_com(): #linked to: [about > credits] (button a)
     win = Toplevel(background = '#606060')
     win.wm_attributes("-topmost", 1)
     win.title("Credits")                                     
@@ -144,7 +143,7 @@ def credits_com(): #linked to about (button a)
     Button(win, text='Close', bd=2, relief='groove', command=win.destroy).pack()   
           
     win.transient(root)
-    win.geometry('320x200')
+    win.geometry('300x200')
     win.wait_window()
 
 def trouble_com():
@@ -158,23 +157,12 @@ def trouble_com():
     win.wait_window()
 
 
-# right click menu
-def r_click(event):
-    editmenu.tk_popup(event.x_root, event.y_root)
-texpert.bind("<Button-3>", r_click)
 
-
-# x_out window
-def x_out():
-    if tkMessageBox.askokcancel("Exit", "Are you sure? "):
-       root.destroy()
-
-
-# Menu Items/Labels
+# Menu Buttons/Labels
 menu = Menu(root, bd=1, relief='flat')
 root.config(menu=menu, bd=1)
 
-#file
+#file menu
 filemenu = Menu(menu, tearoff=0)
 menu.add_cascade(label="File ", menu=filemenu)
 filemenu.add_command(label="New", command=new_com) 
@@ -186,7 +174,7 @@ filemenu.add_separator()
 filemenu.add_command(label="Close", command=close_com)
 filemenu.add_command(label="Exit", command=exit_com, underline=1)
 
-#edit
+#edit menu
 editmenu = Menu(menu, tearoff=0)
 menu.add_cascade(label="Edit ", menu=editmenu)
 editmenu.add_command(label="Undo", command=undo_com)
@@ -196,9 +184,9 @@ editmenu.add_command(label="Cut", command=cut_com)
 editmenu.add_command(label="Copy", command=copy_com)  
 editmenu.add_command(label="Paste", command=paste_com) 
 editmenu.add_separator()
-editmenu.add_command(label="Select All        Ctrl+a", command=select_all) 
+editmenu.add_command(label="Select All", command=select_all) 
 
-#view
+#view menu
 viewmenu = Menu(menu, tearoff=0)
 menu.add_cascade(label="View ", menu=viewmenu)
 viewmenu.add_command(label="Hide Toolbar", command=hide_tbar)
@@ -218,33 +206,43 @@ viewmenu.add_command(label="Hide in Tray", command=tray_com)
 viewmenu.add_command(label="Normal", command=normal_com)
 viewmenu.add_command(label="Fullscreen", command=full_com)
 
-#tool
+#tool menu
 toolmenu = Menu(menu, tearoff=0)
 menu.add_cascade(label="Tools ", menu=toolmenu)
 toolmenu.add_command(label="Insert Time", command=time_com)
 toolmenu.add_command(label="Insert Date", command=date_com)
 
-#help
+#help menu
 helpmenu = Menu(menu, tearoff=0)
 menu.add_cascade(label="Help ", menu=helpmenu)
 helpmenu.add_command(label="About", command=about_com)
 helpmenu.add_command(label="Troubleshooting", command=trouble_com)
 
 
+# right click menu
+def r_click(event):
+    editmenu.tk_popup(event.x_root, event.y_root)
+texpert.bind("<Button-3>", r_click)
+
 # toolBar
 toolbar = Frame(root, bd=2, relief='groove')
-b = Button(toolbar, text="Open", width=4, command=open_com)
-b.pack(side=LEFT, padx=4, pady=2)
-b = Button(toolbar, text="Save", width=4, command=saveas_com)
-b.pack(side=RIGHT, padx=4, pady=2)
+b1 = Button(toolbar, text="Open", width=4, command=open_com)
+b1.pack(side=LEFT, padx=4, pady=2)
+b2 = Button(toolbar, text="Save", width=4, command=saveas_com)
+b2.pack(side=RIGHT, padx=4, pady=2)
 toolbar.pack(side=TOP, fill=X)
 
 # statusBar
 status = Label(text="=Dont forget to save your work=", anchor=W, font =('helvetica 9'))
 status.pack(side=BOTTOM, fill=Y)
 
+# x_out window
+def x_out():
+    if tkMessageBox.askokcancel("Exit", "Are you sure? "):
+       root.destroy()
+
 
 texpert.pack(fill="both", expand=True)
 texpert.focus_set()
-#root.protocol("WM_DELETE_WINDOW", x_out)
+root.protocol("WM_DELETE_WINDOW", x_out)
 root.mainloop()
