@@ -12,8 +12,10 @@ from Tkinter import *
 from ScrolledText import *
 import tkFileDialog
 import tkMessageBox
-import Tkconstants
-import ttk
+
+
+global variable
+filename = None
 
 # Main Window
 root = Tkinter.Tk(className = "Texpert")
@@ -28,27 +30,32 @@ root.option_add("*Font", "TkDefaultFont 9")
 def new_com(): 
     root.title("Untitled ") 
     file = None
-    texpert.delete(1.0,END) 
+    texpert.delete(1.0, 'end-1c') 
+    texpert.config(background='white', fg='black', insertbackground='black')
 
 def open_com():
     file = tkFileDialog.askopenfile(parent=root, mode='rb', title='Select File')
-    if file != None:
+    if file is not None:
   	contents = file.read()
-        texpert.delete(1.0,END)
+        texpert.delete(1.0, 'end-1c')
 	texpert.insert('1.0', contents)
 	file.close()
 
+def save_com():
+    print ("Save")
+
 def saveas_com():
     file = tkFileDialog.asksaveasfile(mode='w')
-    if file != None:
-	data = texpert.get('1.0', END+'-1c')
+    if file is not None:
+	data = texpert.get('1.0', 'end-1c')
 	file.write(data)
  	file.close()
 
 def close_com():
-    root.title("") 
+    root.title('') 
     file = None
-    texpert.delete(1.0,END) 
+    texpert.delete(1.0, 'end-1c') 
+    texpert.config(background='white', fg='black', insertbackground='black')
 
 def exit_com():
     if tkMessageBox.askokcancel("Exit", "Do you really want to exit? "):
@@ -71,8 +78,8 @@ def paste_com():
     texpert.event_generate("<<Paste>>")  
 
 def select_all():
-    texpert.tag_add(SEL, "1.0", END)
-    texpert.mark_set(INSERT, "1.0")
+    texpert.tag_add(SEL, '1.0', 'end-1c')
+    texpert.mark_set(INSERT, '1.0')
     texpert.see(INSERT)
     return 'break'
 texpert.bind("<Control-Key-a>", select_all)
@@ -87,22 +94,24 @@ def show_tbar():
 
 #sub-menu for: [view > mode]
 def dark_mode():
-    texpert.config(background='#181818', fg='#F5F5F5', insertbackground="#F5F5F5")
+    texpert.config(background='#181818', fg='#F5F5F5', insertbackground='#F5F5F5')
 
 def light_mode():
-    texpert.config(background='white', fg='black', insertbackground="black")
+    texpert.config(background='white', fg='black', insertbackground='black')
 
 def legal_mode():
-    texpert.config(background='#FFFEAE', fg='black', insertbackground="black")
+    texpert.config(background='#FFFEAE', fg='black', insertbackground='black')
 
 def green_mode():
-    texpert.config(background='#181818', fg='#00FF33', insertbackground="#00FF33")
+    texpert.config(background='#181818', fg='#00FF33', insertbackground='#00FF33')
+
 
 def tray_com():
     root.iconify()
 
 def normal_com():
     root.attributes('-zoomed', False)
+    root.geometry("700x440+440+195") #window size,position
 
 def full_com():
     root.attributes('-zoomed', True)
@@ -124,7 +133,7 @@ def date_com():
 def about_com():
     win = Toplevel()
     win.title("About")                                     
-    Label(win, foreground='black', text='\n\n\nTexpert\n\nA small text editor designed for Linux.\n\nMade in Python with Tkinter\n\n\n').pack()   
+    Label(win, foreground='black', text="\n\n\nTexpert\n\nA small text editor designed for Linux.\n\nMade in Python with Tkinter\n\n\n").pack()   
     
     a = Button(win, text="Credits", width=4, command=credits_com)
     a.pack(side=LEFT, padx=8, pady=4)
@@ -139,9 +148,8 @@ def credits_com(): #linked to: [about > credits] (button a)
     win = Toplevel(background = '#606060')
     win.wm_attributes("-topmost", 1)
     win.title("Credits")                                     
-    Label(win, foreground='#F5F5F5', background = '#606060', text='\n\n\nCreated by David Lawson\n\n\nme = Person()\nwhile (me.awake()):\nme.code()\n\n').pack()   
+    Label(win, foreground='#F5F5F5', background = '#606060', text="\n\n\nCreated by David Lawson\n\n\nme = Person()\nwhile (me.awake()):\nme.code()\n\n").pack()   
     Button(win, text='Close', bd=2, relief='groove', command=win.destroy).pack()   
-          
     win.transient(root)
     win.geometry('300x200')
     win.wait_window()
@@ -149,11 +157,10 @@ def credits_com(): #linked to: [about > credits] (button a)
 def trouble_com():
     win = Toplevel()
     win.title("Troubleshooting")                                     
-    Label(win, foreground='black', text="\n\nThis program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand is not yet complete.\n\nThe 'right click' menu is now working.\n\nThe 'Save' and 'Save As' options both work\nas 'save as'. This will be fixed (eventually).\n\n('>\n//)\n|\\ ").pack()   
+    Label(win, foreground='black', text="\n\nThis program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand is not yet complete.\n\nThe 'right click' menu is now working.\n\nThe 'Save' and 'Save As' options both work\nas 'save as'. This will be fixed (eventually).\n\n").pack()   
     Button(win, text='Close', command=win.destroy).pack()   
-          
     win.transient(root)
-    win.geometry('320x268')
+    win.geometry('300x248')
     win.wait_window()
 
 
@@ -168,7 +175,7 @@ menu.add_cascade(label="File ", menu=filemenu)
 filemenu.add_command(label="New", command=new_com) 
 filemenu.add_command(label="Open", command=open_com)
 filemenu.add_separator()
-filemenu.add_command(label="Save", command=saveas_com)
+filemenu.add_command(label="Save", command=save_com, state='disabled')
 filemenu.add_command(label="Save As", command=saveas_com)
 filemenu.add_separator()
 filemenu.add_command(label="Close", command=close_com)
@@ -228,12 +235,32 @@ texpert.bind("<Button-3>", r_click)
 toolbar = Frame(root, bd=2, relief='groove')
 b1 = Button(toolbar, text="Open", width=4, command=open_com)
 b1.pack(side=LEFT, padx=4, pady=2)
+
 b2 = Button(toolbar, text="Save", width=4, command=saveas_com)
 b2.pack(side=RIGHT, padx=4, pady=2)
 toolbar.pack(side=TOP, fill=X)
 
+
+
+
 # statusBar
-status = Label(text="=Dont forget to save your work=", anchor=W, font =('helvetica 9'))
+status = Label(text="", anchor=W, font =('Helvetica 9'))
+
+b3 = Button(status, text='Mode:', width=4, bd=0, relief='groove', font =('Helvetica 10'))
+b3.pack(side=LEFT, padx=1, pady=1)
+
+b3 = Button(status, text='Dark', width=4, bd=1, command=dark_mode, activebackground="#181818", activeforeground="#F5F5F5", font =('Helvetica 9'))
+b3.pack(side=LEFT, padx=1, pady=1)
+
+b4 = Button(status, text='Light', width=4, bd=1, command=light_mode, font =('Helvetica 9'))
+b4.pack(side=LEFT, padx=1, pady=1)
+
+b5 = Button(status, text='Legal', width=4, bd=1, command=legal_mode, activebackground="#FFFEAE", activeforeground="black", font =('Helvetica 9'))
+b5.pack(side=LEFT, padx=1, pady=1)
+
+b6 = Button(status, text='Green', width=4, bd=1, command=green_mode, activebackground="#181818", activeforeground="#00FF33", font =('Helvetica 9'))
+b6.pack(side=LEFT, padx=1, pady=1)
+
 status.pack(side=BOTTOM, fill=Y)
 
 # x_out window
