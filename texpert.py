@@ -7,18 +7,15 @@ import sys
 import time
 import datetime
 
-import Tkinter
+import Tkinter as tk
 from Tkinter import *
 from ScrolledText import *
 import tkFileDialog
 import tkMessageBox
 
 
-global variable
-filename = None
-
-# Main Window
-root = Tkinter.Tk(className = "Texpert")
+# Main
+root = tk.Tk(className = "Texpert")
 root.geometry("700x440")
 root.title("Texpert")
 texpert = ScrolledText(root, bg="white", undo=True, font=("Arial", 11))
@@ -240,28 +237,22 @@ b2 = Button(toolbar, text="Save", width=4, command=saveas_com)
 b2.pack(side=RIGHT, padx=4, pady=2)
 toolbar.pack(side=TOP, fill=X)
 
-
-
-
 # statusBar
-status = Label(text="", anchor=W, font =('Helvetica 9'))
+status = Label(text="", anchor=W)
 
-b3 = Button(status, text='Mode:', width=4, bd=0, relief='groove', font =('Helvetica 10'))
-b3.pack(side=LEFT, padx=1, pady=1)
+v = IntVar()
+Label(status, text="Mode:", font =('Helvetica 9')).pack(side='left', anchor=W, padx=2, pady=0)
 
-b3 = Button(status, text='Dark', width=4, bd=1, command=dark_mode, activebackground="#181818", activeforeground="#F5F5F5", font =('Helvetica 9'))
-b3.pack(side=LEFT, padx=1, pady=1)
+Radiobutton(status, text="Dark", font =('Helvetica 9'), variable=v, value=1, command=dark_mode, activebackground="#181818", activeforeground="#F5F5F5").pack(side='left', anchor=W)
 
-b4 = Button(status, text='Light', width=4, bd=1, command=light_mode, font =('Helvetica 9'))
-b4.pack(side=LEFT, padx=1, pady=1)
+Radiobutton(status, text="Light", font =('Helvetica 9'), variable=v, value=2, command=light_mode).pack(side='left', anchor=W)
 
-b5 = Button(status, text='Legal', width=4, bd=1, command=legal_mode, activebackground="#FFFEAE", activeforeground="black", font =('Helvetica 9'))
-b5.pack(side=LEFT, padx=1, pady=1)
+Radiobutton(status, text="Legal", font =('Helvetica 9'), variable=v, value=3, command=legal_mode, activebackground="#FFFEAE", activeforeground="black").pack(side='left', anchor=W)
 
-b6 = Button(status, text='Green', width=4, bd=1, command=green_mode, activebackground="#181818", activeforeground="#00FF33", font =('Helvetica 9'))
-b6.pack(side=LEFT, padx=1, pady=1)
+Radiobutton(status, text="Green", font =('Helvetica 9'), variable=v, value=4, command=green_mode, activebackground="#181818", activeforeground="#00FF33").pack(side='left', anchor=W)
 
-status.pack(side=BOTTOM, fill=Y)
+status.pack(side=BOTTOM, fill=X)
+
 
 # x_out window
 def x_out():
