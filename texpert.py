@@ -14,7 +14,7 @@ import tkFileDialog
 import tkMessageBox
 
 
-# Main
+# Main Window
 root = tk.Tk(className = "Texpert")
 root.geometry("700x440")
 root.title("Texpert")
@@ -28,8 +28,7 @@ def new_com():
     root.title("Untitled ") 
     file = None
     texpert.delete(1.0, 'end-1c') 
-    texpert.config(background='white', fg='black', insertbackground='black')
-
+    
 def open_com():
     file = tkFileDialog.askopenfile(parent=root, mode='rb', title='Select File')
     if file is not None:
@@ -39,7 +38,7 @@ def open_com():
 	file.close()
 
 def save_com():
-    print ("Save")
+    print ("No")
 
 def saveas_com():
     file = tkFileDialog.asksaveasfile(mode='w')
@@ -52,8 +51,7 @@ def close_com():
     root.title('') 
     file = None
     texpert.delete(1.0, 'end-1c') 
-    texpert.config(background='white', fg='black', insertbackground='black')
-
+    
 def exit_com():
     if tkMessageBox.askokcancel("Exit", "Do you really want to exit? "):
 	root.destroy()
@@ -91,15 +89,23 @@ def show_tbar():
 
 #sub-menu for: [view > mode]
 def dark_mode():
+    global status
+    status["text"] = " Mode: Dark"
     texpert.config(background='#181818', fg='#F5F5F5', insertbackground='#F5F5F5')
 
 def light_mode():
+    global status
+    status["text"] = " Mode: Light"
     texpert.config(background='white', fg='black', insertbackground='black')
 
 def legal_mode():
-    texpert.config(background='#FFFEAE', fg='black', insertbackground='black')
+    global status
+    status["text"] = " Mode: Legal Pad"
+    texpert.config(background='#FFFFCC', fg='black', insertbackground='black')
 
 def green_mode():
+    global status
+    status["text"] = " Mode: Night Vision"
     texpert.config(background='#181818', fg='#00FF33', insertbackground='#00FF33')
 
 
@@ -141,7 +147,7 @@ def about_com():
     win.geometry('300x200')
     win.wait_window()
 
-def credits_com(): #linked to: [about > credits] (button a)
+def credits_com(): #linked to: [about > credits]
     win = Toplevel(background = '#606060')
     win.wm_attributes("-topmost", 1)
     win.title("Credits")                                     
@@ -154,10 +160,10 @@ def credits_com(): #linked to: [about > credits] (button a)
 def trouble_com():
     win = Toplevel()
     win.title("Troubleshooting")                                     
-    Label(win, foreground='black', text="\n\nThis program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand is not yet complete.\n\nThe 'right click' menu is now working.\n\nThe 'Save' and 'Save As' options both work\nas 'save as'. This will be fixed (eventually).\n\n").pack()   
+    Label(win, foreground='black', text="\n\nThis program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand is not yet complete.\n\n'Show toolbar' is disabled because it\ndoes not remember original position.\nWill re-write some day.\n\nThe 'Save' and 'Save As' options both work\nas 'save as'. This will be fixed (eventually).\n\n").pack()   
     Button(win, text='Close', command=win.destroy).pack()   
     win.transient(root)
-    win.geometry('300x248')
+    win.geometry('300x268')
     win.wait_window()
 
 
@@ -172,7 +178,7 @@ menu.add_cascade(label="File ", menu=filemenu)
 filemenu.add_command(label="New", command=new_com) 
 filemenu.add_command(label="Open", command=open_com)
 filemenu.add_separator()
-filemenu.add_command(label="Save", command=save_com, state='disabled')
+filemenu.add_command(label="Save", command=saveas_com)
 filemenu.add_command(label="Save As", command=saveas_com)
 filemenu.add_separator()
 filemenu.add_command(label="Close", command=close_com)
@@ -200,10 +206,10 @@ viewmenu.add_separator()
 #sub-menu for: [view > mode]
 submenu = Menu(menu, tearoff=0)
 viewmenu.add_cascade(label="Mode ", menu=submenu)
-submenu.add_command(label=" Dark Mode", command=dark_mode, activebackground="#181818", activeforeground="#F5F5F5")
-submenu.add_command(label=" Light Mode", command=light_mode)
-submenu.add_command(label=" Legal Pad", command=legal_mode, activebackground="#FFFEAE", activeforeground="black")
-submenu.add_command(label=" Green/Black", command=green_mode, activebackground="#181818", activeforeground="#00FF33")
+submenu.add_command(label=" Dark", command=dark_mode, activebackground="#181818", activeforeground="#F5F5F5")
+submenu.add_command(label=" Light", command=light_mode)
+submenu.add_command(label=" Legal Pad", command=legal_mode, activebackground="#FFFFCC", activeforeground="black")
+submenu.add_command(label=" Night Vision", command=green_mode, activebackground="#181818", activeforeground="#00FF33")
 
 viewmenu.add_separator()
 viewmenu.add_command(label="Hide in Tray", command=tray_com)
@@ -238,21 +244,8 @@ b2.pack(side=RIGHT, padx=4, pady=2)
 toolbar.pack(side=TOP, fill=X)
 
 # statusBar
-status = Label(text="", anchor=W)
-
-v = IntVar()
-Label(status, text="Mode:", font =('Helvetica 9')).pack(side='left', anchor=W, padx=2, pady=0)
-
-Radiobutton(status, text="Dark", font =('Helvetica 9'), variable=v, value=1, command=dark_mode, activebackground="#181818", activeforeground="#F5F5F5").pack(side='left', anchor=W)
-
-Radiobutton(status, text="Light", font =('Helvetica 9'), variable=v, value=2, command=light_mode).pack(side='left', anchor=W)
-
-Radiobutton(status, text="Legal", font =('Helvetica 9'), variable=v, value=3, command=legal_mode, activebackground="#FFFEAE", activeforeground="black").pack(side='left', anchor=W)
-
-Radiobutton(status, text="Green", font =('Helvetica 9'), variable=v, value=4, command=green_mode, activebackground="#181818", activeforeground="#00FF33").pack(side='left', anchor=W)
-
+status = Label(text=" Mode: Light", anchor=W, bd=1, relief='sunken', fg='#000000', font=("Arial", 10))
 status.pack(side=BOTTOM, fill=X)
-
 
 # x_out window
 def x_out():
