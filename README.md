@@ -10,7 +10,9 @@ Added:
  -Mode sub-menu: dark, light, legal pad, night vision    
  -Toolbar: open/save  
  -Context menu (right click)  
- -Status bar (changes according to mode)
+ -Status bar (changes according to mode)  
+ 
+ 
  
  
  
