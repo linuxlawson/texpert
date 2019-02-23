@@ -96,18 +96,22 @@ def dark_mode():
 def light_mode():
     global status
     status["text"] = " Mode: Light"
-    texpert.config(background='white', fg='black', insertbackground='black')
+    texpert.config(background='#F5F5F5', fg='#181818', insertbackground='#181818')
 
 def legal_mode():
     global status
     status["text"] = " Mode: Legal Pad"
-    texpert.config(background='#FFFFCC', fg='black', insertbackground='black')
+    texpert.config(background='#FFFFCC', fg='#181818', insertbackground='#181818')
 
 def green_mode():
     global status
     status["text"] = " Mode: Night Vision"
     texpert.config(background='#181818', fg='#00FF33', insertbackground='#00FF33')
 
+def desert_mode():
+    global status
+    status["text"] = " Mode: Desert View"
+    texpert.config(background='#E9DDB3', fg='#40210D', insertbackground='#40210D')
 
 def tray_com():
     root.iconify()
@@ -160,10 +164,10 @@ def credits_com(): #linked to: [about > credits]
 def trouble_com():
     win = Toplevel()
     win.title("Troubleshooting")                                     
-    Label(win, foreground='black', text="\n\nThis program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand is not yet complete.\n\n'Show toolbar' is disabled because it\ndoes not remember original position.\nWill re-write some day.\n\nThe 'Save' and 'Save As' options both work\nas 'save as'. This will be fixed (eventually).\n\n").pack()   
+    Label(win, foreground='black', justify='left', text="\n\nThis program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand is not yet complete.\n\n\n\nKnown Issues:\n\n'Show toolbar' is temporarily disabled\nbecause the toolbar refuses to remember\nits original position. I will make an attempt\nto fix this someday.\n\nThe 'Save' and 'Save As' options both work\nas 'save as'. This will also be fixed someday.\n\n").pack()   
     Button(win, text='Close', command=win.destroy).pack()   
     win.transient(root)
-    win.geometry('300x268')
+    win.geometry('340x350')
     win.wait_window()
 
 
@@ -207,9 +211,10 @@ viewmenu.add_separator()
 submenu = Menu(menu, tearoff=0)
 viewmenu.add_cascade(label="Mode ", menu=submenu)
 submenu.add_command(label=" Dark", command=dark_mode, activebackground="#181818", activeforeground="#F5F5F5")
-submenu.add_command(label=" Light", command=light_mode)
-submenu.add_command(label=" Legal Pad", command=legal_mode, activebackground="#FFFFCC", activeforeground="black")
+submenu.add_command(label=" Light", command=light_mode, activebackground="#F5F5F5", activeforeground="#181818")
+submenu.add_command(label=" Legal Pad", command=legal_mode, activebackground="#FFFFCC", activeforeground="#181818")
 submenu.add_command(label=" Night Vision", command=green_mode, activebackground="#181818", activeforeground="#00FF33")
+submenu.add_command(label=" Desert View", command=desert_mode, activebackground="#E9DDB3", activeforeground="#40210D")
 
 viewmenu.add_separator()
 viewmenu.add_command(label="Hide in Tray", command=tray_com)
