@@ -38,7 +38,7 @@ def open_com():
 	file.close()
 
 def save_com():
-    print ("No")
+    print ("Silent Save")
 
 def saveas_com():
     file = tkFileDialog.asksaveasfile(mode='w')
@@ -152,10 +152,10 @@ def about_com():
     win.wait_window()
 
 def credits_com(): #linked to: [about > credits]
-    win = Toplevel(background = '#606060')
+    win = Toplevel()
     win.wm_attributes("-topmost", 1)
     win.title("Credits")                                     
-    Label(win, foreground='#F5F5F5', background = '#606060', text="\n\n\nCreated by David Lawson\n\n\nme = Person()\nwhile (me.awake()):\nme.code()\n\n").pack()   
+    Label(win, foreground='#606060', text="\n\n\nCreated by David Lawson\n\n\nme = Person()\nwhile (me.awake()):\nme.code()\n\n").pack()   
     Button(win, text='Close', bd=2, relief='groove', command=win.destroy).pack()   
     win.transient(root)
     win.geometry('300x200')
@@ -164,7 +164,7 @@ def credits_com(): #linked to: [about > credits]
 def trouble_com():
     win = Toplevel()
     win.title("Troubleshooting")                                     
-    Label(win, foreground='black', justify='left', text="\n\nThis program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand is not yet complete.\n\n\n\nKnown Issues:\n\n'Show toolbar' is temporarily disabled\nbecause the toolbar refuses to remember\nits original position. I will make an attempt\nto fix this someday.\n\nThe 'Save' and 'Save As' options both work\nas 'save as'. This will also be fixed someday.\n\n").pack()   
+    Label(win, foreground='black', justify='left', text="\n\nThis program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand is not yet complete.\n\n\nKnown Issues:\n\n'Show toolbar' is temporarily disabled\nbecause the toolbar refuses to remember\nits original position. I may or may not\nmake an attempt to fix this someday.\n\nThe 'Save' and 'Save As' options both work\nas 'save as'. This might be fixed someday.\n\n").pack()   
     Button(win, text='Close', command=win.destroy).pack()   
     win.transient(root)
     win.geometry('340x350')
@@ -218,7 +218,7 @@ submenu.add_command(label=" Desert View", command=desert_mode, activebackground=
 
 viewmenu.add_separator()
 viewmenu.add_command(label="Hide in Tray", command=tray_com)
-viewmenu.add_command(label="Normal", command=normal_com)
+viewmenu.add_command(label="Default", command=normal_com)
 viewmenu.add_command(label="Fullscreen", command=full_com)
 
 #tool menu
