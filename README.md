@@ -1,6 +1,5 @@
 # texpert  
 Text editor made in Python with Tkinter  
-
  
 
 Added:  
@@ -13,18 +12,8 @@ Added:
  -Status bar (changes according to mode)  
  
  
+ Designed for Linux
+      
  
+ This is my first project using Tkinter (thought I should mention that).  
  
- 
- 
- Designed for Linux  
-   
-    
-   
-     
- 
- This is my first project using Tkinter (thought I should mention that).
- 
- 
-
-
