@@ -116,9 +116,9 @@ def desert_mode():
 def tray_com():
     root.iconify()
 
-def normal_com():
+def default_com():
     root.attributes('-zoomed', False)
-    root.geometry("700x440+440+195") #window size,position
+    root.geometry("700x440+440+195") #default window size+position
 
 def full_com():
     root.attributes('-zoomed', True)
@@ -135,6 +135,24 @@ def date_com():
     year = str(full_date.tm_year)
     date = ""+month+'/'+day+'/'+year
     texpert.insert(INSERT, date, "a")
+
+# notes container
+def notes_com():
+    note = Toplevel()
+    note.title("Notes")
+         
+    t = Text(note, height=22, width=19, bd=0, relief='flat')
+    t.pack(side='top', fill='both', expand=True)
+
+    a = Button(note, text="Clear", width=4, command=lambda: t.delete(1.0,END))
+    a.pack(side=LEFT, padx=2, pady=2)
+    b = Button(note, text="Close", width=4, command=note.destroy)
+    b.pack(side=RIGHT, padx=2, pady=2)
+
+    note.transient(root)
+    note.geometry('156x352+968+286')
+    note.wait_window()
+
 
 # help menu
 def about_com():
@@ -153,13 +171,50 @@ def about_com():
 
 def credits_com(): #linked to: [about > credits]
     win = Toplevel()
-    win.wm_attributes("-topmost", 1)
+    win.wm_attributes("-topmost", 0)
     win.title("Credits")                                     
     Label(win, foreground='#606060', text="\n\n\nCreated by David Lawson\n\n\nme = Person()\nwhile (me.awake()):\nme.code()\n\n").pack()   
-    Button(win, text='Close', bd=2, relief='groove', command=win.destroy).pack()   
+    
+    a = Button(win, text="License", width=4, command=license_info)
+    a.pack(side=LEFT, padx=8, pady=4)
+    b = Button(win, text="Close", width=4, command=win.destroy)
+    b.pack(side=RIGHT, padx=8, pady=4) 
+    
     win.transient(root)
     win.geometry('300x200')
     win.wait_window()
+
+def license_info():
+    win = Toplevel()
+    win.wm_attributes("-topmost", 1)
+    win.title("License")                                     
+    Label(win, foreground='black', justify='left', text="""\n\nMIT License
+
+Copyright (c) 2019 David Lawson
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.\n""").pack()   
+    
+    Button(win, text='Close', command=win.destroy).pack()   
+    win.transient(root)
+    win.geometry('640x396')
+    win.wait_window()
+
 
 def trouble_com():
     win = Toplevel()
@@ -169,7 +224,6 @@ def trouble_com():
     win.transient(root)
     win.geometry('340x350')
     win.wait_window()
-
 
 
 # Menu Buttons/Labels
@@ -218,7 +272,7 @@ submenu.add_command(label=" Desert View", command=desert_mode, activebackground=
 
 viewmenu.add_separator()
 viewmenu.add_command(label="Hide in Tray", command=tray_com)
-viewmenu.add_command(label="Default", command=normal_com)
+viewmenu.add_command(label="Default", command=default_com)
 viewmenu.add_command(label="Fullscreen", command=full_com)
 
 #tool menu
@@ -226,6 +280,7 @@ toolmenu = Menu(menu, tearoff=0)
 menu.add_cascade(label="Tools ", menu=toolmenu)
 toolmenu.add_command(label="Insert Time", command=time_com)
 toolmenu.add_command(label="Insert Date", command=date_com)
+toolmenu.add_command(label="Notes...", command=notes_com)
 
 #help menu
 helpmenu = Menu(menu, tearoff=0)
