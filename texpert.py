@@ -1,324 +1,326 @@
-#!/usr/bin/python
-# Texpert Text Editor 
-# David Lawson 2018
-
 import os
 import sys
 import time
 import datetime
 
-import Tkinter as tk
-from Tkinter import *
-from ScrolledText import *
-import tkFileDialog
-import tkMessageBox
+try:
+	import Tkinter as tk
+	from ScrolledText import *
+	import tkFileDialog
+	import tkMessageBox
+	import ttk
+except:
+	import tkinter as tk
+	import tkinter.ttk as ttk
+	import tkinter.filedialog as tkFileDialog
+	import tkinter.messagebox as tkMessageBox
+	from tkinter.scrolledtext import ScrolledText
 
 
-# Main Window
-root = tk.Tk(className = "Texpert")
-root.geometry("700x440")
-root.title("Texpert")
-texpert = ScrolledText(root, bg="white", undo=True, font=("Arial", 11))
-root.option_add("*Font", "TkDefaultFont 9")
+class textpert_win:
+	def __init__(self, master):
+		self.master = master
+
+		self.menu = tk.Menu(self.master, bd=1, relief='flat')
+		self.master.config(menu=self.menu, bd=1)
+
+		# toolBar
+		self.toolbar = tk.Frame(self.master, bd=2, relief='groove')
+		self.b1 = tk.Button(self.toolbar, text="Open", width=4, command=self.open_com)
+		self.b1.pack(side=tk.LEFT, padx=4, pady=2)
+
+		self.b2 = tk.Button(self.toolbar, text="Save", width=4, command=self.saveas_com)
+		self.b2.pack(side=tk.RIGHT, padx=4, pady=2)
+		self.toolbar.pack(side=tk.TOP, fill=tk.X)
+
+		#file menu
+		self.filemenu = tk.Menu(self.menu, tearoff=0)
+		self.menu.add_cascade(label="File ", menu=self.filemenu)
+		self.filemenu.add_command(label="New", command=self.new_com)
+		self.filemenu.add_command(label="Open", command=self.open_com)
+		self.filemenu.add_separator()
+		self.filemenu.add_command(label="Save", command=self.saveas_com)
+		self.filemenu.add_command(label="Save As", command=self.saveas_com)
+		self.filemenu.add_separator()
+		self.filemenu.add_command(label="Close", command=self.close_com)
+		self.filemenu.add_command(label="Exit", command=self.exit_com, underline=1)
+
+		#edit menu
+		self.editmenu = tk.Menu(self.menu, tearoff=0)
+		self.menu.add_cascade(label="Edit ", menu=self.editmenu)
+		self.editmenu.add_command(label="Undo", command=self.undo_com)
+		self.editmenu.add_command(label="Redo", command=self.redo_com)
+		self.editmenu.add_separator()
+		self.editmenu.add_command(label="Cut", command=self.cut_com)
+		self.editmenu.add_command(label="Copy", command=self.copy_com)
+		self.editmenu.add_command(label="Paste", command=self.paste_com)
+		self.editmenu.add_separator()
+		self.editmenu.add_command(label="Select All", command=self.select_all)
+
+		#view menu
+		self.viewmenu = tk.Menu(self.menu, tearoff=0)
+		self.menu.add_cascade(label="View ", menu=self.viewmenu)
+		self.viewmenu.add_command(label="Hide Toolbar", command=self.hide_tbar)
+		self.viewmenu.add_command(label="Show Toolbar", command=self.show_tbar, state='disabled')
+		self.viewmenu.add_separator()
+
+		#sub-menu for: [view > mode]
+		self.submenu = tk.Menu(self.menu, tearoff=0)
+		self.viewmenu.add_cascade(label="Mode ", menu=self.submenu)
+		self.submenu.add_command(label=" Dark", command=self.dark_mode, activebackground="#181818", activeforeground="#F5F5F5")
+		self.submenu.add_command(label=" Light", command=self.light_mode, activebackground="#F5F5F5", activeforeground="#181818")
+		self.submenu.add_command(label=" Legal Pad", command=self.legal_mode, activebackground="#FFFFCC", activeforeground="#181818")
+		self.submenu.add_command(label=" Night Vision", command=self.green_mode, activebackground="#181818", activeforeground="#00FF33")
+		self.submenu.add_command(label=" Desert View", command=self.desert_mode, activebackground="#E9DDB3", activeforeground="#40210D")
+
+		self.viewmenu.add_separator()
+		self.viewmenu.add_command(label="Hide in Tray", command=self.tray_com)
+		self.viewmenu.add_command(label="Default", command=self.default_com)
+		self.viewmenu.add_command(label="Fullscreen", command=self.full_com)
+
+		#tool menu
+		self.toolmenu = tk.Menu(self.menu, tearoff=0)
+		self.menu.add_cascade(label="Tools ", menu=self.toolmenu)
+		self.toolmenu.add_command(label="Insert Time", command=self.time_com)
+		self.toolmenu.add_command(label="Insert Date", command=self.date_com)
+		self.toolmenu.add_command(label="Note Area", command=self.note_area)
+
+		#help menu
+		self.helpmenu = tk.Menu(self.menu, tearoff=0)
+		self.menu.add_cascade(label="Help ", menu=self.helpmenu)
+		self.helpmenu.add_command(label="About", command=self.about_com)
+		self.helpmenu.add_command(label="Troubleshooting", command=self.trouble_com)
 
 
-# Menu Functions
-# file menu
-def new_com(): 
-    root.title("Untitled ") 
-    file = None
-    texpert.delete(1.0, 'end-1c') 
-    
-def open_com():
-    file = tkFileDialog.askopenfile(parent=root, mode='rb', title='Select File')
-    if file is not None:
-  	contents = file.read()
-        texpert.delete(1.0, 'end-1c')
-	texpert.insert('1.0', contents)
-	file.close()
+		self.status = tk.Label(text=" Mode: Light", anchor=tk.W, bd=1, relief='sunken', fg='#000000', font=("Arial", 10))
+		self.status.pack(side=tk.BOTTOM, fill=tk.X)
 
-def save_com():
-    print ("Silent Save")
+		texpert.bind("<Control-Key-a>", self.select_all)
+		texpert.bind("<Control-Key-A>", self.select_all)
+		texpert.bind("<Button-3>", self.r_click)
 
-def saveas_com():
-    file = tkFileDialog.asksaveasfile(mode='w')
-    if file is not None:
-	data = texpert.get('1.0', 'end-1c')
-	file.write(data)
- 	file.close()
+	def r_click(self, event):
+		self.editmenu.tk_popup(event.x_root, event.y_root)
 
-def close_com():
-    root.title('') 
-    file = None
-    texpert.delete(1.0, 'end-1c') 
-    
-def exit_com():
-    if tkMessageBox.askokcancel("Exit", "Do you really want to exit? "):
-	root.destroy()
+	# Menu Functions
+	# file menu
+	def new_com(self):
+		self.master.title("Untitled ")
+		file = None
+		texpert.delete(1.0, 'end-1c')
 
-# edit menu
-def undo_com():
-    texpert.edit_undo()
+	def open_com(self):
+		file = tkFileDialog.askopenfile(parent=self.master, mode='rb', title='Select File')
+		if file is not None:
+			contents = file.read()
+			texpert.delete(1.0, 'end-1c')
+			texpert.insert('1.0', contents)
+			file.close()
 
-def redo_com():
-    texpert.edit_redo()
+	def save_com(self):
+		print ("Silent Save")
 
-def cut_com(): 
-    texpert.event_generate("<<Cut>>")
+	def saveas_com(self):
+		file = tkFileDialog.asksaveasfile(mode='w')
+		if file is not None:
+			data = texpert.get('1.0', 'end-1c')
+			file.write(data)
+			file.close()
 
-def copy_com(): 
-    texpert.event_generate("<<Copy>>") 
+	def close_com(self):
+		self.master.title('')
+		file = None
+		texpert.delete(1.0, 'end-1c')
 
-def paste_com(): 
-    texpert.event_generate("<<Paste>>")  
+	def exit_com(self):
+		if tkMessageBox.askokcancel("Exit", "Do you really want to exit? "):
+			self.master.destroy()
 
-def select_all():
-    texpert.tag_add(SEL, '1.0', 'end-1c')
-    texpert.mark_set(INSERT, '1.0')
-    texpert.see(INSERT)
-    return 'break'
-texpert.bind("<Control-Key-a>", select_all)
-texpert.bind("<Control-Key-A>", select_all)
+	# edit menu
+	def undo_com(self):
+		texpert.edit_undo()
 
-# view menu
-def hide_tbar():
-    toolbar.pack_forget()
+	def redo_com(self):
+		texpert.edit_redo()
 
-def show_tbar():
-    toolbar.pack(side=TOP, fill=X)
+	def cut_com(self):
+		texpert.event_generate("<<Cut>>")
 
-#sub-menu for: [view > mode]
-def dark_mode():
-    global status
-    status["text"] = " Mode: Dark"
-    texpert.config(background='#181818', fg='#F5F5F5', insertbackground='#F5F5F5')
+	def copy_com(self):
+		texpert.event_generate("<<Copy>>")
 
-def light_mode():
-    global status
-    status["text"] = " Mode: Light"
-    texpert.config(background='#F5F5F5', fg='#181818', insertbackground='#181818')
+	def paste_com(self):
+		texpert.event_generate("<<Paste>>")
 
-def legal_mode():
-    global status
-    status["text"] = " Mode: Legal Pad"
-    texpert.config(background='#FFFFCC', fg='#181818', insertbackground='#181818')
-
-def green_mode():
-    global status
-    status["text"] = " Mode: Night Vision"
-    texpert.config(background='#181818', fg='#00FF33', insertbackground='#00FF33')
-
-def desert_mode():
-    global status
-    status["text"] = " Mode: Desert View"
-    texpert.config(background='#E9DDB3', fg='#40210D', insertbackground='#40210D')
-
-def tray_com():
-    root.iconify()
-
-def default_com():
-    root.attributes('-zoomed', False)
-    root.geometry("700x440+440+195") #default window size+position
-
-def full_com():
-    root.attributes('-zoomed', True)
-
-# tools menu
-def time_com():
-    ctime = time.strftime('%I:%M %p')
-    texpert.insert(INSERT, ctime, "a")
-
-def date_com():
-    full_date = time.localtime()
-    day = str(full_date.tm_mday)
-    month = str(full_date.tm_mon)
-    year = str(full_date.tm_year)
-    date = ""+month+'/'+day+'/'+year
-    texpert.insert(INSERT, date, "a")
+	def select_all(self):
+		texpert.tag_add(tk.SEL, '1.0', 'end-1c')
+		texpert.mark_set(tk.INSERT, '1.0')
+		texpert.see(tk.INSERT)
+		return 'break'
 
 
-# note area
-def note_area():
-    btn_frame = Frame(texpert)
-    note = LabelFrame(texpert, bd=1, relief='ridge')
+	# view menu
+	def hide_tbar(self):
+		self.toolbar.pack_forget()
 
-    tx = Text(note, height=21, width=19, bd=0, relief='flat')
-    tx.insert('1.0', 'Notes here\nwill not be saved..')
-    tx.bind("<FocusIn>", lambda args: tx.delete('0.0', 'end'))
-    tx.pack(side='top', fill=BOTH, expand=True)
+	def show_tbar(self):
+		self.toolbar.pack(side=TOP, fill=X)
 
-    a = Button(note, text="Clear", width=4, command=lambda: tx.delete('1.0', END))
-    a.pack(side='left', anchor=S, padx=2, pady=2)
-    b = Button(note, text="Close", width=4, command=note.destroy)
-    b.pack(side='right', anchor=S, padx=2, pady=2)
+	#sub-menu for: [view > mode]
+	def dark_mode(self):
 
-    note.pack(side='right', fill=Y)
-    btn_frame.pack(side='bottom', fill=X)
+		self.status["text"] = " Mode: Dark"
+		texpert.config(background='#181818', fg='#F5F5F5', insertbackground='#F5F5F5')
 
+	def light_mode(self):
 
-# help menu
-def about_com():
-    win = Toplevel()
-    win.title("About")                                     
-    Label(win, foreground='black', text="\n\n\nTexpert\n\nA small text editor designed for Linux.\n\nMade in Python with Tkinter\n\n\n").pack()   
-    
-    a = Button(win, text="Credits", width=4, command=credits_com)
-    a.pack(side=LEFT, padx=8, pady=4)
-    b = Button(win, text="Close", width=4, command=win.destroy)
-    b.pack(side=RIGHT, padx=8, pady=4)
-     
-    win.transient(root)
-    win.geometry('300x200')
-    win.wait_window()
+		self.status["text"] = " Mode: Light"
+		texpert.config(background='#F5F5F5', fg='#181818', insertbackground='#181818')
 
-def credits_com(): #linked to: [about > credits]
-    win = Toplevel()
-    win.wm_attributes("-topmost", 0)
-    win.title("Credits")                                     
-    Label(win, foreground='#606060', text="\n\n\nCreated by David Lawson\n\n\nme = Person()\nwhile (me.awake()):\nme.code()\n\n").pack()   
-    
-    a = Button(win, text="License", width=4, command=license_info)
-    a.pack(side=LEFT, padx=8, pady=4)
-    b = Button(win, text="Close", width=4, command=win.destroy)
-    b.pack(side=RIGHT, padx=8, pady=4) 
-    
-    win.transient(root)
-    win.geometry('300x200')
-    win.wait_window()
+	def legal_mode(self):
 
-def license_info():
-    win = Toplevel()
-    win.wm_attributes("-topmost", 1)
-    win.title("License")                                     
-    Label(win, foreground='black', justify='left', text="""\n\nMIT License
+		self.status["text"] = " Mode: Legal Pad"
+		texpert.config(background='#FFFFCC', fg='#181818', insertbackground='#181818')
 
-Copyright (c) 2019 David Lawson
+	def green_mode(self):
 
-Permission is hereby granted, free of charge, to any person
-obtaining a copy of this software and associated documentation
-files (the "Software"), to deal in the Software without restriction, 
-including without limitation the rights to use, copy, modify, merge, 
-publish, distribute, sublicense, and/or sell copies of the Software, 
-and to permit persons to whom the Software is furnished to do so, 
-subject to the following conditions:
+		self.status["text"] = " Mode: Night Vision"
+		texpert.config(background='#181818', fg='#00FF33', insertbackground='#00FF33')
 
-The above copyright notice and this permission notice shall be 
-included in all copies or substantial portions of the Software.
+	def desert_mode(self):
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF 
-ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
-PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, 
-DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
-IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-DEALINGS IN THE SOFTWARE.\n""").pack()   
-    
-    Button(win, text='Close', command=win.destroy).pack()   
-    win.transient(root)
-    win.geometry('504x435')
-    win.wait_window()
+		self.status["text"] = " Mode: Desert View"
+		texpert.config(background='#E9DDB3', fg='#40210D', insertbackground='#40210D')
+
+	def tray_com(self):
+		self.master.iconify()
+
+	def default_com(self):
+		self.master.attributes('-zoomed', False)
+		self.master.geometry("700x440+440+195") #default window size+position
+
+	def full_com(self):
+		self.master.attributes('-zoomed', True)
+
+	# tools menu
+	def time_com(self):
+		ctime = time.strftime('%I:%M %p')
+		texpert.insert(tk.INSERT, ctime, "a")
+
+	def date_com(self):
+		full_date = time.localtime()
+		day = str(full_date.tm_mday)
+		month = str(full_date.tm_mon)
+		year = str(full_date.tm_year)
+		date = ""+month+'/'+day+'/'+year
+		texpert.insert(tk.INSERT, date, "a")
 
 
-def trouble_com():
-    win = Toplevel()
-    win.title("Troubleshooting")                                     
-    Label(win, foreground='black', justify='left', text="\n\nThis program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand is not yet complete.\n\n\nKnown Issues:\n\n'Show toolbar' is temporarily disabled\nbecause the toolbar refuses to remember\nits original position. I may or may not\nmake an attempt to fix this someday.\n\nThe 'Save' and 'Save As' options both work\nas 'save as'. This might be fixed someday.\n\n").pack()   
-    Button(win, text='Close', command=win.destroy).pack()   
-    win.transient(root)
-    win.geometry('340x350')
-    win.wait_window()
+	# note area
+	def note_area(self):
+		btn_frame = tk.Frame(texpert)
+		note = tk.LabelFrame(texpert, bd=1, relief='ridge')
+
+		tx = tk.Text(note, height=21, width=19, bd=0, relief='flat')
+		tx.insert('1.0', 'Notes here\nwill not be saved..')
+		tx.bind("<FocusIn>", lambda args: tx.delete('0.0', 'end'))
+		tx.pack(side='top', fill=tk.BOTH, expand=True)
+
+		a = tk.Button(note, text="Clear", width=4, command=lambda: tx.delete('1.0', tk.END))
+		a.pack(side='left', anchor=tk.S, padx=2, pady=2)
+		b = tk.Button(note, text="Close", width=4, command=note.destroy)
+		b.pack(side='right', anchor=tk.S, padx=2, pady=2)
+
+		note.pack(side='right', fill=tk.Y)
+		btn_frame.pack(side='bottom', fill=tk.X)
 
 
-# Menu Buttons/Labels
-menu = Menu(root, bd=1, relief='flat')
-root.config(menu=menu, bd=1)
+	# help menu
+	def about_com(self):
+		win = tk.Toplevel()
+		win.title("About")
+		tk.Label(win, foreground='black', text="\n\n\nTexpert\n\nA small text editor designed for Linux.\n\nMade in Python with Tkinter\n\n\n").pack()
 
-#file menu
-filemenu = Menu(menu, tearoff=0)
-menu.add_cascade(label="File ", menu=filemenu)
-filemenu.add_command(label="New", command=new_com) 
-filemenu.add_command(label="Open", command=open_com)
-filemenu.add_separator()
-filemenu.add_command(label="Save", command=saveas_com)
-filemenu.add_command(label="Save As", command=saveas_com)
-filemenu.add_separator()
-filemenu.add_command(label="Close", command=close_com)
-filemenu.add_command(label="Exit", command=exit_com, underline=1)
+		a = tk.Button(win, text="Credits", width=4, command=self.credits_com)
+		a.pack(side=tk.LEFT, padx=8, pady=4)
+		b = tk.Button(win, text="Close", width=4, command=win.destroy)
+		b.pack(side=tk.RIGHT, padx=8, pady=4)
 
-#edit menu
-editmenu = Menu(menu, tearoff=0)
-menu.add_cascade(label="Edit ", menu=editmenu)
-editmenu.add_command(label="Undo", command=undo_com)
-editmenu.add_command(label="Redo", command=redo_com)
-editmenu.add_separator()
-editmenu.add_command(label="Cut", command=cut_com)
-editmenu.add_command(label="Copy", command=copy_com)  
-editmenu.add_command(label="Paste", command=paste_com) 
-editmenu.add_separator()
-editmenu.add_command(label="Select All", command=select_all) 
+		win.transient(self.master)
+		win.geometry('300x200')
+		win.wait_window()
 
-#view menu
-viewmenu = Menu(menu, tearoff=0)
-menu.add_cascade(label="View ", menu=viewmenu)
-viewmenu.add_command(label="Hide Toolbar", command=hide_tbar)
-viewmenu.add_command(label="Show Toolbar", command=show_tbar, state='disabled')
-viewmenu.add_separator()
+	def credits_com(self): #linked to: [about > credits]
+		win = Toplevel()
+		win.wm_attributes("-topmost", 0)
+		win.title("Credits")
+		tk.Label(win, foreground='#606060', text="\n\n\nCreated by David Lawson\n\n\nme = Person()\nwhile (me.awake()):\nme.code()\n\n").pack()
 
-#sub-menu for: [view > mode]
-submenu = Menu(menu, tearoff=0)
-viewmenu.add_cascade(label="Mode ", menu=submenu)
-submenu.add_command(label=" Dark", command=dark_mode, activebackground="#181818", activeforeground="#F5F5F5")
-submenu.add_command(label=" Light", command=light_mode, activebackground="#F5F5F5", activeforeground="#181818")
-submenu.add_command(label=" Legal Pad", command=legal_mode, activebackground="#FFFFCC", activeforeground="#181818")
-submenu.add_command(label=" Night Vision", command=green_mode, activebackground="#181818", activeforeground="#00FF33")
-submenu.add_command(label=" Desert View", command=desert_mode, activebackground="#E9DDB3", activeforeground="#40210D")
+		a = tk.Button(win, text="License", width=4, command=self.license_info)
+		a.pack(side=tk.LEFT, padx=8, pady=4)
+		b = tk.Button(win, text="Close", width=4, command=win.destroy)
+		b.pack(side=tk.RIGHT, padx=8, pady=4)
 
-viewmenu.add_separator()
-viewmenu.add_command(label="Hide in Tray", command=tray_com)
-viewmenu.add_command(label="Default", command=default_com)
-viewmenu.add_command(label="Fullscreen", command=full_com)
+		win.transient(self.master)
+		win.geometry('300x200')
+		win.wait_window()
 
-#tool menu
-toolmenu = Menu(menu, tearoff=0)
-menu.add_cascade(label="Tools ", menu=toolmenu)
-toolmenu.add_command(label="Insert Time", command=time_com)
-toolmenu.add_command(label="Insert Date", command=date_com)
-toolmenu.add_command(label="Note Area", command=note_area)
+	def license_info(self):
+		win = tk.Toplevel()
+		win.wm_attributes("-topmost", 1)
+		win.title("License")
+		tk.Label(win, foreground='black', justify='left', text="""\n\nMIT License
 
-#help menu
-helpmenu = Menu(menu, tearoff=0)
-menu.add_cascade(label="Help ", menu=helpmenu)
-helpmenu.add_command(label="About", command=about_com)
-helpmenu.add_command(label="Troubleshooting", command=trouble_com)
+	Copyright (c) 2019 David Lawson
 
+	Permission is hereby granted, free of charge, to any person
+	obtaining a copy of this software and associated documentation
+	files (the "Software"), to deal in the Software without restriction,
+	including without limitation the rights to use, copy, modify, merge,
+	publish, distribute, sublicense, and/or sell copies of the Software,
+	and to permit persons to whom the Software is furnished to do so,
+	subject to the following conditions:
 
-# right click menu
-def r_click(event):
-    editmenu.tk_popup(event.x_root, event.y_root)
-texpert.bind("<Button-3>", r_click)
+	The above copyright notice and this permission notice shall be
+	included in all copies or substantial portions of the Software.
 
-# toolBar
-toolbar = Frame(root, bd=2, relief='groove')
-b1 = Button(toolbar, text="Open", width=4, command=open_com)
-b1.pack(side=LEFT, padx=4, pady=2)
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF
+	ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+	TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+	PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+	THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+	DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+	CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
+	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+	DEALINGS IN THE SOFTWARE.\n""").pack()
 
-b2 = Button(toolbar, text="Save", width=4, command=saveas_com)
-b2.pack(side=RIGHT, padx=4, pady=2)
-toolbar.pack(side=TOP, fill=X)
-
-# statusBar
-status = Label(text=" Mode: Light", anchor=W, bd=1, relief='sunken', fg='#000000', font=("Arial", 10))
-status.pack(side=BOTTOM, fill=X)
-
-# x_out window
-def x_out():
-    if tkMessageBox.askokcancel("Exit", "Are you sure? "):
-       root.destroy()
+		tk.Button(win, text='Close', command=win.destroy).pack()
+		win.transient(self.master)
+		win.geometry('504x435')
+		win.wait_window()
 
 
-texpert.pack(fill="both", expand=True)
-texpert.focus_set()
-root.protocol("WM_DELETE_WINDOW", x_out)
-root.mainloop()
+	def trouble_com(self):
+		win = tk.Toplevel()
+		win.title("Troubleshooting")
+		tk.Label(win, foreground='black', justify='left', text="\n\nThis program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand is not yet complete.\n\n\nKnown Issues:\n\n'Show toolbar' is temporarily disabled\nbecause the toolbar refuses to remember\nits original position. I may or may not\nmake an attempt to fix this someday.\n\nThe 'Save' and 'Save As' options both work\nas 'save as'. This might be fixed someday.\n\n").pack()
+		tk.Button(win, text='Close', command=win.destroy).pack()
+		win.transient(self.master)
+		win.geometry('340x350')
+		win.wait_window()
+
+
+
+def main():
+	global texpert
+	root = tk.Tk(className = "Texpert")
+	root.geometry("700x440")
+	root.title("Texpert")
+	texpert = ScrolledText(root, bg="white", undo=True, font=("Arial", 11))
+	texpert.pack(fill="both", expand=True)
+	texpert.focus_set()
+	root.option_add("*Font", "TkDefaultFont 9")
+	textpert_gui = textpert_win(root)
+	root.mainloop()
+if __name__ == '__main__':
+	main()
