@@ -143,6 +143,8 @@ def note_area():
     note = LabelFrame(texpert, bd=1, relief='ridge')
 
     tx = Text(note, height=21, width=19, bd=0, relief='flat')
+    tx.insert('1.0', 'Notes here\nwill not be saved..')
+    tx.bind("<FocusIn>", lambda args: tx.delete('0.0', 'end'))
     tx.pack(side='top', fill=BOTH, expand=True)
 
     a = Button(note, text="Clear", width=4, command=lambda: tx.delete('1.0', END))
