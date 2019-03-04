@@ -10,6 +10,7 @@ Added:
  -Toolbar: open/save  
  -Context menu (right click)  
  -Status bar (changes according to mode)  
+ -Expandable Note Area!
  
  
  Designed for Linux  
