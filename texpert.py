@@ -136,22 +136,22 @@ def date_com():
     date = ""+month+'/'+day+'/'+year
     texpert.insert(INSERT, date, "a")
 
-# notes container
-def notes_com():
-    note = Toplevel()
-    note.title("Notes")
-         
-    t = Text(note, height=22, width=19, bd=0, relief='flat')
-    t.pack(side='top', fill='both', expand=True)
 
-    a = Button(note, text="Clear", width=4, command=lambda: t.delete(1.0,END))
-    a.pack(side=LEFT, padx=2, pady=2)
+# note area
+def note_area():
+    btn_frame = Frame(texpert)
+    note = LabelFrame(texpert, bd=1, relief='ridge')
+
+    tx = Text(note, height=21, width=19, bd=0, relief='flat')
+    tx.pack(side='top', fill=BOTH, expand=True)
+
+    a = Button(note, text="Clear", width=4, command=lambda: tx.delete('1.0', END))
+    a.pack(side='left', anchor=S, padx=2, pady=2)
     b = Button(note, text="Close", width=4, command=note.destroy)
-    b.pack(side=RIGHT, padx=2, pady=2)
+    b.pack(side='right', anchor=S, padx=2, pady=2)
 
-    note.transient(root)
-    note.geometry('156x352+968+286')
-    note.wait_window()
+    note.pack(side='right', fill=Y)
+    btn_frame.pack(side='bottom', fill=X)
 
 
 # help menu
@@ -208,13 +208,14 @@ ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
 TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
 PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, 
-DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
-THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n\n""").pack()   
+DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
+IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+DEALINGS IN THE SOFTWARE.\n""").pack()   
     
     Button(win, text='Close', command=win.destroy).pack()   
     win.transient(root)
-    win.geometry('520x434')
+    win.geometry('504x435')
     win.wait_window()
 
 
@@ -282,7 +283,7 @@ toolmenu = Menu(menu, tearoff=0)
 menu.add_cascade(label="Tools ", menu=toolmenu)
 toolmenu.add_command(label="Insert Time", command=time_com)
 toolmenu.add_command(label="Insert Date", command=date_com)
-toolmenu.add_command(label="Notes...", command=notes_com)
+toolmenu.add_command(label="Note Area", command=note_area)
 
 #help menu
 helpmenu = Menu(menu, tearoff=0)
