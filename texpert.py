@@ -219,11 +219,11 @@ class textpert_win:
 	# note area
 	def note_area(self):
 		btn_frame = tk.Frame(texpert)
-		note = tk.LabelFrame(texpert, bd=1, relief='ridge')
+		note = tk.LabelFrame(texpert, bd=0)
 
-		tx = tk.Text(note, height=21, width=19, bd=0, relief='flat')
+		tx = tk.Text(note, height=22, width=18, relief='ridge')
 		tx.insert('1.0', 'Notes here\nwill not be saved..')
-		tx.bind("<FocusIn>", lambda args: tx.delete('0.0', 'end'))
+		#tx.bind("<FocusIn>", lambda args: tx.delete('0.0', 'end'))
 		tx.pack(side='top', fill=tk.BOTH, expand=True)
 
 		a = tk.Button(note, text="Clear", width=4, command=lambda: tx.delete('1.0', tk.END))
@@ -231,8 +231,8 @@ class textpert_win:
 		b = tk.Button(note, text="Close", width=4, command=note.destroy)
 		b.pack(side='right', anchor=tk.S, padx=2, pady=2)
 
-		note.pack(side='right', fill=tk.Y)
-		btn_frame.pack(side='bottom', fill=tk.X)
+		note.pack(side='right', fill=tk.Y, padx=1, pady=1)
+		btn_frame.pack(side='bottom', fill=tk.Y)
 
 
 	# help menu
@@ -303,8 +303,11 @@ class textpert_win:
 	def trouble_com(self):
 		win = tk.Toplevel()
 		win.title("Troubleshooting")
-		tk.Label(win, foreground='black', justify='left', text="\n\nThis program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand is not yet complete.\n\n\nKnown Issues:\n\n'Show toolbar' is temporarily disabled\nbecause the toolbar refuses to remember\nits original position. I may or may not\nmake an attempt to fix this someday.\n\nThe 'Save' and 'Save As' options both work\nas 'save as'. This might be fixed someday.\n\n").pack()
-		tk.Button(win, text='Close', command=win.destroy).pack()
+		warning_text = "\n\nThis program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand will probably never be complete.\n\n\nKnown Issues:\n\n'Show toolbar' is temporarily disabled\nbecause the toolbar refuses to remember\nits original position. I may or may not\nmake an attempt to fix this someday.\n\nThe 'Save' and 'Save As' options both work\nas 'save as'. This might be fixed someday.\n\n"
+
+
+	 	tk.Label(win, foreground='black', justify='left', text=warning_text).pack()
+	 	tk.Button(win, text='Close', command=win.destroy).pack()
 		win.transient(self.master)
 		win.geometry('340x350')
 		win.wait_window()
