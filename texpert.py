@@ -140,11 +140,11 @@ def date_com():
 # note area
 def note_area():
     btn_frame = Frame(texpert)
-    note = LabelFrame(texpert, bd=1, relief='ridge')
+    note = LabelFrame(texpert, bd=0)
 
-    tx = Text(note, height=21, width=19, bd=0, relief='flat')
+    tx = Text(note, height=22, width=18, relief='ridge')
     tx.insert('1.0', 'Notes here\nwill not be saved..')
-    tx.bind("<FocusIn>", lambda args: tx.delete('0.0', 'end'))
+    #tx.bind("<FocusIn>", lambda args: tx.delete('1.0', 'end')) #optional
     tx.pack(side='top', fill=BOTH, expand=True)
 
     a = Button(note, text="Clear", width=4, command=lambda: tx.delete('1.0', END))
@@ -152,8 +152,8 @@ def note_area():
     b = Button(note, text="Close", width=4, command=note.destroy)
     b.pack(side='right', anchor=S, padx=2, pady=2)
 
-    note.pack(side='right', fill=Y)
-    btn_frame.pack(side='bottom', fill=X)
+    note.pack(side='right', fill=Y, padx=1, pady=1)
+    btn_frame.pack(side='bottom', fill=Y)
 
 
 # help menu
@@ -224,7 +224,7 @@ DEALINGS IN THE SOFTWARE.\n""").pack()
 def trouble_com():
     win = Toplevel()
     win.title("Troubleshooting")                                     
-    Label(win, foreground='black', justify='left', text="\n\nThis program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand is not yet complete.\n\n\nKnown Issues:\n\n'Show toolbar' is temporarily disabled\nbecause the toolbar refuses to remember\nits original position. I may or may not\nmake an attempt to fix this someday.\n\nThe 'Save' and 'Save As' options both work\nas 'save as'. This might be fixed someday.\n\n").pack()   
+    Label(win, foreground='black', justify='left', text="\n\nThis program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand will probably never be complete.\n\n\nKnown Issues:\n\n'Show toolbar' is temporarily disabled\nbecause the toolbar refuses to remember\nits original position. I may or may not\nmake an attempt to fix this someday.\n\nThe 'Save' and 'Save As' options both work\nas 'save as'. This might be fixed someday.\n\n").pack()   
     Button(win, text='Close', command=win.destroy).pack()   
     win.transient(root)
     win.geometry('340x350')
