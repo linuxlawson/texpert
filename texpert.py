@@ -18,7 +18,7 @@ import tkMessageBox
 root = tk.Tk(className = "Texpert")
 root.geometry("700x440")
 root.title("Texpert")
-texpert = ScrolledText(root, bg="white", undo=True, font=("Arial", 11))
+texpert = ScrolledText(root, bg="white", undo=True, font=('Arial 11'))
 root.option_add("*Font", "TkDefaultFont 9")
 
 
@@ -81,11 +81,20 @@ texpert.bind("<Control-Key-a>", select_all)
 texpert.bind("<Control-Key-A>", select_all)
 
 # view menu
-def hide_tbar():
+def hide_toolbar():
     toolbar.pack_forget()
 
-def show_tbar():
-    toolbar.pack(side=TOP, fill=X)
+def show_toolbar():
+    toolbar.pack(side=TOP, anchor=N, fill=X)
+
+# toolBar
+toolbar = Frame(root, bd=2, relief='groove')
+b1 = Button(toolbar, text="Open", width=4, command=open_com)
+b1.pack(side=LEFT, padx=4, pady=2)
+
+b2 = Button(toolbar, text="Save", width=4, command=saveas_com)
+b2.pack(side=RIGHT, padx=4, pady=2)
+toolbar.pack(side=TOP, anchor=N, fill=X)
 
 #sub-menu for: [view > mode]
 def dark_mode():
@@ -113,6 +122,11 @@ def desert_mode():
     status["text"] = " Mode: Desert View"
     texpert.config(background='#E9DDB3', fg='#40210D', insertbackground='#40210D')
 
+def mint_mode():
+    global status
+    status["text"] = " Mode: Chocolate Mint"
+    texpert.config(background='#BDFCC9', fg='#40210D', insertbackground='#40210D')
+
 def tray_com():
     root.iconify()
 
@@ -136,8 +150,6 @@ def date_com():
     date = ""+month+'/'+day+'/'+year
     texpert.insert(INSERT, date, "a")
 
-
-# note area
 def note_area():
     btn_frame = Frame(texpert)
     note = LabelFrame(texpert, bd=0)
@@ -152,9 +164,8 @@ def note_area():
     b = Button(note, text="Close", width=4, command=note.destroy)
     b.pack(side='right', anchor=S, padx=2, pady=2)
 
-    note.pack(side='right', fill=Y, padx=1, pady=1)
+    note.pack(side='right', fill=Y, padx=0, pady=0)
     btn_frame.pack(side='bottom', fill=Y)
-
 
 # help menu
 def about_com():
@@ -262,8 +273,8 @@ editmenu.add_command(label="Select All", command=select_all)
 #view menu
 viewmenu = Menu(menu, tearoff=0)
 menu.add_cascade(label="View ", menu=viewmenu)
-viewmenu.add_command(label="Hide Toolbar", command=hide_tbar)
-viewmenu.add_command(label="Show Toolbar", command=show_tbar, state='disabled')
+viewmenu.add_command(label="Hide Toolbar", command=hide_toolbar)
+viewmenu.add_command(label="Show Toolbar", command=show_toolbar, state='disabled')
 viewmenu.add_separator()
 
 #sub-menu for: [view > mode]
@@ -274,6 +285,7 @@ submenu.add_command(label=" Light", command=light_mode, activebackground="#F5F5F
 submenu.add_command(label=" Legal Pad", command=legal_mode, activebackground="#FFFFCC", activeforeground="#181818")
 submenu.add_command(label=" Night Vision", command=green_mode, activebackground="#181818", activeforeground="#00FF33")
 submenu.add_command(label=" Desert View", command=desert_mode, activebackground="#E9DDB3", activeforeground="#40210D")
+submenu.add_command(label=" Chocolate Mint", command=mint_mode, activebackground="#BDFCC9", activeforeground="#40210D")
 
 viewmenu.add_separator()
 viewmenu.add_command(label="Hide in Tray", command=tray_com)
@@ -299,17 +311,8 @@ def r_click(event):
     editmenu.tk_popup(event.x_root, event.y_root)
 texpert.bind("<Button-3>", r_click)
 
-# toolBar
-toolbar = Frame(root, bd=2, relief='groove')
-b1 = Button(toolbar, text="Open", width=4, command=open_com)
-b1.pack(side=LEFT, padx=4, pady=2)
-
-b2 = Button(toolbar, text="Save", width=4, command=saveas_com)
-b2.pack(side=RIGHT, padx=4, pady=2)
-toolbar.pack(side=TOP, fill=X)
-
 # statusBar
-status = Label(text=" Mode: Light", anchor=W, bd=1, relief='sunken', fg='#000000', font=("Arial", 10))
+status = Label(text=" Mode: Light", anchor=W, bd=1, relief='sunken', font=('Arial 10'))
 status.pack(side=BOTTOM, fill=X)
 
 # x_out window
