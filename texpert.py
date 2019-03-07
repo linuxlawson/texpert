@@ -34,7 +34,7 @@ class texpert_win:
 		self.menu = tk.Menu(self.master, bd=1, relief='flat')
 		self.master.config(menu=self.menu, bd=1)
 
-		self.texpert = CustomText(self.master, bg="white", undo=True, font=("Arial", 11))
+		self.texpert = CustomText(self.master, bg="white", maxundo=-1, font=("Arial", 11))
 		self.texpert.grid(row=0, column=0, sticky='nsew')
 		self.texpert.focus_set()
 		#self.texpert.bind('<Key>', self.colour_in)
@@ -63,14 +63,18 @@ class texpert_win:
 		#edit menu
 		self.editmenu = tk.Menu(self.menu, tearoff=0)
 		self.menu.add_cascade(label="Edit ", menu=self.editmenu)
-		self.editmenu.add_command(label="Undo", command=self.undo_com)
-		self.editmenu.add_command(label="Redo", command=self.redo_com)
+		self.editmenu.add_command(label="Undo", command=self.undo_com, accelerator="Ctrl+Z")
+		self.texpert.bind("<Control-Key-z>", lambda e: self.undo_com)
+		self.editmenu.add_command(label="Redo", command=self.redo_com, accelerator="Shift+Ctrl+Z")
 		self.editmenu.add_separator()
-		self.editmenu.add_command(label="Cut", command=self.cut_com)
-		self.editmenu.add_command(label="Copy", command=self.copy_com)
-		self.editmenu.add_command(label="Paste", command=self.paste_com)
+		self.editmenu.add_command(label="Cut", command=self.cut_com, accelerator="Ctrl+X")
+		self.texpert.bind("<Control-Key-x>", lambda e: self.undo_com)
+		self.editmenu.add_command(label="Copy", command=self.copy_com, accelerator="Ctrl+C")
+		self.texpert.bind("<Control-Key-c>", lambda e: self.undo_com)
+		self.editmenu.add_command(label="Paste", command=self.paste_com, accelerator="Ctrl+V")
+		self.texpert.bind("<Control-Key-v>", lambda e: self.undo_com)
 		self.editmenu.add_separator()
-		self.editmenu.add_command(label="Select All", command=self.select_all)
+		self.editmenu.add_command(label="Select All", command=self.select_all, accelerator="Ctrl+A")
 
 		#view menu
 		self.viewmenu = tk.Menu(self.menu, tearoff=0)
@@ -177,19 +181,24 @@ class texpert_win:
 
 	# edit menu
 	def undo_com(self):
-		self.texpert.edit_undo()
+		try: self.texpert.event_generate("<<Undo>>")
+		except tk.TclError: pass
 
 	def redo_com(self):
-		self.texpert.edit_redo()
+		try: self.texpert.event_generate("<<Redo>>")
+		except tk.TclError: pass
 
 	def cut_com(self):
-		self.texpert.event_generate("<<Cut>>")
+		try: self.texpert.event_generate("<<Cut>>")
+		except tk.TclError: pass
 
 	def copy_com(self):
-		self.texpert.event_generate("<<Copy>>")
+		try: self.texpert.event_generate("<<Copy>>")
+		except tk.TclError: pass
 
 	def paste_com(self):
-		self.texpert.event_generate("<<Paste>>")
+		try: self.texpert.event_generate("<<Paste>>")
+		except tk.TclError: pass
 
 	def select_all(self, event=None):
 		self.texpert.tag_add(tk.SEL, '1.0', 'end-1c')
@@ -365,7 +374,7 @@ class texpert_win:
 		self.texpert.destroy()
 		self.texpert.frame.destroy()
 		del self.texpert
-		self.texpert = CustomText(self.master, bg="white", undo=True, font=("Arial", 11))
+		self.texpert = CustomText(self.master, bg="white", maxundo=-1, font=("Arial", 11))
 		self.texpert.grid(row=0, column=0, sticky='nsew')
 		self.texpert.insert(tk.END, text)
 		self.texpert.focus_set()
@@ -392,18 +401,12 @@ class CustomText(tk.Text):
 		self.hbar = tk.Scrollbar(self.frame, command=self.xview, orient=tk.HORIZONTAL)
 		kw.update({'xscrollcommand': self._scroll(self.hbar)})
 
-		tk.Text.__init__(self, self.frame, **kw)
+		tk.Text.__init__(self, self.frame, **kw, undo=True)
 		self.grid(row=0, column=0, sticky='nsew', padx=2, pady=2)
 		self.vbar.grid(row=0, column=1, sticky='nsew')
 		self.hbar.grid(row=1, column=0, sticky='nsew')
 		self['xscrollcommand'] = self._scroll(self.hbar)
 		self['yscrollcommand'] = self._scroll(self.vbar)
-
-
-		self._orig = self._w + "_original"
-		self.tk.call("rename", self._w, self._orig)
-		self.tk.createcommand(self._w, self._rework)
-
 
 		# Copy geometry methods of self.frame without overriding Text
 		# methods -- hack!
@@ -417,16 +420,6 @@ class CustomText(tk.Text):
 
 	def __str__(self):
 		return str(self.frame)
-
-	def _rework(self, command,*args):
-		'''Bind <<TextModified>> to a custom command'''
-		cmd = (self._orig, command) + args
-		result = self.tk.call(cmd)
-
-		if command in ("insert", "delete", "replace"):
-			self.event_generate("<<TextModified>>")
-
-		return result
 
 	@staticmethod
 	def _scroll(sbar):
