@@ -16,22 +16,37 @@ except:
 	import tkinter.messagebox as tkMessageBox
 	from tkinter.scrolledtext import ScrolledText
 
+try:
+	import idlelib
+	import idlelib.colorizer
+	from idlelib.percolator import Percolator
+	from idlelib import configdialog
+except:
+	popup = tk.Tk()
+	popup.withdraw()
+	tkMessageBox.showerror("Error", "Could not import `idlelib`, colour formatting disabled")
+	popup.destroy()
 
-class textpert_win:
+class texpert_win:
 	def __init__(self, master):
 		self.master = master
 
 		self.menu = tk.Menu(self.master, bd=1, relief='flat')
 		self.master.config(menu=self.menu, bd=1)
 
+		self.texpert = CustomText(self.master, bg="white", undo=True, font=("Arial", 11))
+		self.texpert.grid(row=0, column=0, sticky='nsew')
+		self.texpert.focus_set()
+		#self.texpert.bind('<Key>', self.colour_in)
+
 		# toolBar
 		self.toolbar = tk.Frame(self.master, bd=2, relief='groove')
-		self.b1 = tk.Button(self.toolbar, text="Open", width=4, command=self.open_com)
-		self.b1.pack(side=tk.LEFT, padx=4, pady=2)
+		self.open_butt = tk.Button(self.toolbar, text="Open", width=4, command=self.open_com)
+		self.open_butt.pack(side=tk.LEFT, padx=4, pady=2)
 
-		self.b2 = tk.Button(self.toolbar, text="Save", width=4, command=self.saveas_com)
-		self.b2.pack(side=tk.RIGHT, padx=4, pady=2)
-		self.toolbar.pack(side=tk.TOP, fill=tk.X)
+		self.save_butt = tk.Button(self.toolbar, text="Save", width=4, command=self.saveas_com)
+		self.save_butt.pack(side=tk.RIGHT, padx=4, pady=2)
+		self.toolbar.grid(row=1, column=0, sticky='ew')
 
 		#file menu
 		self.filemenu = tk.Menu(self.menu, tearoff=0)
@@ -60,8 +75,16 @@ class textpert_win:
 		#view menu
 		self.viewmenu = tk.Menu(self.menu, tearoff=0)
 		self.menu.add_cascade(label="View ", menu=self.viewmenu)
-		self.viewmenu.add_command(label="Hide Toolbar", command=self.hide_tbar)
-		self.viewmenu.add_command(label="Show Toolbar", command=self.show_tbar, state='disabled')
+		self.toolbar_visible = tk.BooleanVar()
+		self.toolbar_visible.set(True)
+		self.viewmenu.add_checkbutton(label="Show Toolbar", variable=self.toolbar_visible,command=self.show_hide_toolbar, state='normal')
+		self.inherit_idle_sett = tk.BooleanVar()
+		if 'idlelib' in sys.modules:
+			self.viewmenu.add_checkbutton(label="Inherit IDLE settings", variable=self.inherit_idle_sett, command=self.refresh_sett, state='normal')
+			self.master.instance_dict = {}
+			self.viewmenu.add_command(label="Configure IDLE", command=lambda: configdialog.ConfigDialog(self.master, 'IDLE Settings'), state='normal')
+		else:
+			self.viewmenu.add_command(label="Inherit IDLE settings", command=self.show_toolbar, state='disabled')
 		self.viewmenu.add_separator()
 
 		#sub-menu for: [view > mode]
@@ -72,6 +95,7 @@ class textpert_win:
 		self.submenu.add_command(label=" Legal Pad", command=self.legal_mode, activebackground="#FFFFCC", activeforeground="#181818")
 		self.submenu.add_command(label=" Night Vision", command=self.green_mode, activebackground="#181818", activeforeground="#00FF33")
 		self.submenu.add_command(label=" Desert View", command=self.desert_mode, activebackground="#E9DDB3", activeforeground="#40210D")
+		self.submenu.add_command(label=" Chocolate Mint", command=self.mint_mode, activebackground="#BDFCC9", activeforeground="#40210D")
 
 		self.viewmenu.add_separator()
 		self.viewmenu.add_command(label="Hide in Tray", command=self.tray_com)
@@ -93,11 +117,18 @@ class textpert_win:
 
 
 		self.status = tk.Label(text=" Mode: Light", anchor=tk.W, bd=1, relief='sunken', fg='#000000', font=("Arial", 10))
-		self.status.pack(side=tk.BOTTOM, fill=tk.X)
+		self.status.grid(row=2, column=0, sticky='ew')
 
-		texpert.bind("<Control-Key-a>", self.select_all)
-		texpert.bind("<Control-Key-A>", self.select_all)
-		texpert.bind("<Button-3>", self.r_click)
+		self.texpert.bind("<Control-Key-a>", self.select_all)
+		self.texpert.bind("<Control-Key-A>", self.select_all)
+		self.texpert.bind("<Button-3>", self.r_click)
+
+		self.current_file = None
+		self.file_type = None
+
+		self.master.grid_rowconfigure(0, weight=1)
+		self.master.grid_columnconfigure(0, weight=1)
+
 
 	def r_click(self, event):
 		self.editmenu.tk_popup(event.x_root, event.y_root)
@@ -107,15 +138,20 @@ class textpert_win:
 	def new_com(self):
 		self.master.title("Untitled ")
 		file = None
-		texpert.delete(1.0, 'end-1c')
+		self.texpert.delete(1.0, 'end-1c')
 
 	def open_com(self):
 		file = tkFileDialog.askopenfile(parent=self.master, mode='rb', title='Select File')
 		if file is not None:
+			self.current_file = file.name
 			contents = file.read()
-			texpert.delete(1.0, 'end-1c')
-			texpert.insert('1.0', contents)
+			self.texpert.delete(1.0, 'end-1c')
+			self.texpert.insert('1.0', contents)
 			file.close()
+			if str(self.current_file)[-3:] == '.py':
+				self.file_type = 'Python'
+				self.texpert.colour_py(self.inherit_idle_sett.get())
+
 
 	def save_com(self):
 		print ("Silent Save")
@@ -123,14 +159,14 @@ class textpert_win:
 	def saveas_com(self):
 		file = tkFileDialog.asksaveasfile(mode='w')
 		if file is not None:
-			data = texpert.get('1.0', 'end-1c')
+			data = self.texpert.get('1.0', 'end-1c')
 			file.write(data)
 			file.close()
 
 	def close_com(self):
 		self.master.title('')
 		file = None
-		texpert.delete(1.0, 'end-1c')
+		self.texpert.delete(1.0, 'end-1c')
 
 	def exit_com(self):
 		if tkMessageBox.askokcancel("Exit", "Do you really want to exit? "):
@@ -138,59 +174,69 @@ class textpert_win:
 
 	# edit menu
 	def undo_com(self):
-		texpert.edit_undo()
+		self.texpert.edit_undo()
 
 	def redo_com(self):
-		texpert.edit_redo()
+		self.texpert.edit_redo()
 
 	def cut_com(self):
-		texpert.event_generate("<<Cut>>")
+		self.texpert.event_generate("<<Cut>>")
 
 	def copy_com(self):
-		texpert.event_generate("<<Copy>>")
+		self.texpert.event_generate("<<Copy>>")
 
 	def paste_com(self):
-		texpert.event_generate("<<Paste>>")
+		self.texpert.event_generate("<<Paste>>")
 
-	def select_all(self):
-		texpert.tag_add(tk.SEL, '1.0', 'end-1c')
-		texpert.mark_set(tk.INSERT, '1.0')
-		texpert.see(tk.INSERT)
+	def select_all(self, event=None):
+		self.texpert.tag_add(tk.SEL, '1.0', 'end-1c')
+		self.texpert.mark_set(tk.INSERT, '1.0')
+		self.texpert.see(tk.INSERT)
 		return 'break'
 
+	def show_hide_toolbar(self):
+		if not self.toolbar_visible.get():
+			self.hide_toolbar()
+		else:
+			self.show_toolbar()
 
 	# view menu
-	def hide_tbar(self):
-		self.toolbar.pack_forget()
+	def hide_toolbar(self):
+		self.toolbar.grid_forget()
 
-	def show_tbar(self):
-		self.toolbar.pack(side=TOP, fill=X)
+	def show_toolbar(self):
+		self.toolbar.grid(row=1, column=0, sticky='ew')
 
 	#sub-menu for: [view > mode]
 	def dark_mode(self):
 
 		self.status["text"] = " Mode: Dark"
-		texpert.config(background='#181818', fg='#F5F5F5', insertbackground='#F5F5F5')
+		self.texpert.config(background='#181818', fg='#F5F5F5', insertbackground='#F5F5F5')
 
 	def light_mode(self):
 
 		self.status["text"] = " Mode: Light"
-		texpert.config(background='#F5F5F5', fg='#181818', insertbackground='#181818')
+		self.texpert.config(background='#F5F5F5', fg='#181818', insertbackground='#181818')
 
 	def legal_mode(self):
 
 		self.status["text"] = " Mode: Legal Pad"
-		texpert.config(background='#FFFFCC', fg='#181818', insertbackground='#181818')
+		self.texpert.config(background='#FFFFCC', fg='#181818', insertbackground='#181818')
 
 	def green_mode(self):
 
 		self.status["text"] = " Mode: Night Vision"
-		texpert.config(background='#181818', fg='#00FF33', insertbackground='#00FF33')
+		self.texpert.config(background='#181818', fg='#00FF33', insertbackground='#00FF33')
 
 	def desert_mode(self):
 
 		self.status["text"] = " Mode: Desert View"
-		texpert.config(background='#E9DDB3', fg='#40210D', insertbackground='#40210D')
+		self.texpert.config(background='#E9DDB3', fg='#40210D', insertbackground='#40210D')
+
+
+	def mint_mode(self):
+		self.status["text"] = " Mode: Chocolate Mint"
+		self.texpert.config(background='#BDFCC9', fg='#40210D', insertbackground='#40210D')
 
 	def tray_com(self):
 		self.master.iconify()
@@ -205,7 +251,7 @@ class textpert_win:
 	# tools menu
 	def time_com(self):
 		ctime = time.strftime('%I:%M %p')
-		texpert.insert(tk.INSERT, ctime, "a")
+		self.texpert.insert(tk.INSERT, ctime, "a")
 
 	def date_com(self):
 		full_date = time.localtime()
@@ -213,13 +259,13 @@ class textpert_win:
 		month = str(full_date.tm_mon)
 		year = str(full_date.tm_year)
 		date = ""+month+'/'+day+'/'+year
-		texpert.insert(tk.INSERT, date, "a")
+		self.texpert.insert(tk.INSERT, date, "a")
 
 
 	# note area
 	def note_area(self):
-		btn_frame = tk.Frame(texpert)
-		note = tk.LabelFrame(texpert, bd=0)
+		note = tk.LabelFrame(self.texpert, bd=0)
+		btn_frame = tk.Frame(note)
 
 		tx = tk.Text(note, height=22, width=18, relief='ridge')
 		tx.insert('1.0', 'Notes here\nwill not be saved..')
@@ -231,7 +277,7 @@ class textpert_win:
 		b = tk.Button(note, text="Close", width=4, command=note.destroy)
 		b.pack(side='right', anchor=tk.S, padx=2, pady=2)
 
-		note.pack(side='right', fill=tk.Y, padx=1, pady=1)
+		note.pack(side='right', fill=tk.Y, padx=0, pady=0)
 		btn_frame.pack(side='bottom', fill=tk.Y)
 
 
@@ -304,26 +350,78 @@ class textpert_win:
 		win = tk.Toplevel()
 		win.title("Troubleshooting")
 		warning_text = "\n\nThis program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand will probably never be complete.\n\n\nKnown Issues:\n\n'Show toolbar' is temporarily disabled\nbecause the toolbar refuses to remember\nits original position. I may or may not\nmake an attempt to fix this someday.\n\nThe 'Save' and 'Save As' options both work\nas 'save as'. This might be fixed someday.\n\n"
-
-
-	 	tk.Label(win, foreground='black', justify='left', text=warning_text).pack()
-	 	tk.Button(win, text='Close', command=win.destroy).pack()
+		tk.Label(win, foreground='black', justify='left', text=warning_text).pack()
+		tk.Button(win, text='Close', command=win.destroy).pack()
 		win.transient(self.master)
 		win.geometry('340x350')
 		win.wait_window()
 
 
+	def refresh_sett(self):
+		self.texpert.frame.destroy()
+		self.texpert = CustomText(self.master, bg="white", undo=True, font=("Arial", 11))
+		self.texpert.grid(row=0, column=0, sticky='nsew')
+		self.texpert.focus_set()
+
+		self.texpert.colour_py(self.inherit_idle_sett.get())
+
+class CustomText(tk.Text):
+	'''
+	The highlight_pattern method is a simplified python
+	version of the tcl code at http://wiki.tcl.tk/3246
+	'''
+	def __init__(self, master=None, **kw):
+		self.frame = tk.Frame(master)
+		self.frame.grid_rowconfigure(0, weight=1)
+		self.frame.grid_columnconfigure(0, weight=1)
+
+		if 'wrap' not in kw:
+			tk.Text.__init__(self, self.frame, **kw, wrap="none")
+		else:
+			tk.Text.__init__(self, self.frame, **kw)
+
+		self.grid(row=0, column=0, sticky='nsew', padx=2, pady=2)
+		self.vbar = tk.Scrollbar(self.frame, command=self.yview)
+		self.vbar.grid(row=0, column=1, sticky='nsew')
+		kw.update({'yscrollcommand': self.vbar.set})
+		self['yscrollcommand'] = self.vbar.set
+
+		self.hbar = tk.Scrollbar(self.frame, command=self.xview, orient=tk.HORIZONTAL)
+		self.hbar.grid(row=1, column=0, sticky='nsew')
+		kw.update({'xscrollcommand': self.hbar.set})
+		self['xscrollcommand'] = self.hbar.set
+
+		# Copy geometry methods of self.frame without overriding Text
+		# methods -- hack!
+		text_meths = vars(tk.Text).keys()
+		methods = vars(tk.Pack).keys() | vars(tk.Grid).keys() | vars(tk.Place).keys()
+		methods = methods.difference(text_meths)
+
+		for m in methods:
+			if m[0] != '_' and m != 'config' and m != 'configure':
+				setattr(self, m, getattr(self.frame, m))
+
+	def __str__(self):
+		return str(self.frame)
+
+	def colour_py(self, inherit_config=True):
+		if 'idlelib' in sys.modules:
+			col = idlelib.colorizer
+			if inherit_config:
+				col.color_config(self)
+			p = Percolator(self)
+			d = col.ColorDelegator()
+			p.insertfilter(d)
+
+
 
 def main():
-	global texpert
 	root = tk.Tk(className = "Texpert")
 	root.geometry("700x440")
 	root.title("Texpert")
-	texpert = ScrolledText(root, bg="white", undo=True, font=("Arial", 11))
-	texpert.pack(fill="both", expand=True)
-	texpert.focus_set()
 	root.option_add("*Font", "TkDefaultFont 9")
-	textpert_gui = textpert_win(root)
+	texpert_gui = texpert_win(root)
 	root.mainloop()
+
 if __name__ == '__main__':
 	main()
