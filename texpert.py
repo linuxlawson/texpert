@@ -140,8 +140,11 @@ class texpert_win:
 		file = None
 		self.texpert.delete(1.0, 'end-1c')
 
-	def open_com(self):
-		file = tkFileDialog.askopenfile(parent=self.master, mode='rb', title='Select File')
+	def open_com(self, action='dialog'):
+		if action == 'dialog':
+			file = tkFileDialog.askopenfile(parent=self.master, mode='rb', title='Select File')
+		elif action == 'current':
+			file = self.current_file
 		if file is not None:
 			self.current_file = file.name
 			contents = file.read()
@@ -358,9 +361,11 @@ class texpert_win:
 
 
 	def refresh_sett(self):
+		text = self.texpert.get('1.0', tk.END)
 		self.texpert.frame.destroy()
 		self.texpert = CustomText(self.master, bg="white", undo=True, font=("Arial", 11))
 		self.texpert.grid(row=0, column=0, sticky='nsew')
+		self.texpert.insert(tk.END, text)
 		self.texpert.focus_set()
 
 		self.texpert.colour_py(self.inherit_idle_sett.get())
