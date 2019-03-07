@@ -153,7 +153,7 @@ class texpert_win:
 			file.close()
 			if str(self.current_file)[-3:] == '.py':
 				self.file_type = 'Python'
-				self.texpert.colour_py(self.inherit_idle_sett.get())
+				self.refresh_sett()
 
 
 	def save_com(self):
@@ -362,7 +362,9 @@ class texpert_win:
 
 	def refresh_sett(self):
 		text = self.texpert.get('1.0', tk.END)
+		self.texpert.destroy()
 		self.texpert.frame.destroy()
+		del self.texpert
 		self.texpert = CustomText(self.master, bg="white", undo=True, font=("Arial", 11))
 		self.texpert.grid(row=0, column=0, sticky='nsew')
 		self.texpert.insert(tk.END, text)
@@ -381,20 +383,27 @@ class CustomText(tk.Text):
 		self.frame.grid_columnconfigure(0, weight=1)
 
 		if 'wrap' not in kw:
-			tk.Text.__init__(self, self.frame, **kw, wrap="none")
-		else:
-			tk.Text.__init__(self, self.frame, **kw)
+			kw['wrap'] = 'none'
 
-		self.grid(row=0, column=0, sticky='nsew', padx=2, pady=2)
+
 		self.vbar = tk.Scrollbar(self.frame, command=self.yview)
-		self.vbar.grid(row=0, column=1, sticky='nsew')
-		kw.update({'yscrollcommand': self.vbar.set})
-		self['yscrollcommand'] = self.vbar.set
+		kw.update({'yscrollcommand': self._scroll(self.vbar)})
 
 		self.hbar = tk.Scrollbar(self.frame, command=self.xview, orient=tk.HORIZONTAL)
+		kw.update({'xscrollcommand': self._scroll(self.hbar)})
+
+		tk.Text.__init__(self, self.frame, **kw)
+		self.grid(row=0, column=0, sticky='nsew', padx=2, pady=2)
+		self.vbar.grid(row=0, column=1, sticky='nsew')
 		self.hbar.grid(row=1, column=0, sticky='nsew')
-		kw.update({'xscrollcommand': self.hbar.set})
-		self['xscrollcommand'] = self.hbar.set
+		self['xscrollcommand'] = self._scroll(self.hbar)
+		self['yscrollcommand'] = self._scroll(self.vbar)
+
+
+		self._orig = self._w + "_original"
+		self.tk.call("rename", self._w, self._orig)
+		self.tk.createcommand(self._w, self._rework)
+
 
 		# Copy geometry methods of self.frame without overriding Text
 		# methods -- hack!
@@ -408,6 +417,28 @@ class CustomText(tk.Text):
 
 	def __str__(self):
 		return str(self.frame)
+
+	def _rework(self, command,*args):
+		'''Bind <<TextModified>> to a custom command'''
+		cmd = (self._orig, command) + args
+		result = self.tk.call(cmd)
+
+		if command in ("insert", "delete", "replace"):
+			self.event_generate("<<TextModified>>")
+
+		return result
+
+	@staticmethod
+	def _scroll(sbar):
+		'''Hide and show scrollbar as needed'''
+		def wrapped(first, last):
+			first, last = float(first), float(last)
+			if first <= 0 and last >= 1:
+				sbar.grid_remove()
+			else:
+				sbar.grid()
+			sbar.set(first, last)
+		return wrapped
 
 	def colour_py(self, inherit_config=True):
 		if 'idlelib' in sys.modules:
