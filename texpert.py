@@ -18,7 +18,7 @@ import tkMessageBox
 root = tk.Tk(className = "Texpert")
 root.geometry("700x444")
 root.title("Texpert")
-texpert = ScrolledText(root, padx=2, pady=2, undo=True, font=('Arial 11'))
+texpert = ScrolledText(root, padx=2, pady=2, undo=True, wrap="word", font=('Arial 11'))
 root.option_add("*Font", "TkDefaultFont 9")
 
 
@@ -141,13 +141,13 @@ def date_com():
     date = ""+month+'/'+day+'/'+year
     texpert.insert(INSERT, date, "a")
 
-def note_area():  #if opened, dont open again (fix)
+def note_area():
     btn_frame = Frame()
     note = LabelFrame(texpert, bd=1, relief='ridge')
 
     tx = Text(note, width=18, bd=0, relief='flat', padx=2, pady=2)
     tx.insert('1.0', "Nothing here is saved..")
-    #tx.bind("<FocusIn>", lambda args: tx.delete('1.0', 'end')) #option(al)
+    #tx.bind("<FocusIn>", lambda args: tx.delete('1.0', 'end')) #optional
     tx.config(wrap="word")
     tx.pack(side='top', fill=BOTH, expand=True)
     a = Button(note, text="Clear", width=4, command=lambda: tx.delete('1.0', 'end-1c'))
@@ -162,7 +162,7 @@ def note_area():  #if opened, dont open again (fix)
 def about_com():
     win = Toplevel()
     win.title("About")                                     
-    Label(win, foreground='black', text="\n\n\nTexpert\n\nA small text editor designed for Linux.\n\nMade in Python\n\n\n").pack()   
+    Label(win, text="\n\n\nTexpert\n\nA small text editor designed for Linux.\n\nMade in Python with Tkinter\n\n\n").pack()   
     
     a = Button(win, text="Credits", width=4, command=credits_com)
     a.pack(side=LEFT, padx=8, pady=4)
@@ -177,7 +177,7 @@ def credits_com(): #linked to: [about > credits]
     win = Toplevel()
     win.wm_attributes("-topmost", 0)
     win.title("Credits")                                     
-    Label(win, foreground='#606060', text="\n\n\nCreated by David Lawson\n\n\nme = Person()\nwhile (me.awake()):\nme.code()\n\n").pack()   
+    Label(win, foreground='#404040', text="\n\n\nCreated by David Lawson\n\n\nme = Person()\nwhile (me.awake()):\nme.code()\n\n").pack()   
     
     a = Button(win, text="License", width=4, command=license_info)
     a.pack(side=LEFT, padx=8, pady=4)
@@ -226,7 +226,7 @@ DEALINGS IN THE SOFTWARE.\n\n""").pack()
 def trouble_com():
     win = Toplevel()
     win.title("Troubleshooting")                                     
-    Label(win, foreground='black', justify='left', text="\n\nThis program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand will probably never be complete.\n\n\nKnown Issues:\n\n'Show toolbar' is temporarily disabled\nbecause the toolbar refuses to remember\nits original position. I may or may not\nmake an attempt to fix this someday.\n\nThe 'Save' and 'Save As' options both work\nas 'save as'. This may not be fixed someday.\n\n\n").pack()   
+    Label(win, justify='left', text="\n\nThis program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand will probably never be complete.\n\n\nKnown Issues:\n\n'Show toolbar' is temporarily disabled\nbecause the toolbar refuses to remember\nits original position. I may or may not\nmake an attempt to fix this someday.\n\nThe 'Save' and 'Save As' options both work\nas 'save as'. This should be fixed someday.\n\n\n").pack()   
     Button(win, text='Close', command=win.destroy).pack()   
     win.transient(root)
     win.geometry('340x350')
@@ -297,13 +297,14 @@ helpmenu.add_command(label="About", command=about_com)
 helpmenu.add_command(label="Troubleshooting", command=trouble_com)
 
 
+
 # right click menu
 def r_click(event):
     editmenu.tk_popup(event.x_root, event.y_root)
 texpert.bind("<Button-3>", r_click)
 
 
-# toolBar
+# toolBar and buttons
 toolbar = Frame(root, bd=2, relief='groove')
 b1 = Button(toolbar, text="Open", width=4, command=open_com)
 b1.pack(side=LEFT, padx=4, pady=2)
@@ -314,17 +315,7 @@ b4.pack(side=RIGHT, padx=4, pady=2)
 toolbar.pack(side=TOP, fill=X)
 
 
-# statusBar
-status = Label(text=" Mode: Light", anchor=W, bd=1, relief='sunken', font=('Arial 10'))
-status.pack(side=BOTTOM, fill=X)
-
-# x_out window
-def x_out():
-    if tkMessageBox.askokcancel("Exit", "Unsaved work will be lost.\n\nAre you sure? "):
-       root.destroy()
-
-
-#mode button (toolbar)
+# Mode button for toolbar
 var = StringVar(root)
 var.set("Mode")
 w = OptionMenu(toolbar, variable = var, value="")
@@ -336,6 +327,7 @@ third = BooleanVar()
 forth = BooleanVar()
 fifth = BooleanVar()
 sixth = BooleanVar()
+w['menu'].delete('0', 'end')
 w['menu'].add_checkbutton(label="Dark", onvalue=1, 
                          activebackground="#181818", activeforeground="#F5F5F5", 
                          offvalue=0, variable=first, command=dark_mode, indicatoron=False)
@@ -359,6 +351,16 @@ w['menu'].add_checkbutton(label="Desert View", onvalue=1,
 w['menu'].add_checkbutton(label="Chocolate Mint", onvalue=1, 
                          activebackground="#CCFFCC", activeforeground="#40210D", 
                          offvalue=0, variable=sixth, command=mint_mode, indicatoron=False)
+
+
+# statusBar
+status = Label(text=" Mode: Light", anchor=W, bd=1, relief='sunken', font=('Arial 10'))
+status.pack(side=BOTTOM, fill=X)
+
+# x_out window
+def x_out():
+    if tkMessageBox.askokcancel("Exit", "Unsaved work will be lost.\n\nAre you sure? "):
+       root.destroy()
 
 
 texpert.pack(fill="both", expand=True)
