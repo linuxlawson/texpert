@@ -30,7 +30,7 @@ Expandable Note Area!!
     
     
   
-**Designed for Linux**  
+**Designed for Linux**  :+1:
 
 
 
