@@ -3,6 +3,7 @@ Text editor made in Python with Tkinter
 
   
   
+  
 Features:
 
 File Menu: New, Open, Save, Save As, Close, and Exit  
