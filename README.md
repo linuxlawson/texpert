@@ -26,8 +26,9 @@ Toolbar: for quick access to Open, Save, Mode, and Note Area (notes).
 Statusbar: changes according to 'Mode'.
 
 Expandable Note Area!!  
-
   
+    
+    
   
 Designed for Linux  
 
