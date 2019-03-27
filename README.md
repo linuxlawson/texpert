@@ -4,7 +4,7 @@ Text editor made in Python with Tkinter
   
   
   
-Features:
+**Features:**
 
 File Menu: New, Open, Save, Save As, Close, and Exit  
 
@@ -19,7 +19,7 @@ Help Menu: About, Troubleshooting
 
 --------------------------------------------------------------------  
 
-Added: 
+**Added:** 
 
 Toolbar: for quick access to Open, Save, Mode, and Note Area (notes).  
 
@@ -30,7 +30,7 @@ Expandable Note Area!!
     
     
   
-Designed for Linux  
+**Designed for Linux**  
 
 
 
