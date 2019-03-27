@@ -1,17 +1,33 @@
-# texpert  
+# Texpert  
 Text editor made in Python with Tkinter  
- 
 
-Added:  
- -Edit menu: undo/redo, cut, copy, paste, etc.    
- -View menu: default view/fullscreen, hide/show toolbar, etc.                 
- -Tool menu: insert time/date, etc.      
- -Mode sub-menu: dark, light, legal pad, night vision, etc.      
- -Toolbar: open/save      
- -Context menu (right click)    
- -Status bar (changes according to mode)    
- -Expandable Note Area!  
- 
- 
- Designed for Linux    
- 
+
+Features:
+
+File Menu: New, Open, Save, Save As, Close, and Exit  
+
+Edit Menu: Undo/Redo, Cut, Copy, Paste, Select All
+
+View Menu: Hide/Show Toolbar, Mode, Default/Fullscreen, Hide in Tray  
+
+Tools Menu: Insert Time/Date, Note Area  
+
+Help Menu: About, Troubleshooting  
+
+
+--------------------------------------------------------------------  
+
+Added: 
+
+Toolbar: for quick access to Open, Save, Mode, and Note Area (notes).  
+
+Statusbar: changes according to 'Mode'.
+
+Expandable Note Area!!  
+
+
+Designed for Linux  
+
+
+
+
