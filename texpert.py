@@ -16,7 +16,7 @@ import ttk
 
 # Main
 root = tk.Tk(className = "Texpert")
-root.geometry("700x444")
+root.geometry("700x454")
 root.title("Texpert")
 texpert = ScrolledText(root, padx=2, pady=2, undo=True, font=('Arial 11'))
 texpert.config(wrap="word")
@@ -54,7 +54,7 @@ def close_com():
     texpert.delete('1.0', 'end-1c') 
     
 def exit_com():
-    if tkMessageBox.askokcancel("Exit", "Do you really want to exit? "):
+    if tkMessageBox.askokcancel("Exit", "Do you really want to exit?"):
 	root.destroy()
 
 # edit menu
@@ -104,7 +104,7 @@ def legal_mode():
     status["text"] = " Mode: Legal Pad"
     texpert.config(background="#FFFFCC", fg="#181818", insertbackground="#181818")
 
-def green_mode():
+def night_mode():
     global status
     status["text"] = " Mode: Night Vision"
     texpert.config(background="#181818", fg="#00FF33", insertbackground="#00FF33")
@@ -124,7 +124,10 @@ def tray_com():
 
 def default_com():
     root.attributes('-zoomed', False)
-    root.geometry("700x440+440+195") #size+position
+    root.geometry("700x454+440+188") #size+position
+    texpert = ScrolledText(root, padx=2, pady=2, undo=True, font=('Arial 11'))
+    texpert.config(wrap="word")
+    root.option_add("*Font", "TkDefaultFont 9")
 
 def full_com():
     root.attributes('-zoomed', True)
@@ -159,6 +162,8 @@ def about_com():
     
     a = Button(win, text="Credits", width=4, command=credits_com)
     a.pack(side='left', padx=8, pady=4)
+    ver = Label(win, text="v 1.0", width=4, bd=0, state='disabled')
+    ver.pack(side='left', padx=8, pady=4, expand=YES)
     b = Button(win, text="Close", width=4, command=win.destroy)
     b.pack(side='right', padx=8, pady=4)
      
@@ -170,7 +175,7 @@ def credits_com():
     win = Toplevel()
     win.wm_attributes("-topmost", 0)
     win.title("Credits")                                     
-    Label(win, foreground='#404040', text="\n\n\nCreated by David Lawson\n\n\nme = Person()\nwhile (me.awake()):\nme.code()\n\n").pack()   
+    Label(win, foreground="#404040", text="\n\n\nCreated by David Lawson\n\n\nme = Person()\nwhile (me.awake()):\nme.code()\n\n").pack()   
     
     a = Button(win, text="License", width=4, command=license_info)
     a.pack(side='left', padx=8, pady=4)
@@ -212,23 +217,23 @@ DEALINGS IN THE SOFTWARE.\n\n""").pack()
     
     Button(win, text='Close', command=win.destroy).pack()   
     win.transient(root)
-    win.geometry('500x439')
+    win.geometry('500x449')
     win.wait_window()
 
 
 def trouble_com():
     win = Toplevel()
     win.title("Troubleshooting")                                     
-    Label(win, justify='left', text="\n\nThis program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand will probably never be complete.\n\n\nKnown Issues:\n\n'Show toolbar' is temporarily disabled\nbecause the toolbar refuses to remember\nits original position. I may or may not\nmake an attempt to fix this someday.\n\nThe 'Save' and 'Save As' options both work\nas 'save as'. This should be fixed someday.\n\n\n").pack()   
+    Label(win, justify='left', text="\n\nThis program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand will probably never be complete.\n\n\n\nKnown Issues:\n\n'Show toolbar' is temporarily disabled\nbecause the toolbar refuses to remember\nits original position. I may or may not\nmake an attempt to fix this someday.\n\nThe 'Save' and 'Save As' options both work\nas 'save as'. This should be fixed someday.\n\n").pack()   
     Button(win, text='Close', command=win.destroy).pack()   
     win.transient(root)
     win.geometry('340x350')
     win.wait_window()
 
 
-# Menu Button Labels
+# Menu Buttons/Labels
 menu = Menu(root, bd=1, relief='flat')
-root.config(menu=menu, bd=1)
+root.config(menu=menu, bd=2)
 
 #file menu
 filemenu = Menu(menu, tearoff=0)
@@ -267,7 +272,7 @@ viewmenu.add_cascade(label="Mode ", menu=submenu)
 submenu.add_command(label=" Dark", command=dark_mode, activebackground="#181818", activeforeground="#F5F5F5")
 submenu.add_command(label=" Light", command=light_mode, activebackground="#F5F5F5", activeforeground="#181818")
 submenu.add_command(label=" Legal Pad", command=legal_mode, activebackground="#FFFFCC", activeforeground="#181818")
-submenu.add_command(label=" Night Vision", command=green_mode, activebackground="#181818", activeforeground="#00FF33")
+submenu.add_command(label=" Night Vision", command=night_mode, activebackground="#181818", activeforeground="#00FF33")
 submenu.add_command(label=" Desert View", command=desert_mode, activebackground="#E9DDB3", activeforeground="#40210D")
 submenu.add_command(label=" Chocolate Mint", command=mint_mode, activebackground="#CCFFCC", activeforeground="#40210D")
 
@@ -283,7 +288,7 @@ toolmenu.add_command(label="Insert Time", command=time_com)
 toolmenu.add_command(label="Insert Date", command=date_com)
 is_notearea = tk.BooleanVar()
 is_notearea.trace('w', lambda *args: note_area())
-toolmenu.add_checkbutton(label="Note Area", variable=is_notearea, indicatoron='1')
+toolmenu.add_checkbutton(label="Note Area", variable=is_notearea, indicatoron=1)
 
 #help menu
 helpmenu = Menu(menu, tearoff=0)
@@ -293,29 +298,29 @@ helpmenu.add_command(label="Troubleshooting", command=trouble_com)
 
 
 
-# right click menu
+# Context Menu (right-click)
 def r_click(event):
-    time.sleep(0)
     editmenu.tk_popup(event.x_root, event.y_root)
 texpert.bind("<Button-3>", r_click)
 
 
-# toolBar and buttons
+# ToolBar Buttons 
 toolbar = Frame(root, bd=2, relief='groove')
 b1 = Button(toolbar, text="Open", width=4, command=open_com)
 b1.pack(side='left', padx=4, pady=2)
 b2 = Button(toolbar, text="Save", width=4, command=saveas_com)
 b2.pack(side='right', padx=4, pady=2)
-b4 = Button(toolbar, text="Notes", width=4, command=lambda: is_notearea.set(not is_notearea.get()))
+b4 = Button(toolbar, text="Notes", width=4, 
+            command=lambda: is_notearea.set(not is_notearea.get()))
 b4.pack(side=RIGHT, padx=4, pady=2)
 toolbar.pack(side='top', fill=X)
 
 
-# Mode button for toolbar
+# Mode button (on toolbar)
 var = StringVar(root)
 var.set("Mode")
 w = OptionMenu(toolbar, variable = var, value='')
-w.config(indicatoron=0, bd=1, width='6', padx=4, pady=5)
+w.config(indicatoron=0, bd=1, width=6, padx=4, pady=5)
 w.pack(side='left', padx=4, pady=2)
 first = BooleanVar()
 second = BooleanVar()
@@ -324,48 +329,65 @@ forth = BooleanVar()
 fifth = BooleanVar()
 sixth = BooleanVar()
 w['menu'].delete('0', 'end')
-w['menu'].add_checkbutton(label="Dark", onvalue=1, 
+w['menu'].add_checkbutton(label="Dark", onvalue=1, offvalue=0, 
                          activebackground="#181818", activeforeground="#F5F5F5", 
-                         offvalue=0, variable=first, command=dark_mode, indicatoron=0)
+                         variable=first, command=dark_mode, indicatoron=0)
 
-w['menu'].add_checkbutton(label="Light", onvalue=1, 
+w['menu'].add_checkbutton(label="Light", onvalue=1, offvalue=0,
                          activebackground="#F5F5F5", activeforeground="#181818", 
-                         offvalue=0, variable=second, command=light_mode, indicatoron=0)
+                         variable=second, command=light_mode, indicatoron=0)
 
-w['menu'].add_checkbutton(label="Legal Pad", onvalue=1, 
+w['menu'].add_checkbutton(label="Legal Pad", onvalue=1, offvalue=0,
                          activebackground="#FFFFCC", activeforeground="#181818", 
-                         offvalue=0, variable=third, command=legal_mode, indicatoron=0)
+                         variable=third, command=legal_mode, indicatoron=0)
 
-w['menu'].add_checkbutton(label="Night Vision", onvalue=1, 
+w['menu'].add_checkbutton(label="Night Vision", onvalue=1, offvalue=0,
                          activebackground="#181818", activeforeground="#00FF33", 
-                         offvalue=0, variable=forth, command=green_mode, indicatoron=0)
+                         variable=forth, command=night_mode, indicatoron=0)
 
-w['menu'].add_checkbutton(label="Desert View", onvalue=1, 
+w['menu'].add_checkbutton(label="Desert View", onvalue=1, offvalue=0,
                          activebackground="#E9DDB3", activeforeground="#40210D", 
-                         offvalue=0, variable=fifth, command=desert_mode, indicatoron=0)
+                         variable=fifth, command=desert_mode, indicatoron=0)
 
-w['menu'].add_checkbutton(label="Chocolate Mint", onvalue=1, 
+w['menu'].add_checkbutton(label="Chocolate Mint", onvalue=1, offvalue=0,
                          activebackground="#CCFFCC", activeforeground="#40210D", 
-                         offvalue=0, variable=sixth, command=mint_mode, indicatoron=0)
-
-
-# statusBar
-status = Label(text=" Mode: Light", anchor=W, bd=1, relief='sunken', font=('Arial 10'))
-status.pack(side='bottom', fill=X)
+                         variable=sixth, command=mint_mode, indicatoron=0)
 
 
 # Init Note Area
 btn_frame = Frame()
 note = LabelFrame(texpert, bd=1, relief='ridge')
-tx = Text(note, width=18, bd=0, relief='flat', padx=2, pady=2)
+tx = Text(note, width=18, bd=0, relief='flat', padx=0, pady=0)
 tx.insert('1.0', "Nothing here is saved..")
-#tx.bind("<FocusIn>", lambda args: tx.delete('1.0', 'end')) #optional
 tx.config(wrap="word")
 tx.pack(side='top', fill=BOTH, expand=True)
 a = Button(note, text="Clear", width=4, command=lambda: tx.delete('1.0', 'end-1c'))
-a.pack(side='left', anchor=S, padx=2, pady=2)
+a.pack(side='left', anchor=S, padx=2, pady=4)
 b = Button(note, text="Close", width=4, command=lambda: is_notearea.set(not is_notearea.get()))
-b.pack(side='right', anchor=S, padx=2, pady=2)
+b.pack(side='right', anchor=S, padx=2, pady=4)
+
+
+# Black out toggle
+index = 0
+def black_out():
+    global index
+    if index:
+        status.config(bg="#D3D3D3", fg="#181818")
+        toolbar.config(bg="#D3D3D3")
+
+    else:
+        status.config(bg="#181818", fg="#F5F5F5")
+        toolbar.config(bg="#181818")
+    index = not index
+
+
+# statusBar
+status = Label(text=" Mode: Light", anchor=W, bd=1, relief='sunken', font=('Arial 10'))
+
+b = Checkbutton(status, text=" Black Out ", width=10, command=black_out, indicatoron=1, bd=0,  relief='flat', font=('Arial 10'))
+b.pack(side='right', fill=X)
+
+status.pack(side='bottom', fill=X)
 
 
 # x_out window
