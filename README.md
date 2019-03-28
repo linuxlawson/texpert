@@ -27,7 +27,7 @@ Statusbar: changes according to 'Mode'.
 
 Expandable Note Area!!  
 
---
+  
 **Designed for Linux**   
 
 
