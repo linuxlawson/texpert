@@ -1,7 +1,5 @@
 # Texpert  
 Text editor made in Python with Tkinter  
-
-  
   
   
 **Features:**
@@ -16,6 +14,8 @@ Tools Menu: Insert Time/Date, Note Area
 
 Help Menu: About, Troubleshooting  
 
+Context Menu: (right click)
+
 
 --------------------------------------------------------------------  
 
@@ -26,10 +26,9 @@ Toolbar: for quick access to Open, Save, Mode, and Note Area (notes).
 Statusbar: changes according to 'Mode'.
 
 Expandable Note Area!!  
-  
-    
-    
-  
+
+      
+   
 **Designed for Linux**   
 
 
