@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # Texpert Text Editor 
-# by David Lawson
+# Written by David Lawson
 
 import os
 import sys
@@ -8,11 +8,18 @@ import time
 import datetime
 
 import Tkinter as tk
-from Tkinter import *
+#from Tkinter import *
 from ScrolledText import *
 import tkFileDialog
 import tkMessageBox
 import ttk
+
+
+class MainApp(tk.Frame):
+    def __init__(self, parent, *args, **kwargs):
+        tk.Frame.__init__(self, parent, *args, **kwargs)
+        self.parent = parent
+
 
 # Main
 root = tk.Tk(className = "Texpert")
@@ -74,9 +81,9 @@ def paste_com():
     texpert.event_generate("<<Paste>>")  
 
 def select_all():
-    texpert.tag_add(SEL, '1.0', 'end-1c')
-    texpert.mark_set(INSERT, '1.0')
-    texpert.see(INSERT)
+    texpert.tag_add('sel', '1.0', 'end-1c')
+    texpert.mark_set('insert', '1.0')
+    texpert.see('insert')
     return 'break'
 texpert.bind("<Control-Key-a>", select_all)
 texpert.bind("<Control-Key-A>", select_all)
@@ -86,7 +93,7 @@ def hide_toolbar():
     toolbar.pack_forget()
 
 def show_toolbar():
-    toolbar.pack(side='top', fill=X)
+    toolbar.pack(side='top', fill='x')
 
 #sub-menu for: [view > mode]
 def dark_mode():
@@ -122,20 +129,27 @@ def mint_mode():
 def tray_com():
     root.iconify()
 
-def default_com():
+def slim_view():
+    root.attributes('-zoomed', False)
+    root.geometry("540x600+440+188")
+    texpert = ScrolledText(root, padx=2, pady=2, undo=True, font=('Arial 11'))
+    texpert.config(wrap="word")
+    root.option_add("*Font", "TkDefaultFont 9")
+
+def default_view():
     root.attributes('-zoomed', False)
     root.geometry("700x454+440+188") #size+position
     texpert = ScrolledText(root, padx=2, pady=2, undo=True, font=('Arial 11'))
     texpert.config(wrap="word")
     root.option_add("*Font", "TkDefaultFont 9")
 
-def full_com():
+def full_screen():
     root.attributes('-zoomed', True)
 
 # tools menu
 def time_com():
     ctime = time.strftime('%I:%M %p')
-    texpert.insert(INSERT, ctime, "a")
+    texpert.insert('insert', ctime, "a")
 
 def date_com():
     full_date = time.localtime()
@@ -143,12 +157,12 @@ def date_com():
     month = str(full_date.tm_mon)
     year = str(full_date.tm_year)
     date = ""+month+'/'+day+'/'+year
-    texpert.insert(INSERT, date, "a")
+    texpert.insert('insert', date, "a")
 
 def note_area():
     if is_notearea.get():
-        note.pack(side='right', fill=Y, padx=0, pady=0)
-        btn_frame.pack(side='bottom', fill=Y, padx=0, pady=0)
+        note.pack(side='right', fill='y', padx=0, pady=0)
+        btn_frame.pack(side='bottom', fill='y', padx=0, pady=0)
     else:
         note.pack_forget()
         btn_frame.pack_forget()
@@ -156,15 +170,15 @@ def note_area():
 
 # help menu
 def about_com():
-    win = Toplevel()
+    win = tk.Toplevel()
     win.title("About")                                     
-    Label(win, text="\n\n\nTexpert\n\nA small text editor designed for Linux\n\nMade in Python with Tkinter\n\n\n").pack()   
+    tk.Label(win, text="\n\n\nTexpert\n\nA small text editor designed for Linux\n\nMade in Python with Tkinter\n\n\n").pack()   
     
-    a = Button(win, text="Credits", width=4, command=credits_com)
+    a = tk.Button(win, text="Credits", width=4, command=credits_com)
     a.pack(side='left', padx=8, pady=4)
-    ver = Label(win, text="v 1.0", width=4, bd=0, state='disabled')
-    ver.pack(side='left', padx=8, pady=4, expand=YES)
-    b = Button(win, text="Close", width=4, command=win.destroy)
+    ver = tk.Label(win, text="v 1.0", width=4, bd=0, state='disabled')
+    ver.pack(side='left', padx=8, pady=4, expand='yes')
+    b = tk.Button(win, text="Close", width=4, command=win.destroy)
     b.pack(side='right', padx=8, pady=4)
      
     win.transient(root)
@@ -172,14 +186,14 @@ def about_com():
     win.wait_window()
 
 def credits_com(): 
-    win = Toplevel()
+    win = tk.Toplevel()
     win.wm_attributes("-topmost", 0)
     win.title("Credits")                                     
-    Label(win, foreground="#404040", text="\n\n\nCreated by David Lawson\n\n\nme = Person()\nwhile (me.awake()):\nme.code()\n\n").pack()   
+    tk.Label(win, foreground="#404040", text="\n\n\nCreated by David Lawson\n\n\nme = Person()\nwhile (me.awake()):\nme.code()\n\n").pack()   
     
-    a = Button(win, text="License", width=4, command=license_info)
+    a = tk.Button(win, text="License", width=4, command=license_info)
     a.pack(side='left', padx=8, pady=4)
-    b = Button(win, text="Close", width=4, command=win.destroy)
+    b = tk.Button(win, text="Close", width=4, command=win.destroy)
     b.pack(side='right', padx=8, pady=4) 
     
     win.transient(root)
@@ -187,10 +201,10 @@ def credits_com():
     win.wait_window()
 
 def license_info():
-    win = Toplevel()
+    win = tk.Toplevel()
     win.wm_attributes("-topmost", 1)
     win.title("License")                                     
-    Label(win, justify='left', text="""\n\nMIT License
+    tk.Label(win, justify='left', text="""\n\nMIT License
 
 Copyright (c) 2019 David Lawson
 
@@ -215,28 +229,28 @@ CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
 IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 DEALINGS IN THE SOFTWARE.\n\n""").pack()   
     
-    Button(win, text='Close', command=win.destroy).pack()   
+    tk.Button(win, text='Close', command=win.destroy).pack()   
     win.transient(root)
-    win.geometry('500x449')
+    win.geometry('480x449')
     win.wait_window()
 
 
 def trouble_com():
-    win = Toplevel()
+    win = tk.Toplevel()
     win.title("Troubleshooting")                                     
-    Label(win, justify='left', text="\n\nThis program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand will probably never be complete.\n\n\n\nKnown Issues:\n\n'Show toolbar' is temporarily disabled\nbecause the toolbar refuses to remember\nits original position. I may or may not\nmake an attempt to fix this someday.\n\nThe 'Save' and 'Save As' options both work\nas 'save as'. This should be fixed someday.\n\n").pack()   
-    Button(win, text='Close', command=win.destroy).pack()   
+    tk.Label(win, justify='left', text="\n\nThis program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand will probably never be complete.\n\n\n\nKnown Issues:\n\n'Show toolbar' is temporarily disabled\nbecause the toolbar refuses to remember\nits original position. I may or may not\nmake an attempt to fix this someday.\n\nThe 'Save' and 'Save As' options both work\nas 'save as'. This should be fixed someday.\n\n").pack()   
+    tk.Button(win, text='Close', command=win.destroy).pack()   
     win.transient(root)
-    win.geometry('340x350')
+    win.geometry('350x350')
     win.wait_window()
 
 
 # Menu Buttons/Labels
-menu = Menu(root, bd=1, relief='flat')
+menu = tk.Menu(root, bd=1, relief='flat')
 root.config(menu=menu, bd=2)
 
 #file menu
-filemenu = Menu(menu, tearoff=0)
+filemenu = tk.Menu(menu, tearoff=0)
 menu.add_cascade(label="File ", menu=filemenu)
 filemenu.add_command(label="New", command=new_com) 
 filemenu.add_command(label="Open", command=open_com)
@@ -248,7 +262,7 @@ filemenu.add_command(label="Close", command=close_com)
 filemenu.add_command(label="Exit", command=exit_com, underline=1)
 
 #edit menu
-editmenu = Menu(menu, tearoff=0)
+editmenu = tk.Menu(menu, tearoff=0)
 menu.add_cascade(label="Edit ", menu=editmenu)
 editmenu.add_command(label="Undo", command=undo_com)
 editmenu.add_command(label="Redo", command=redo_com)
@@ -260,14 +274,14 @@ editmenu.add_separator()
 editmenu.add_command(label="Select All", command=select_all) 
 
 #view menu
-viewmenu = Menu(menu, tearoff=0)
+viewmenu = tk.Menu(menu, tearoff=0)
 menu.add_cascade(label="View ", menu=viewmenu)
 viewmenu.add_command(label="Hide Toolbar", command=hide_toolbar)
 viewmenu.add_command(label="Show Toolbar", command=show_toolbar, state='disabled')
 viewmenu.add_separator()
 
 #sub-menu for: [view > mode]
-submenu = Menu(menu, tearoff=0)
+submenu = tk.Menu(menu, tearoff=0)
 viewmenu.add_cascade(label="Mode ", menu=submenu)
 submenu.add_command(label=" Dark", command=dark_mode, activebackground="#181818", activeforeground="#F5F5F5")
 submenu.add_command(label=" Light", command=light_mode, activebackground="#F5F5F5", activeforeground="#181818")
@@ -278,11 +292,13 @@ submenu.add_command(label=" Chocolate Mint", command=mint_mode, activebackground
 
 viewmenu.add_separator()
 viewmenu.add_command(label="Hide in Tray", command=tray_com)
-viewmenu.add_command(label="Default", command=default_com)
-viewmenu.add_command(label="Fullscreen", command=full_com)
+viewmenu.add_separator()
+viewmenu.add_command(label="Slim View", command=slim_view)
+viewmenu.add_command(label="Default", command=default_view)
+viewmenu.add_command(label="Fullscreen", command=full_screen)
 
 #tool menu
-toolmenu = Menu(menu, tearoff=0)
+toolmenu = tk.Menu(menu, tearoff=0)
 menu.add_cascade(label="Tools ", menu=toolmenu)
 toolmenu.add_command(label="Insert Time", command=time_com)
 toolmenu.add_command(label="Insert Date", command=date_com)
@@ -291,7 +307,7 @@ is_notearea.trace('w', lambda *args: note_area())
 toolmenu.add_checkbutton(label="Note Area", variable=is_notearea, indicatoron=1)
 
 #help menu
-helpmenu = Menu(menu, tearoff=0)
+helpmenu = tk.Menu(menu, tearoff=0)
 menu.add_cascade(label="Help ", menu=helpmenu)
 helpmenu.add_command(label="About", command=about_com)
 helpmenu.add_command(label="Troubleshooting", command=trouble_com)
@@ -304,30 +320,30 @@ def r_click(event):
 texpert.bind("<Button-3>", r_click)
 
 
-# ToolBar Buttons 
-toolbar = Frame(root, bd=2, relief='groove')
-b1 = Button(toolbar, text="Open", width=4, command=open_com)
+# Toolbar/Buttons 
+toolbar = tk.Frame(root, bd=2, relief='groove')
+b1 = tk.Button(toolbar, text="Open", width=4, command=open_com)
 b1.pack(side='left', padx=4, pady=2)
-b2 = Button(toolbar, text="Save", width=4, command=saveas_com)
+b2 = tk.Button(toolbar, text="Save", width=4, command=saveas_com)
 b2.pack(side='right', padx=4, pady=2)
-b4 = Button(toolbar, text="Notes", width=4, 
+b4 = tk.Button(toolbar, text="Notes", width=4, 
             command=lambda: is_notearea.set(not is_notearea.get()))
-b4.pack(side=RIGHT, padx=4, pady=2)
-toolbar.pack(side='top', fill=X)
+b4.pack(side='right', padx=4, pady=2)
+toolbar.pack(side='top', fill='x')
 
 
 # Mode button (on toolbar)
-var = StringVar(root)
+var = tk.StringVar(root)
 var.set("Mode")
-w = OptionMenu(toolbar, variable = var, value='')
+w = tk.OptionMenu(toolbar, variable = var, value='')
 w.config(indicatoron=0, bd=1, width=6, padx=4, pady=5)
 w.pack(side='left', padx=4, pady=2)
-first = BooleanVar()
-second = BooleanVar()
-third = BooleanVar()
-forth = BooleanVar()
-fifth = BooleanVar()
-sixth = BooleanVar()
+first = tk.BooleanVar()
+second = tk.BooleanVar()
+third = tk.BooleanVar()
+forth = tk.BooleanVar()
+fifth = tk.BooleanVar()
+sixth = tk.BooleanVar()
 w['menu'].delete('0', 'end')
 w['menu'].add_checkbutton(label="Dark", onvalue=1, offvalue=0, 
                          activebackground="#181818", activeforeground="#F5F5F5", 
@@ -355,26 +371,25 @@ w['menu'].add_checkbutton(label="Chocolate Mint", onvalue=1, offvalue=0,
 
 
 # Init Note Area
-btn_frame = Frame()
-note = LabelFrame(texpert, bd=1, relief='ridge')
-tx = Text(note, width=18, bd=0, relief='flat', padx=0, pady=0)
+btn_frame = tk.Frame()
+note = tk.LabelFrame(texpert, bd=1, relief='ridge')
+tx = tk.Text(note, width=18, bd=0, relief='flat', padx=0, pady=0)
 tx.insert('1.0', "Nothing here is saved..")
 tx.config(wrap="word")
-tx.pack(side='top', fill=BOTH, expand=True)
-a = Button(note, text="Clear", width=4, command=lambda: tx.delete('1.0', 'end-1c'))
-a.pack(side='left', anchor=S, padx=2, pady=4)
-b = Button(note, text="Close", width=4, command=lambda: is_notearea.set(not is_notearea.get()))
-b.pack(side='right', anchor=S, padx=2, pady=4)
+tx.pack(side='top', fill='both', expand=True)
+a = tk.Button(note, text="Clear", width=4, command=lambda: tx.delete('1.0', 'end-1c'))
+a.pack(side='left', anchor='s', padx=2, pady=4)
+b = tk.Button(note, text="Close", width=4, command=lambda: is_notearea.set(not is_notearea.get()))
+b.pack(side='right', anchor='s', padx=2, pady=4)
 
 
-# Black out toggle
+# Black out checkbox
 index = 0
 def black_out():
     global index
     if index:
         status.config(bg="#D3D3D3", fg="#181818")
         toolbar.config(bg="#D3D3D3")
-
     else:
         status.config(bg="#181818", fg="#F5F5F5")
         toolbar.config(bg="#181818")
@@ -382,12 +397,10 @@ def black_out():
 
 
 # statusBar
-status = Label(text=" Mode: Light", anchor=W, bd=1, relief='sunken', font=('Arial 10'))
-
-b = Checkbutton(status, text=" Black Out ", width=10, command=black_out, indicatoron=1, bd=0,  relief='flat', font=('Arial 10'))
-b.pack(side='right', fill=X)
-
-status.pack(side='bottom', fill=X)
+status = tk.Label(text=" Mode: Light", anchor='w', bd=1, relief='sunken', font=('Arial 10'))
+b = tk.Checkbutton(status, text=" Black Out ", width=10, command=black_out, font=('Arial 10'))
+b.pack(side='right', fill='x')
+status.pack(side='bottom', fill='x')
 
 
 # x_out window
@@ -399,4 +412,8 @@ def x_out():
 texpert.pack(fill='both', expand=True)
 texpert.focus_set()
 root.protocol("WM_DELETE_WINDOW", x_out)
+
+if __name__ == "__main__":
+    MainApp(root).pack(side="top")
+
 root.mainloop()
