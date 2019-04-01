@@ -8,8 +8,7 @@ import time
 import datetime
 
 import Tkinter as tk
-#from Tkinter import *
-from ScrolledText import *
+import ScrolledText as tkst
 import tkFileDialog
 import tkMessageBox
 import ttk
@@ -25,7 +24,7 @@ class MainApp(tk.Frame):
 root = tk.Tk(className = "Texpert")
 root.geometry("700x454")
 root.title("Texpert")
-texpert = ScrolledText(root, padx=2, pady=2, undo=True, font=('Arial 11'))
+texpert = tkst.ScrolledText(root, padx=2, pady=2, undo=True, font=('Arial 11'))
 texpert.config(wrap="word")
 root.option_add("*Font", "TkDefaultFont 9")
 
@@ -95,34 +94,28 @@ def hide_toolbar():
 def show_toolbar():
     toolbar.pack(side='top', fill='x')
 
-#sub-menu for: [view > mode]
+# sub-menu for: [view > mode]
 def dark_mode():
-    global status
     status["text"] = " Mode: Dark"
     texpert.config(background="#181818", fg="#F5F5F5", insertbackground="#F5F5F5")
 
 def light_mode():
-    global status
     status["text"] = " Mode: Light"
     texpert.config(background="#F5F5F5", fg="#181818", insertbackground="#181818")
 
 def legal_mode():
-    global status
     status["text"] = " Mode: Legal Pad"
     texpert.config(background="#FFFFCC", fg="#181818", insertbackground="#181818")
 
 def night_mode():
-    global status
     status["text"] = " Mode: Night Vision"
     texpert.config(background="#181818", fg="#00FF33", insertbackground="#00FF33")
 
 def desert_mode():
-    global status
     status["text"] = " Mode: Desert View"
     texpert.config(background="#E9DDB3", fg="#40210D", insertbackground="#40210D")
 
 def mint_mode():
-    global status
     status["text"] = " Mode: Chocolate Mint"
     texpert.config(background="#CCFFCC", fg="#40210D", insertbackground="#40210D")
 
@@ -132,14 +125,14 @@ def tray_com():
 def slim_view():
     root.attributes('-zoomed', False)
     root.geometry("540x600+440+188")
-    texpert = ScrolledText(root, padx=2, pady=2, undo=True, font=('Arial 11'))
+    texpert = tkst.ScrolledText(root, padx=2, pady=2, undo=True, font=('Arial 11'))
     texpert.config(wrap="word")
     root.option_add("*Font", "TkDefaultFont 9")
 
 def default_view():
     root.attributes('-zoomed', False)
     root.geometry("700x454+440+188") #size+position
-    texpert = ScrolledText(root, padx=2, pady=2, undo=True, font=('Arial 11'))
+    texpert = tkst.ScrolledText(root, padx=2, pady=2, undo=True, font=('Arial 11'))
     texpert.config(wrap="word")
     root.option_add("*Font", "TkDefaultFont 9")
 
@@ -332,7 +325,7 @@ b4.pack(side='right', padx=4, pady=2)
 toolbar.pack(side='top', fill='x')
 
 
-# Mode button (on toolbar)
+# Toolbar 'Mode' button
 var = tk.StringVar(root)
 var.set("Mode")
 w = tk.OptionMenu(toolbar, variable = var, value='')
@@ -370,12 +363,14 @@ w['menu'].add_checkbutton(label="Chocolate Mint", onvalue=1, offvalue=0,
                          variable=sixth, command=mint_mode, indicatoron=0)
 
 
+
 # Init Note Area
 btn_frame = tk.Frame()
 note = tk.LabelFrame(texpert, bd=1, relief='ridge')
-tx = tk.Text(note, width=18, bd=0, relief='flat', padx=0, pady=0)
+tx = tk.Text(note, width=18, bd=0, relief='flat', padx=2, pady=2)
 tx.insert('1.0', "Nothing here is saved..")
 tx.config(wrap="word")
+tx.focus()
 tx.pack(side='top', fill='both', expand=True)
 a = tk.Button(note, text="Clear", width=4, command=lambda: tx.delete('1.0', 'end-1c'))
 a.pack(side='left', anchor='s', padx=2, pady=4)
@@ -383,7 +378,7 @@ b = tk.Button(note, text="Close", width=4, command=lambda: is_notearea.set(not i
 b.pack(side='right', anchor='s', padx=2, pady=4)
 
 
-# Black out checkbox
+# blackout checkbox (statusBar)
 index = 0
 def black_out():
     global index
@@ -394,7 +389,6 @@ def black_out():
         status.config(bg="#181818", fg="#F5F5F5")
         toolbar.config(bg="#181818")
     index = not index
-
 
 # statusBar
 status = tk.Label(text=" Mode: Light", anchor='w', bd=1, relief='sunken', font=('Arial 10'))
