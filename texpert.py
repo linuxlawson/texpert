@@ -389,7 +389,7 @@ w['menu'].add_checkbutton(label="Chocolate Mint", onvalue=1, offvalue=0,
 
 # Init Note Area
 btn_frame = tk.Frame()
-note = tk.LabelFrame(texpert, bd=1, relief='sunken')
+note = tk.LabelFrame(texpert)
 tx = tk.Text(note, width=18, bd=0, relief='flat')
 tx.insert('1.0', "Nothing here is saved..")
 tx.config(padx=2, pady=2, wrap="word")
