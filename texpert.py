@@ -11,22 +11,22 @@ import Tkinter as tk
 import ScrolledText as tkst
 import tkFileDialog
 import tkMessageBox
-import ttk
 
 
-class MainApp(tk.Frame):
-    def __init__(self, parent, *args, **kwargs):
-        tk.Frame.__init__(self, parent, *args, **kwargs)
+class MainFrame(tk.Frame):
+    def __init__(self, parent):
+        tk.Frame.__init__(self, parent)
         self.parent = parent
 
-
 # Main
-root = tk.Tk(className = "Texpert")
-root.geometry("700x454")
+root = tk.Tk()
 root.title("Texpert")
-texpert = tkst.ScrolledText(root, padx=2, pady=2, undo=True, font=('Arial 11'))
-texpert.config(wrap="word")
+root.geometry("700x454")
 root.option_add("*Font", "TkDefaultFont 9")
+
+texpert = tkst.ScrolledText(root, undo=True, font=('Arial 11'))
+texpert.config(padx=2, pady=2, wrap="word")
+texpert.focus_set()
 
 
 # Menu Functions
@@ -125,15 +125,15 @@ def tray_com():
 def slim_view():
     root.attributes('-zoomed', False)
     root.geometry("540x600+440+188")
-    texpert = tkst.ScrolledText(root, padx=2, pady=2, undo=True, font=('Arial 11'))
-    texpert.config(wrap="word")
+    texpert = tkst.ScrolledText(root, undo=True, font=('Arial 11'))
+    texpert.config(padx=2, pady=2, wrap="word")
     root.option_add("*Font", "TkDefaultFont 9")
 
 def default_view():
     root.attributes('-zoomed', False)
     root.geometry("700x454+440+188") #size+position
-    texpert = tkst.ScrolledText(root, padx=2, pady=2, undo=True, font=('Arial 11'))
-    texpert.config(wrap="word")
+    texpert = tkst.ScrolledText(root, undo=True, font=('Arial 11'))
+    texpert.config(padx=2, pady=2, wrap="word")
     root.option_add("*Font", "TkDefaultFont 9")
 
 def full_screen():
@@ -154,8 +154,8 @@ def date_com():
 
 def note_area():
     if is_notearea.get():
-        note.pack(side='right', fill='y', padx=0, pady=0)
-        btn_frame.pack(side='bottom', fill='y', padx=0, pady=0)
+        note.pack(side='right', fill='y')
+        btn_frame.pack(side='bottom', fill='y')
     else:
         note.pack_forget()
         btn_frame.pack_forget()
@@ -232,10 +232,39 @@ def trouble_com():
     win = tk.Toplevel()
     win.title("Troubleshooting")                                     
     tk.Label(win, justify='left', text="\n\nThis program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand will probably never be complete.\n\n\n\nKnown Issues:\n\n'Show toolbar' is temporarily disabled\nbecause the toolbar refuses to remember\nits original position. I may or may not\nmake an attempt to fix this someday.\n\nThe 'Save' and 'Save As' options both work\nas 'save as'. This should be fixed someday.\n\n").pack()   
+    
     tk.Button(win, text='Close', command=win.destroy).pack()   
     win.transient(root)
-    win.geometry('350x350')
+    win.geometry('350x340')
     win.wait_window()
+
+
+# context menu (right-click)
+def r_click(event):
+    editmenu.tk_popup(event.x_root, event.y_root)
+texpert.bind("<Button-3>", r_click)
+
+# x_out window
+def x_out():
+    if tkMessageBox.askokcancel("Exit", "Unsaved work will be lost.\n\nAre you sure? "):
+       root.destroy()
+
+# black out checkbox (statusbar)
+index = 0
+def black_out():
+    global index
+    if index:
+        root.config(bg="#D9D9D9")
+        toolbar.config(bg="#D9D9D9")
+        status.config(bg="#D9D9D9", fg="#181818")
+        cbox.config(bg="#D9D9D9", fg="#181818", selectcolor="#F5F5F5")
+    else:
+        root.config(bg="#181818")
+        toolbar.config(bg="#181818")
+        status.config(bg="#181818", fg="#F5F5F5")
+        cbox.config(bg="#181818", fg="#F5F5F5", selectcolor="#181818")
+    index = not index
+
 
 
 # Menu Buttons/Labels
@@ -307,12 +336,6 @@ helpmenu.add_command(label="Troubleshooting", command=trouble_com)
 
 
 
-# Context Menu (right-click)
-def r_click(event):
-    editmenu.tk_popup(event.x_root, event.y_root)
-texpert.bind("<Button-3>", r_click)
-
-
 # Toolbar/Buttons 
 toolbar = tk.Frame(root, bd=2, relief='groove')
 b1 = tk.Button(toolbar, text="Open", width=4, command=open_com)
@@ -366,11 +389,10 @@ w['menu'].add_checkbutton(label="Chocolate Mint", onvalue=1, offvalue=0,
 
 # Init Note Area
 btn_frame = tk.Frame()
-note = tk.LabelFrame(texpert, bd=1, relief='ridge')
-tx = tk.Text(note, width=18, bd=0, relief='flat', padx=2, pady=2)
+note = tk.LabelFrame(texpert, bd=1, relief='sunken')
+tx = tk.Text(note, width=18, bd=0, relief='flat')
 tx.insert('1.0', "Nothing here is saved..")
-tx.config(wrap="word")
-tx.focus()
+tx.config(padx=2, pady=2, wrap="word")
 tx.pack(side='top', fill='both', expand=True)
 a = tk.Button(note, text="Clear", width=4, command=lambda: tx.delete('1.0', 'end-1c'))
 a.pack(side='left', anchor='s', padx=2, pady=4)
@@ -378,36 +400,17 @@ b = tk.Button(note, text="Close", width=4, command=lambda: is_notearea.set(not i
 b.pack(side='right', anchor='s', padx=2, pady=4)
 
 
-# blackout checkbox (statusBar)
-index = 0
-def black_out():
-    global index
-    if index:
-        status.config(bg="#D3D3D3", fg="#181818")
-        toolbar.config(bg="#D3D3D3")
-    else:
-        status.config(bg="#181818", fg="#F5F5F5")
-        toolbar.config(bg="#181818")
-    index = not index
-
 # statusBar
 status = tk.Label(text=" Mode: Light", anchor='w', bd=1, relief='sunken', font=('Arial 10'))
-b = tk.Checkbutton(status, text=" Black Out ", width=10, command=black_out, font=('Arial 10'))
-b.pack(side='right', fill='x')
 status.pack(side='bottom', fill='x')
-
-
-# x_out window
-def x_out():
-    if tkMessageBox.askokcancel("Exit", "Unsaved work will be lost.\n\nAre you sure? "):
-       root.destroy()
+cbox = tk.Checkbutton(status, text=" Black Out ", width=10, command=black_out, font=('Arial 10'))
+cbox.pack(side='right', fill='x')
 
 
 texpert.pack(fill='both', expand=True)
-texpert.focus_set()
 root.protocol("WM_DELETE_WINDOW", x_out)
 
 if __name__ == "__main__":
-    MainApp(root).pack(side="top")
+    MainFrame(root).pack(side="top", fill="both")
 
 root.mainloop()
