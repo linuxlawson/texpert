@@ -403,7 +403,7 @@ b.pack(side='right', anchor='s', padx=2, pady=4)
 # statusBar
 status = tk.Label(text=" Mode: Light", anchor='w', bd=1, relief='sunken', font=('Arial 10'))
 status.pack(side='bottom', fill='x')
-cbox = tk.Checkbutton(status, text=" Black Out ", width=10, command=black_out,                 			      highlightthickness=0, font=('Arial 10'))
+cbox = tk.Checkbutton(status, text=" Black Out ", width=10, command=black_out, highlightthickness=0, font=('Arial 10'))
 cbox.pack(side='right', fill='x')
 
 
