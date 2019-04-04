@@ -13,13 +13,12 @@ import tkFileDialog
 import tkMessageBox
 
 
-class MainFrame(tk.Frame):
+class Texpert:
     def __init__(self, parent):
-        tk.Frame.__init__(self, parent)
         self.parent = parent
 
 # Main
-root = tk.Tk()
+root = tk.Tk(className = "Texpert")
 root.title("Texpert")
 root.geometry("700x454")
 root.option_add("*Font", "TkDefaultFont 9")
@@ -138,6 +137,10 @@ def default_view():
 
 def full_screen():
     root.attributes('-zoomed', True)
+    texpert = tkst.ScrolledText(root, undo=True, font=('Arial 11'))
+    texpert.config(padx=2, pady=2, wrap="word")
+    root.option_add("*Font", "TkDefaultFont 9")
+
 
 # tools menu
 def time_com():
@@ -167,12 +170,12 @@ def about_com():
     win.title("About")                                     
     tk.Label(win, text="\n\n\nTexpert\n\nA small text editor designed for Linux\n\nMade in Python with Tkinter\n\n\n").pack()   
     
-    a = tk.Button(win, text="Credits", width=4, command=credits_com)
-    a.pack(side='left', padx=8, pady=4)
+    cre = tk.Button(win, text="Credits", width=4, command=credits_com)
+    cre.pack(side='left', padx=8, pady=4)
     ver = tk.Label(win, text="v 1.0", width=4, bd=0, state='disabled')
     ver.pack(side='left', padx=8, pady=4, expand='yes')
-    b = tk.Button(win, text="Close", width=4, command=win.destroy)
-    b.pack(side='right', padx=8, pady=4)
+    clo = tk.Button(win, text="Close", width=4, command=win.destroy)
+    clo.pack(side='right', padx=8, pady=4)
      
     win.transient(root)
     win.geometry('300x200')
@@ -184,10 +187,10 @@ def credits_com():
     win.title("Credits")                                     
     tk.Label(win, foreground="#404040", text="\n\n\nCreated by David Lawson\n\n\nme = Person()\nwhile (me.awake()):\nme.code()\n\n").pack()   
     
-    a = tk.Button(win, text="License", width=4, command=license_info)
-    a.pack(side='left', padx=8, pady=4)
-    b = tk.Button(win, text="Close", width=4, command=win.destroy)
-    b.pack(side='right', padx=8, pady=4) 
+    lic = tk.Button(win, text="License", width=4, command=license_info)
+    lic.pack(side='left', padx=8, pady=4)
+    cls = tk.Button(win, text="Close", width=4, command=win.destroy)
+    cls.pack(side='right', padx=8, pady=4) 
     
     win.transient(root)
     win.geometry('300x200')
@@ -394,23 +397,23 @@ tx = tk.Text(note, width=18, bd=0, relief='flat')
 tx.insert('1.0', "Nothing here is saved..")
 tx.config(padx=2, pady=2, wrap="word")
 tx.pack(side='top', fill='both', expand=True)
-a = tk.Button(note, text="Clear", width=4, command=lambda: tx.delete('1.0', 'end-1c'))
-a.pack(side='left', anchor='s', padx=2, pady=4)
-b = tk.Button(note, text="Close", width=4, command=lambda: is_notearea.set(not is_notearea.get()))
-b.pack(side='right', anchor='s', padx=2, pady=4)
+clear = tk.Button(note, text="Clear", width=4, command=lambda: tx.delete('1.0', 'end-1c'))
+clear.pack(side='left', anchor='s', padx=2, pady=4)
+close = tk.Button(note, text="Close", width=4, command=lambda: is_notearea.set(not is_notearea.get()))
+close.pack(side='right', anchor='s', padx=2, pady=4)
 
 
 # statusBar
 status = tk.Label(text=" Mode: Light", anchor='w', bd=1, relief='sunken', font=('Arial 10'))
 status.pack(side='bottom', fill='x')
 cbox = tk.Checkbutton(status, text=" Black Out ", width=10, command=black_out, highlightthickness=0, font=('Arial 10'))
-cbox.pack(side='right', fill='x')
+cbox.pack(side='right')
 
 
 texpert.pack(fill='both', expand=True)
 root.protocol("WM_DELETE_WINDOW", x_out)
 
 if __name__ == "__main__":
-    MainFrame(root).pack(side="top", fill="both")
+    Texpert(root)
 
 root.mainloop()
