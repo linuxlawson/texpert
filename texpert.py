@@ -13,10 +13,6 @@ import tkFileDialog
 import tkMessageBox
 
 
-class Texpert:
-    def __init__(self, parent):
-        self.parent = parent
-
 # Main
 root = tk.Tk(className = "Texpert")
 root.title("Texpert")
@@ -412,8 +408,5 @@ cbox.pack(side='right')
 
 texpert.pack(fill='both', expand=True)
 root.protocol("WM_DELETE_WINDOW", x_out)
-
-if __name__ == "__main__":
-    Texpert(root)
 
 root.mainloop()
