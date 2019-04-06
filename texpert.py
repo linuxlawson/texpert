@@ -238,7 +238,7 @@ def trouble_com():
     
     tk.Button(win, text='Close', command=win.destroy).pack()   
     win.transient(root)
-    win.geometry('300x240')
+    win.geometry('310x240')
     win.wait_window()
 
 
@@ -391,8 +391,8 @@ w['menu'].add_checkbutton(label="Chocolate Mint", onvalue=1, offvalue=0,
 
 
 # Init Note Area
-btn_frame = tk.Frame()
-note = tk.LabelFrame(texpert, bd=1, relief='sunken')
+btn_frame = tk.Frame(texpert, bd=1, relief='sunken')
+note = tk.LabelFrame(texpert, bd=0, relief='flat')
 tx = tk.Text(note, width=18)
 tx.insert('1.0', "Nothing here is saved..")
 tx.config(padx=2, pady=2, wrap="word")
