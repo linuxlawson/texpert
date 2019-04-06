@@ -388,8 +388,8 @@ w['menu'].add_checkbutton(label="Chocolate Mint", onvalue=1, offvalue=0,
 
 # Init Note Area
 btn_frame = tk.Frame()
-note = tk.LabelFrame(texpert)
-tx = tk.Text(note, width=18, bd=0, relief='flat')
+note = tk.LabelFrame(texpert, bd=1, relief='sunken')
+tx = tk.Text(note, width=18)
 tx.insert('1.0', "Nothing here is saved..")
 tx.config(padx=2, pady=2, wrap="word")
 tx.pack(side='top', fill='both', expand=True)
@@ -400,10 +400,12 @@ close.pack(side='right', anchor='s', padx=2, pady=4)
 
 
 # statusBar
+statusbar = tk.Frame()
 status = tk.Label(text=" Mode: Light", anchor='w', bd=1, relief='sunken', font=('Arial 10'))
 status.pack(side='bottom', fill='x')
 cbox = tk.Checkbutton(status, text=" Black Out ", width=10, command=black_out, highlightthickness=0, font=('Arial 10'))
-cbox.pack(side='right')
+cbox.pack(side='right', fill='x')
+statusbar.pack(side='bottom', fill='x')
 
 
 texpert.pack(fill='both', expand=True)
