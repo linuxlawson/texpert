@@ -16,8 +16,9 @@ import tkMessageBox
 # Main
 root = tk.Tk(className = "Texpert")
 root.title("Texpert")
-root.geometry("700x454")
+root.geometry("700x480")
 root.option_add("*Font", "TkDefaultFont 9")
+
 
 texpert = tkst.ScrolledText(root, undo=True, font=('Arial 11'))
 texpert.config(padx=2, pady=2, wrap="word")
@@ -87,7 +88,7 @@ def hide_toolbar():
     toolbar.pack_forget()
 
 def show_toolbar():
-    toolbar.pack(side='top', fill='x')
+    toolbar.pack(side='top', anchor='n', fill='x')
 
 # sub-menu for: [view > mode]
 def dark_mode():
@@ -119,24 +120,27 @@ def tray_com():
 
 def slim_view():
     root.attributes('-zoomed', False)
-    root.geometry("540x600+440+188")
+    root.geometry("540x600+440+175")
+    root.option_add("*Font", "TkDefaultFont 9")
     texpert = tkst.ScrolledText(root, undo=True, font=('Arial 11'))
     texpert.config(padx=2, pady=2, wrap="word")
-    root.option_add("*Font", "TkDefaultFont 9")
+    texpert.focus_set()
 
 def default_view():
     root.attributes('-zoomed', False)
-    root.geometry("700x454+440+188") #size+position
+    root.geometry("700x480+440+175") #size+position
+    root.option_add("*Font", "TkDefaultFont 9")
     texpert = tkst.ScrolledText(root, undo=True, font=('Arial 11'))
     texpert.config(padx=2, pady=2, wrap="word")
-    root.option_add("*Font", "TkDefaultFont 9")
+    texpert.focus_set()
 
 def full_screen():
     root.attributes('-zoomed', True)
+    root.option_add("*Font", "TkDefaultFont 9")
     texpert = tkst.ScrolledText(root, undo=True, font=('Arial 11'))
     texpert.config(padx=2, pady=2, wrap="word")
-    root.option_add("*Font", "TkDefaultFont 9")
-
+    texpert.focus_set()
+    
 
 # tools menu
 def time_com():
@@ -230,11 +234,11 @@ DEALINGS IN THE SOFTWARE.\n\n""").pack()
 def trouble_com():
     win = tk.Toplevel()
     win.title("Troubleshooting")                                     
-    tk.Label(win, justify='left', text="\n\nThis program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand will probably never be complete.\n\n\n\nKnown Issues:\n\n'Show toolbar' is temporarily disabled\nbecause the toolbar refuses to remember\nits original position. I may or may not\nmake an attempt to fix this someday.\n\nThe 'Save' and 'Save As' options both work\nas 'save as'. This should be fixed someday.\n\n").pack()   
+    tk.Label(win, justify='left', text="\n\nThis program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand will probably never be complete.\n\n\n\nKnown Issues:\n\n").pack()   
     
     tk.Button(win, text='Close', command=win.destroy).pack()   
     win.transient(root)
-    win.geometry('350x340')
+    win.geometry('300x240')
     win.wait_window()
 
 
@@ -298,7 +302,7 @@ editmenu.add_command(label="Select All", command=select_all)
 viewmenu = tk.Menu(menu, tearoff=0)
 menu.add_cascade(label="View ", menu=viewmenu)
 viewmenu.add_command(label="Hide Toolbar", command=hide_toolbar)
-viewmenu.add_command(label="Show Toolbar", command=show_toolbar, state='disabled')
+viewmenu.add_command(label="Show Toolbar", command=show_toolbar)
 viewmenu.add_separator()
 
 #sub-menu for: [view > mode]
@@ -394,9 +398,9 @@ tx.insert('1.0', "Nothing here is saved..")
 tx.config(padx=2, pady=2, wrap="word")
 tx.pack(side='top', fill='both', expand=True)
 clear = tk.Button(note, text="Clear", width=4, command=lambda: tx.delete('1.0', 'end-1c'))
-clear.pack(side='left', anchor='s', padx=2, pady=4)
+clear.pack(side='left', anchor='s', padx=2, pady=2)
 close = tk.Button(note, text="Close", width=4, command=lambda: is_notearea.set(not is_notearea.get()))
-close.pack(side='right', anchor='s', padx=2, pady=4)
+close.pack(side='right', anchor='s', padx=2, pady=2)
 
 
 # statusBar
@@ -408,7 +412,7 @@ cbox.pack(side='right', fill='x')
 statusbar.pack(side='bottom', fill='x')
 
 
-texpert.pack(fill='both', expand=True)
+texpert.pack(side='bottom', fill='both', expand=True)
 root.protocol("WM_DELETE_WINDOW", x_out)
 
 root.mainloop()
