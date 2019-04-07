@@ -158,7 +158,7 @@ def date_com():
 def note_area():
     if is_notearea.get():
         note.pack(side='right', fill='y')
-        btn_frame.pack(side='bottom', fill='y')
+        btn_frame.pack(side='right', fill='y')
     else:
         note.pack_forget()
         btn_frame.pack_forget()
@@ -234,11 +234,11 @@ DEALINGS IN THE SOFTWARE.\n\n""").pack()
 def trouble_com():
     win = tk.Toplevel()
     win.title("Troubleshooting")                                     
-    tk.Label(win, justify='left', text="\n\nThis program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand will probably never be complete.\n\n\n\nKnown Issues:\n\n").pack()   
+    tk.Label(win, justify='left', text="\n\nThis program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand will probably never be complete.\n\n\nKnown Issues: Unknown\n\n").pack()   
     
     tk.Button(win, text='Close', command=win.destroy).pack()   
     win.transient(root)
-    win.geometry('310x240')
+    win.geometry('300x220')
     win.wait_window()
 
 
@@ -391,8 +391,8 @@ w['menu'].add_checkbutton(label="Chocolate Mint", onvalue=1, offvalue=0,
 
 
 # Init Note Area
-btn_frame = tk.Frame(texpert, bd=1, relief='sunken')
-note = tk.LabelFrame(texpert, bd=0, relief='flat')
+btn_frame = tk.Frame(texpert, bd=0, relief='sunken')
+note = tk.LabelFrame(btn_frame, bd=0, relief='flat')
 tx = tk.Text(note, width=18)
 tx.insert('1.0', "Nothing here is saved..")
 tx.config(padx=2, pady=2, wrap="word")
@@ -405,7 +405,7 @@ close.pack(side='right', anchor='s', padx=2, pady=2)
 
 # statusBar
 statusbar = tk.Frame()
-status = tk.Label(text=" Mode: Light", anchor='w', bd=1, relief='sunken', font=('Arial 10'))
+status = tk.Label(statusbar, text=" Mode: Light", anchor='w', bd=1, relief='sunken', font=('Arial 10'))
 status.pack(side='bottom', fill='x')
 cbox = tk.Checkbutton(status, text=" Black Out ", width=10, command=black_out, highlightthickness=0, font=('Arial 10'))
 cbox.pack(side='right', fill='x')
