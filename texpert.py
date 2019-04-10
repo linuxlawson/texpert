@@ -10,7 +10,6 @@ import datetime
 import Tkinter as tk
 import ScrolledText as tkst
 import tkFileDialog
-import tkMessageBox
 
 
 # Main
@@ -18,7 +17,6 @@ root = tk.Tk(className = "Texpert")
 root.title("Texpert")
 root.geometry("700x480")
 root.option_add("*Font", "TkDefaultFont 9")
-
 
 texpert = tkst.ScrolledText(root, undo=True, font=('Arial 11'))
 texpert.config(padx=2, pady=2, wrap="word")
@@ -56,8 +54,16 @@ def close_com():
     texpert.delete('1.0', 'end-1c') 
     
 def exit_com():
-    if tkMessageBox.askokcancel("Exit", "Do you really want to exit?"):
-	root.destroy()
+    win = tk.Toplevel()
+    win.title("Exit")                                     
+    tk.Label(win, text="\n\nDo you really want to exit?\n").pack()   
+    ex = tk.Button(win, text="Exit", width=4, command=root.destroy)
+    ex.pack(side='left', padx=24, pady=4)
+    can = tk.Button(win, text="Cancel", width=4, command=win.destroy)
+    can.pack(side='right', padx=24, pady=4)
+    win.transient(root)
+    win.geometry('220x120')
+    win.wait_window()
 
 # edit menu
 def undo_com():
@@ -92,27 +98,27 @@ def show_toolbar():
 
 # sub-menu for: [view > mode]
 def dark_mode():
-    status["text"] = " Mode: Dark"
+    mode["text"] = " Mode: Dark"
     texpert.config(background="#181818", fg="#F5F5F5", insertbackground="#F5F5F5")
 
 def light_mode():
-    status["text"] = " Mode: Light"
+    mode["text"] = " Mode: Light"
     texpert.config(background="#F5F5F5", fg="#181818", insertbackground="#181818")
 
 def legal_mode():
-    status["text"] = " Mode: Legal Pad"
+    mode["text"] = " Mode: Legal Pad"
     texpert.config(background="#FFFFCC", fg="#181818", insertbackground="#181818")
 
 def night_mode():
-    status["text"] = " Mode: Night Vision"
+    mode["text"] = " Mode: Night Vision"
     texpert.config(background="#181818", fg="#00FF33", insertbackground="#00FF33")
 
 def desert_mode():
-    status["text"] = " Mode: Desert View"
+    mode["text"] = " Mode: Desert View"
     texpert.config(background="#E9DDB3", fg="#40210D", insertbackground="#40210D")
 
 def mint_mode():
-    status["text"] = " Mode: Chocolate Mint"
+    mode["text"] = " Mode: Chocolate Mint"
     texpert.config(background="#CCFFCC", fg="#40210D", insertbackground="#40210D")
 
 def tray_com():
@@ -247,10 +253,6 @@ def r_click(event):
     editmenu.tk_popup(event.x_root, event.y_root)
 texpert.bind("<Button-3>", r_click)
 
-# x_out window
-def x_out():
-    if tkMessageBox.askokcancel("Exit", "Unsaved work will be lost.\n\nAre you sure? "):
-       root.destroy()
 
 # black out checkbox (statusbar)
 index = 0
@@ -259,12 +261,14 @@ def black_out():
     if index:
         root.config(bg="#D9D9D9")
         toolbar.config(bg="#D9D9D9")
-        status.config(bg="#D9D9D9", fg="#181818")
+        statusbar.config(bg="#D9D9D9")
+	mode.config(bg="#D9D9D9", fg="#181818")
         cbox.config(bg="#D9D9D9", fg="#181818", selectcolor="#F5F5F5")
     else:
         root.config(bg="#181818")
         toolbar.config(bg="#181818")
-        status.config(bg="#181818", fg="#F5F5F5")
+        statusbar.config(bg="#181818")
+	mode.config(bg="#181818", fg="#F5F5F5")
         cbox.config(bg="#181818", fg="#F5F5F5", selectcolor="#181818")
     index = not index
 
@@ -352,7 +356,7 @@ toolbar.pack(side='top', fill='x')
 
 
 # Toolbar 'Mode' button
-var = tk.StringVar(root)
+var = tk.StringVar(toolbar)
 var.set("Mode")
 w = tk.OptionMenu(toolbar, variable = var, value='')
 w.config(indicatoron=0, bd=1, width=6, padx=4, pady=5)
@@ -404,15 +408,15 @@ close.pack(side='right', anchor='s', padx=2, pady=2)
 
 
 # statusBar
-statusbar = tk.Frame()
-status = tk.Label(statusbar, text=" Mode: Light", anchor='w', bd=1, relief='sunken', font=('Arial 10'))
-status.pack(side='bottom', fill='x')
-cbox = tk.Checkbutton(status, text=" Black Out ", width=10, command=black_out, highlightthickness=0, font=('Arial 10'))
+statusbar = tk.Frame(root, bd=1, relief='sunken')
+mode = tk.Label(statusbar, text=" Mode: Light")
+mode.pack(side='left', fill='x')
+cbox = tk.Checkbutton(statusbar, text=" Black Out ", width=10, command=black_out, highlightthickness=0)
 cbox.pack(side='right', fill='x')
 statusbar.pack(side='bottom', fill='x')
 
 
 texpert.pack(side='bottom', fill='both', expand=True)
-root.protocol("WM_DELETE_WINDOW", x_out)
+root.protocol("WM_DELETE_WINDOW", exit_com)
 
 root.mainloop()
