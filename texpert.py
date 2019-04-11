@@ -56,7 +56,7 @@ def close_com():
 def exit_com():
     win = tk.Toplevel()
     win.title("Exit")                                     
-    tk.Label(win, text="\n\nDo you really want to exit?\n").pack()   
+    tk.Label(win, text="\nUnsaved work will be lost.\n\nAre you sure?\n").pack()   
     ex = tk.Button(win, text="Exit", width=4, command=root.destroy)
     ex.pack(side='left', padx=24, pady=4)
     can = tk.Button(win, text="Cancel", width=4, command=win.destroy)
@@ -81,7 +81,7 @@ def copy_com():
 def paste_com(): 
     texpert.event_generate("<<Paste>>")  
 
-def select_all():
+def select_all(event=None):
     texpert.tag_add('sel', '1.0', 'end-1c')
     texpert.mark_set('insert', '1.0')
     texpert.see('insert')
@@ -273,6 +273,13 @@ def black_out():
     index = not index
 
 
+def linecount(event):
+    (line, char) = map(int, event.widget.index("end-1c").split("."))
+    print line, char
+
+texpert.bind("<KeyRelease>", linecount)
+
+
 
 # Menu Buttons/Labels
 menu = tk.Menu(root, bd=1, relief='flat')
@@ -352,11 +359,11 @@ b2.pack(side='right', padx=4, pady=2)
 b4 = tk.Button(toolbar, text="Notes", width=4, 
             command=lambda: is_notearea.set(not is_notearea.get()))
 b4.pack(side='right', padx=4, pady=2)
-toolbar.pack(side='top', fill='x')
+toolbar.pack(side='top', anchor='n', fill='x')
 
 
 # Toolbar 'Mode' button
-var = tk.StringVar(toolbar)
+var = tk.StringVar()
 var.set("Mode")
 w = tk.OptionMenu(toolbar, variable = var, value='')
 w.config(indicatoron=0, bd=1, width=6, padx=4, pady=5)
@@ -402,17 +409,17 @@ tx.insert('1.0', "Nothing here is saved..")
 tx.config(padx=2, pady=2, wrap="word")
 tx.pack(side='top', fill='both', expand=True)
 clear = tk.Button(note, text="Clear", width=4, command=lambda: tx.delete('1.0', 'end-1c'))
-clear.pack(side='left', anchor='s', padx=2, pady=2)
+clear.pack(side='left', padx=2, pady=2)
 close = tk.Button(note, text="Close", width=4, command=lambda: is_notearea.set(not is_notearea.get()))
-close.pack(side='right', anchor='s', padx=2, pady=2)
+close.pack(side='right', padx=2, pady=2)
 
 
 # statusBar
 statusbar = tk.Frame(root, bd=1, relief='sunken')
 mode = tk.Label(statusbar, text=" Mode: Light")
-mode.pack(side='left', fill='x')
-cbox = tk.Checkbutton(statusbar, text=" Black Out ", width=10, command=black_out, highlightthickness=0)
-cbox.pack(side='right', fill='x')
+mode.pack(side='left')
+cbox = tk.Checkbutton(statusbar, text=" Black Out ", width=9, command=black_out, highlightthickness=0)
+cbox.pack(side='right')
 statusbar.pack(side='bottom', fill='x')
 
 
