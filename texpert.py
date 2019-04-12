@@ -62,7 +62,7 @@ def exit_com():
     can = tk.Button(win, text="Cancel", width=4, command=win.destroy)
     can.pack(side='right', padx=24, pady=4)
     win.transient(root)
-    win.geometry('220x120')
+    win.geometry('224x120')
     win.wait_window()
 
 # edit menu
@@ -254,29 +254,9 @@ def r_click(event):
 texpert.bind("<Button-3>", r_click)
 
 
-# black out checkbox (statusbar)
-index = 0
-def black_out():
-    global index
-    if index:
-        root.config(bg="#D9D9D9")
-        toolbar.config(bg="#D9D9D9")
-        statusbar.config(bg="#D9D9D9")
-	mode.config(bg="#D9D9D9", fg="#181818")
-        cbox.config(bg="#D9D9D9", fg="#181818", selectcolor="#F5F5F5")
-    else:
-        root.config(bg="#181818")
-        toolbar.config(bg="#181818")
-        statusbar.config(bg="#181818")
-	mode.config(bg="#181818", fg="#F5F5F5")
-        cbox.config(bg="#181818", fg="#F5F5F5", selectcolor="#181818")
-    index = not index
-
-
 def linecount(event):
     (line, char) = map(int, event.widget.index("end-1c").split("."))
-    print line, char
-
+    line_lbl['text'] = 'Ln {line}, Col {col}'.format(line=line, col=char+1)
 texpert.bind("<KeyRelease>", linecount)
 
 
@@ -418,8 +398,8 @@ close.pack(side='right', padx=2, pady=2)
 statusbar = tk.Frame(root, bd=1, relief='sunken')
 mode = tk.Label(statusbar, text=" Mode: Light")
 mode.pack(side='left')
-cbox = tk.Checkbutton(statusbar, text=" Black Out ", width=9, command=black_out, highlightthickness=0)
-cbox.pack(side='right')
+line_lbl = tk.Label(statusbar, text="Ln 1, Col 1")
+line_lbl.pack(side='right', padx=6)
 statusbar.pack(side='bottom', fill='x')
 
 
