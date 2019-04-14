@@ -2,14 +2,17 @@
 # Texpert Text Editor 
 # Written by David Lawson
 
-import os
-import sys
 import time
 import datetime
 
-import Tkinter as tk
-import ScrolledText as tkst
-import tkFileDialog
+try:
+    import Tkinter as tk
+    import ScrolledText as tkst
+    import tkFileDialog
+except:
+    import tkinter as tk
+    import tkinter.scrolledtext as tkst
+    import tkinter.filedialog as tkFileDialog
 
 
 # Main
@@ -233,7 +236,7 @@ DEALINGS IN THE SOFTWARE.\n\n""").pack()
     
     tk.Button(win, text='Close', command=win.destroy).pack()   
     win.transient(root)
-    win.geometry('480x449')
+    win.geometry('480x450')
     win.wait_window()
 
 
@@ -255,8 +258,8 @@ texpert.bind("<Button-3>", r_click)
 
 
 def linecount(event):
-    (line, char) = map(int, event.widget.index("end-1c").split("."))
-    line_lbl['text'] = 'Ln {line}, Col {col}'.format(line=line, col=char+1)
+    (line, col) = map(int, event.widget.index("end-1c").split("."))
+    line_lbl['text'] = 'Line {line}, Col {col}'.format(line=line, col=col+1)
 texpert.bind("<KeyRelease>", linecount)
 
 
@@ -398,8 +401,8 @@ close.pack(side='right', padx=2, pady=2)
 statusbar = tk.Frame(root, bd=1, relief='sunken')
 mode = tk.Label(statusbar, text=" Mode: Light")
 mode.pack(side='left')
-line_lbl = tk.Label(statusbar, text="Ln 1, Col 1")
-line_lbl.pack(side='right', padx=6)
+line_lbl = tk.Label(statusbar, text="Line 1, Col 1")
+line_lbl.pack(side='right', padx=10)
 statusbar.pack(side='bottom', fill='x')
 
 
