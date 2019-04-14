@@ -2,13 +2,14 @@
 # Info box 
 # David Lawson
 
-import os
-import sys
+
 import time
 import datetime
 
-import Tkinter as tk
-
+try:
+    import Tkinter as tk
+except:
+    import tkinter as tk
 
 # Main Window
 root = tk.Tk(className = "Info")
