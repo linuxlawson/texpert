@@ -15,15 +15,35 @@ except:
     import tkinter.filedialog as tkFileDialog
 
 
-# Main
 root = tk.Tk(className = "Texpert")
 root.title("Texpert")
 root.geometry("700x480")
 root.option_add("*Font", "TkDefaultFont 9")
 
-texpert = tkst.ScrolledText(root, undo=True, font=('Arial 11'))
-texpert.config(padx=2, pady=2, wrap="word")
+class Texpert:
+    def __init__(self, master):
+        self.master = master
+	master.title("Texpert")
+
+
+# Main Frame
+mainframe = tk.Frame(root, bd=0, relief='flat')
+mainframe.pack(fill='both', expand=True, padx=0, pady=0)
+
+# Text Area
+texpert = tkst.ScrolledText(mainframe, undo=True, font=('Arial 11'))
+texpert.pack(side='bottom', fill='both', expand=True)
+texpert.config(padx=2, pady=0, wrap="word")
 texpert.focus_set()
+
+# StatusBar
+statusbar = tk.Frame(root, bd=1, relief='sunken')
+statusbar.pack(side='bottom', fill='x')
+mode = tk.Label(statusbar, text=" Mode: Light")
+mode.pack(side='left')
+line_lbl = tk.Label(statusbar, text="Line 1, Col 1")
+line_lbl.pack(side='right', padx=10)
+
 
 
 # Menu Functions
@@ -166,11 +186,19 @@ def date_com():
 
 def note_area():
     if is_notearea.get():
-        note.pack(side='right', fill='y')
-        btn_frame.pack(side='right', fill='y')
+        note.pack(side='right', anchor='e', fill='y')
+        btn_frame.pack(side='right', anchor='e', fill='y')
     else:
         note.pack_forget()
         btn_frame.pack_forget()
+
+
+def line_numb():
+    if is_linenumb.get():
+        outer_frame.pack(side='left', anchor='w', fill='y')
+    else:
+        outer_frame.pack_forget()
+
 
 
 # help menu
@@ -251,20 +279,34 @@ def trouble_com():
     win.wait_window()
 
 
-# context menu (right-click)
+#context menu (right-click)
 def r_click(event):
     editmenu.tk_popup(event.x_root, event.y_root)
 texpert.bind("<Button-3>", r_click)
 
-
+#line count (statusbar)
 def linecount(event):
-    (line, col) = map(int, event.widget.index("end-1c").split("."))
-    line_lbl['text'] = 'Line {line}, Col {col}'.format(line=line, col=col+1)
+    (line, char) = map(int, event.widget.index("end-1c").split("."))
+    line_lbl['text'] = 'Line {line}, Col {col}'.format(line=line, col=char+1)
 texpert.bind("<KeyRelease>", linecount)
 
 
+#line numbers (left margin)
+def line_numbers(event):
+    index = texpert.index("@%s,%s" % (event.x, event.y))
+    line, char = index.split(".")
+    #line_lbl.configure(text=" Line %s, Col _" % line)
+texpert.bind("<1>", line_numbers)
 
-# Menu Buttons/Labels
+
+def left_margin():
+    print ("Left")
+
+def right_margin():
+    print ("Right")
+
+
+# Main Menu 
 menu = tk.Menu(root, bd=1, relief='flat')
 root.config(menu=menu, bd=2)
 
@@ -323,7 +365,11 @@ toolmenu.add_command(label="Insert Time", command=time_com)
 toolmenu.add_command(label="Insert Date", command=date_com)
 is_notearea = tk.BooleanVar()
 is_notearea.trace('w', lambda *args: note_area())
-toolmenu.add_checkbutton(label="Note Area", variable=is_notearea, indicatoron=1)
+toolmenu.add_checkbutton(label="Note Area", variable=is_notearea)
+
+is_linenumb = tk.BooleanVar()
+is_linenumb.trace('w', lambda *args: line_numb())
+toolmenu.add_checkbutton(label="Line Numbers", variable=is_linenumb, state='disabled')
 
 #help menu
 helpmenu = tk.Menu(menu, tearoff=0)
@@ -333,20 +379,21 @@ helpmenu.add_command(label="Troubleshooting", command=trouble_com)
 
 
 
-# Toolbar/Buttons 
-toolbar = tk.Frame(root, bd=2, relief='groove')
+# Toolbar 
+toolbar = tk.Frame(mainframe, bd=2, relief='groove')
+toolbar.pack(side='top', anchor='n', fill='x')
 b1 = tk.Button(toolbar, text="Open", width=4, command=open_com)
 b1.pack(side='left', padx=4, pady=2)
 b2 = tk.Button(toolbar, text="Save", width=4, command=saveas_com)
 b2.pack(side='right', padx=4, pady=2)
 b4 = tk.Button(toolbar, text="Notes", width=4, 
-            command=lambda: is_notearea.set(not is_notearea.get()))
+               command=lambda: is_notearea.set(not is_notearea.get()))
 b4.pack(side='right', padx=4, pady=2)
-toolbar.pack(side='top', anchor='n', fill='x')
+
 
 
 # Toolbar 'Mode' button
-var = tk.StringVar()
+var = tk.StringVar(toolbar)
 var.set("Mode")
 w = tk.OptionMenu(toolbar, variable = var, value='')
 w.config(indicatoron=0, bd=1, width=6, padx=4, pady=5)
@@ -397,16 +444,19 @@ close = tk.Button(note, text="Close", width=4, command=lambda: is_notearea.set(n
 close.pack(side='right', padx=2, pady=2)
 
 
-# statusBar
-statusbar = tk.Frame(root, bd=1, relief='sunken')
-mode = tk.Label(statusbar, text=" Mode: Light")
-mode.pack(side='left')
-line_lbl = tk.Label(statusbar, text="Line 1, Col 1")
-line_lbl.pack(side='right', padx=10)
-statusbar.pack(side='bottom', fill='x')
+# Init Line Numbers
+outer_frame = tk.Frame(texpert, bd=0, relief='flat')
+tex = tk.Text(outer_frame, width=4, bg="#F0F0F0", bd=0, relief='flat', font=('Arial 12'))
+tex.pack(side='top', fill='both', expand=True)
+for n in range(1,999):
+    tex.insert('end', " %s\n" % n)
+tex.config(state='disabled')
+#tex.tag_config("right", justify='right')
+#tex.tag_add("right", 1.0, "end")
 
 
-texpert.pack(side='bottom', fill='both', expand=True)
 root.protocol("WM_DELETE_WINDOW", exit_com)
 
+app = Texpert(root)
 root.mainloop()
+
