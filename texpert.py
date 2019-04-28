@@ -20,9 +20,10 @@ root.title("Texpert")
 root.geometry("700x480")
 root.option_add("*Font", "TkDefaultFont 9")
 
-class Texpert:
+
+class Texpert(tk.Frame):
     def __init__(self, master):
-        self.master = master
+        tk.Frame.__init__(self, master)
 	master.title("Texpert")
 
 
@@ -457,6 +458,6 @@ tex.config(state='disabled')
 
 root.protocol("WM_DELETE_WINDOW", exit_com)
 
-app = Texpert(root)
+Texpert(root).pack()
 root.mainloop()
 
