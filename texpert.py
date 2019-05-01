@@ -2,6 +2,8 @@
 # Texpert Text Editor 
 # Written by David Lawson
 
+import os
+import sys
 import time
 import datetime
 
@@ -89,6 +91,7 @@ def exit_com():
     win.geometry('224x120')
     win.wait_window()
 
+
 # edit menu
 def undo_com():
     texpert.edit_undo()
@@ -114,11 +117,12 @@ texpert.bind("<Control-Key-a>", select_all)
 texpert.bind("<Control-Key-A>", select_all)
 
 # view menu
-def hide_toolbar():
-    toolbar.pack_forget()
+def tool_bar():
+    if is_tbar.get():
+        toolbar.pack_forget()
+    else:
+	toolbar.pack(side='top', anchor='n', fill='x')
 
-def show_toolbar():
-    toolbar.pack(side='top', anchor='n', fill='x')
 
 # sub-menu for: [view > mode]
 def dark_mode():
@@ -145,6 +149,12 @@ def mint_mode():
     mode["text"] = " Mode: Chocolate Mint"
     texpert.config(background="#CCFFCC", fg="#40210D", insertbackground="#40210D")
 
+def transparent():
+    if is_trans.get():
+	root.wm_attributes('-alpha',0.9)
+    else:
+	root.wm_attributes('-alpha',1.0)
+
 def tray_com():
     root.iconify()
 
@@ -163,7 +173,7 @@ def default_view():
     texpert = tkst.ScrolledText(root, undo=True, font=('Arial 11'))
     texpert.config(padx=2, pady=2, wrap="word")
     texpert.focus_set()
-
+    
 def full_screen():
     root.attributes('-zoomed', True)
     root.option_add("*Font", "TkDefaultFont 9")
@@ -193,13 +203,11 @@ def note_area():
         note.pack_forget()
         btn_frame.pack_forget()
 
-
 def line_numb():
     if is_linenumb.get():
         outer_frame.pack(side='left', anchor='w', fill='y')
     else:
         outer_frame.pack_forget()
-
 
 
 # help menu
@@ -300,12 +308,6 @@ def line_numbers(event):
 texpert.bind("<1>", line_numbers)
 
 
-def left_margin():
-    print ("Left")
-
-def right_margin():
-    print ("Right")
-
 
 # Main Menu 
 menu = tk.Menu(root, bd=1, relief='flat')
@@ -323,6 +325,7 @@ filemenu.add_separator()
 filemenu.add_command(label="Close", command=close_com)
 filemenu.add_command(label="Exit", command=exit_com, underline=1)
 
+
 #edit menu
 editmenu = tk.Menu(menu, tearoff=0)
 menu.add_cascade(label="Edit ", menu=editmenu)
@@ -335,11 +338,14 @@ editmenu.add_command(label="Paste", command=paste_com)
 editmenu.add_separator()
 editmenu.add_command(label="Select All", command=select_all) 
 
+
 #view menu
 viewmenu = tk.Menu(menu, tearoff=0)
 menu.add_cascade(label="View ", menu=viewmenu)
-viewmenu.add_command(label="Hide Toolbar", command=hide_toolbar)
-viewmenu.add_command(label="Show Toolbar", command=show_toolbar)
+
+is_tbar = tk.BooleanVar()
+is_tbar.trace('w', lambda *args: tool_bar())
+viewmenu.add_checkbutton(label="Toolbar", variable=is_tbar, onvalue=0, offvalue=1)
 viewmenu.add_separator()
 
 #sub-menu for: [view > mode]
@@ -352,12 +358,18 @@ submenu.add_command(label=" Night Vision", command=night_mode, activebackground=
 submenu.add_command(label=" Desert View", command=desert_mode, activebackground="#E9DDB3", activeforeground="#40210D")
 submenu.add_command(label=" Chocolate Mint", command=mint_mode, activebackground="#CCFFCC", activeforeground="#40210D")
 
+is_trans = tk.BooleanVar()
+is_trans.trace('w', lambda *args: transparent())
+viewmenu.add_checkbutton(label="Transparent", variable=is_trans, onvalue=1, offvalue=0)
+
 viewmenu.add_separator()
 viewmenu.add_command(label="Hide in Tray", command=tray_com)
+
 viewmenu.add_separator()
 viewmenu.add_command(label="Slim View", command=slim_view)
 viewmenu.add_command(label="Default", command=default_view)
 viewmenu.add_command(label="Fullscreen", command=full_screen)
+
 
 #tool menu
 toolmenu = tk.Menu(menu, tearoff=0)
@@ -372,6 +384,7 @@ is_linenumb = tk.BooleanVar()
 is_linenumb.trace('w', lambda *args: line_numb())
 toolmenu.add_checkbutton(label="Line Numbers", variable=is_linenumb, state='disabled')
 
+
 #help menu
 helpmenu = tk.Menu(menu, tearoff=0)
 menu.add_cascade(label="Help ", menu=helpmenu)
@@ -379,8 +392,7 @@ helpmenu.add_command(label="About", command=about_com)
 helpmenu.add_command(label="Troubleshooting", command=trouble_com)
 
 
-
-# Toolbar 
+# ToolBar
 toolbar = tk.Frame(mainframe, bd=2, relief='groove')
 toolbar.pack(side='top', anchor='n', fill='x')
 b1 = tk.Button(toolbar, text="Open", width=4, command=open_com)
@@ -391,9 +403,7 @@ b4 = tk.Button(toolbar, text="Notes", width=4,
                command=lambda: is_notearea.set(not is_notearea.get()))
 b4.pack(side='right', padx=4, pady=2)
 
-
-
-# Toolbar 'Mode' button
+# ToolBar 'Mode' button
 var = tk.StringVar(toolbar)
 var.set("Mode")
 w = tk.OptionMenu(toolbar, variable = var, value='')
