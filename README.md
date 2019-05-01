@@ -27,6 +27,8 @@ Statusbar: changes according to 'Mode'.
 
 Expandable Note Area!!  
 
+Transparency: for those who dont want to see too much.
+
   
 **Designed for Linux**   
 
