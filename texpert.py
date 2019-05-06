@@ -119,7 +119,7 @@ texpert.bind("<Control-Key-A>", select_all)
 
 # view menu
 def tool_bar():
-    if is_tbar.get():
+    if is_toolbar.get():
         toolbar.pack_forget()
     else:
 	toolbar.pack(side='top', anchor='n', fill='x')
@@ -129,12 +129,6 @@ def status_bar():
         statusbar.pack_forget()
     else:
 	statusbar.pack(side='bottom', fill='x')
-
-def transparent():
-    if is_trans.get():
-	root.wm_attributes('-alpha',0.9)
-    else:
-	root.wm_attributes('-alpha',1.0)
 
 # sub-menu for: [view > mode]
 def dark_mode():
@@ -160,6 +154,12 @@ def desert_mode():
 def mint_mode():
     mode["text"] = " Mode: Chocolate Mint"
     texpert.config(background="#CCFFCC", fg="#40210D", insertbackground="#40210D")
+
+def transparent():
+    if is_transparent.get():
+	root.wm_attributes('-alpha',0.9)
+    else:
+	root.wm_attributes('-alpha',1.0)
 
 def tray_com():
     root.iconify()
@@ -349,18 +349,14 @@ editmenu.add_command(label="Select All", command=select_all)
 viewmenu = tk.Menu(menu, tearoff=0)
 menu.add_cascade(label="View ", menu=viewmenu)
 
-is_tbar = tk.BooleanVar()
-is_tbar.trace('w', lambda *args: tool_bar())
-viewmenu.add_checkbutton(label="Toolbar", variable=is_tbar, onvalue=0, offvalue=1)
+is_toolbar = tk.BooleanVar()
+is_toolbar.trace('w', lambda *args: tool_bar())
+viewmenu.add_checkbutton(label="Toolbar", variable=is_toolbar, onvalue=0, offvalue=1)
 
 is_statusbar = tk.BooleanVar()
 is_statusbar.trace('w', lambda *args: status_bar())
 viewmenu.add_checkbutton(label="Statusbar", variable=is_statusbar, onvalue=0, offvalue=1)
 viewmenu.add_separator()
-
-is_trans = tk.BooleanVar()
-is_trans.trace('w', lambda *args: transparent())
-viewmenu.add_checkbutton(label="Transparent", variable=is_trans, onvalue=1, offvalue=0)
 
 #sub-menu for: [view > mode]
 submenu = tk.Menu(menu, tearoff=0)
@@ -371,6 +367,10 @@ submenu.add_command(label=" Legal Pad", command=legal_mode, activebackground="#F
 submenu.add_command(label=" Night Vision", command=night_mode, activebackground="#181818", activeforeground="#00FF33")
 submenu.add_command(label=" Desert View", command=desert_mode, activebackground="#E9DDB3", activeforeground="#40210D")
 submenu.add_command(label=" Chocolate Mint", command=mint_mode, activebackground="#CCFFCC", activeforeground="#40210D")
+
+is_transparent = tk.BooleanVar()
+is_transparent.trace('w', lambda *args: transparent())
+viewmenu.add_checkbutton(label="Transparency", variable=is_transparent, onvalue=1, offvalue=0)
 
 viewmenu.add_separator()
 viewmenu.add_command(label="Hide in Tray", command=tray_com)
