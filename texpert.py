@@ -82,7 +82,7 @@ def close_com():
 def exit_com():
     win = tk.Toplevel()
     win.title("Exit")                                     
-    tk.Label(win, text="\nUnsaved work will be lost.\n\nAre you sure?\n").pack()   
+    tk.Label(win, text="\nUnsaved work will be lost.\n\nAre you sure you want to exit?\n").pack()   
     ex = tk.Button(win, text="Exit", width=4, command=root.destroy)
     ex.pack(side='left', padx=24, pady=4)
     can = tk.Button(win, text="Cancel", width=4, command=win.destroy)
@@ -306,15 +306,6 @@ def linecount(event):
 texpert.bind("<KeyRelease>", linecount)
 
 
-#line numbers (left margin)
-def line_numbers(event):
-    index = texpert.index("@%s,%s" % (event.x, event.y))
-    line, char = index.split(".")
-    #line_lbl.configure(text=" Line %s, Col _" % line)
-texpert.bind("<1>", line_numbers)
-
-
-
 # Main Menu 
 menu = tk.Menu(root, bd=1, relief='flat')
 root.config(menu=menu, bd=2)
@@ -389,10 +380,6 @@ is_notearea = tk.BooleanVar()
 is_notearea.trace('w', lambda *args: note_area())
 toolmenu.add_checkbutton(label="Note Area", variable=is_notearea)
 
-is_linenumb = tk.BooleanVar()
-is_linenumb.trace('w', lambda *args: line_numb())
-toolmenu.add_checkbutton(label="Line Numbers", variable=is_linenumb, state='disabled')
-
 
 #help menu
 helpmenu = tk.Menu(menu, tearoff=0)
@@ -462,17 +449,6 @@ clear = tk.Button(note, text="Clear", width=4, command=lambda: tx.delete('1.0', 
 clear.pack(side='left', padx=2, pady=2)
 close = tk.Button(note, text="Close", width=4, command=lambda: is_notearea.set(not is_notearea.get()))
 close.pack(side='right', padx=2, pady=2)
-
-
-# Init Line Numbers
-outer_frame = tk.Frame(texpert, bd=0, relief='flat')
-tex = tk.Text(outer_frame, width=4, bg="#F0F0F0", bd=0, relief='flat', font=('Arial 12'))
-tex.pack(side='top', fill='both', expand=True)
-for n in range(1,999):
-    tex.insert('end', " %s\n" % n)
-tex.config(state='disabled')
-#tex.tag_config("right", justify='right')
-#tex.tag_add("right", 1.0, "end")
 
 
 root.protocol("WM_DELETE_WINDOW", exit_com)
