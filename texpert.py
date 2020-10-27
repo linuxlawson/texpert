@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # Texpert Text Editor 
 # Written by David Lawson
+# using Python/Tkinter (2.7)
 
 import os
 import sys
@@ -60,6 +61,7 @@ def open_com():
     file = tkFileDialog.askopenfile(parent=root, mode='rb', title='Select File')
     if file is not None:
   	contents = file.read()
+	name = root.title(file.name) #adds path/filename to title
         texpert.delete('1.0', 'end-1c')
 	texpert.insert('1.0', contents)
 	file.close()
@@ -73,6 +75,20 @@ def saveas_com():
 	data = texpert.get('1.0', 'end-1c')
 	file.write(data)
  	file.close()
+
+#both print and print preview not done
+def print_com():
+    print ("")
+
+def preview_com():
+    print ("Silent Save")
+    root.attributes('-zoomed', False)
+    root.geometry("740x800+440+175") #experimental
+    root.option_add("*Font", "TkDefaultFont 9")
+    texpert = tkst.ScrolledText(root, undo=True, font=('Arial 11'))
+    texpert.config(padx=2, pady=2, wrap="word")
+    texpert.focus_set()
+
 
 def close_com():
     root.title('') 
@@ -286,11 +302,11 @@ DEALINGS IN THE SOFTWARE.\n\n""").pack()
 def trouble_com():
     win = tk.Toplevel()
     win.title("Troubleshooting")                                     
-    tk.Label(win, justify='left', text="\n\nThis program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand will probably never be complete.\n\n\nKnown Issues: Unknown\n\n").pack()   
+    tk.Label(win, justify='left', text="\n\nThis program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand may or may not ever be complete.\n\n\nKnown Issues: \n\nLine/Col numbers are not fully functional.\nProblem remains: unfixed.\n\nSave/Save as both work as 'Save as'\n\nPrint preview is not entirely accurate.\n\nAlso, (pay attention because this is important)\nanything typed in note area will not be saved\nalong with other work and/or documents,\n'twas not designed/programmed to do so.\n\n\nAnyway..\n\n").pack()   
     
     tk.Button(win, text='Close', command=win.destroy).pack()   
     win.transient(root)
-    win.geometry('300x220')
+    win.geometry('320x428')
     win.wait_window()
 
 
@@ -318,22 +334,28 @@ filemenu.add_command(label="Open", command=open_com)
 filemenu.add_separator()
 filemenu.add_command(label="Save", command=saveas_com)
 filemenu.add_command(label="Save As", command=saveas_com)
+
+filemenu.add_separator()
+filemenu.add_command(label="Print", command=print_com, state="disabled")
+filemenu.add_command(label="Print Preview", command=preview_com)
+
+
 filemenu.add_separator()
 filemenu.add_command(label="Close", command=close_com)
-filemenu.add_command(label="Exit", command=exit_com, underline=1)
+filemenu.add_command(label="Exit", command=exit_com, underline=1, accelerator="Alt+F4")
 
 
 #edit menu
 editmenu = tk.Menu(menu, tearoff=0)
 menu.add_cascade(label="Edit ", menu=editmenu)
-editmenu.add_command(label="Undo", command=undo_com)
-editmenu.add_command(label="Redo", command=redo_com)
+editmenu.add_command(label="Undo", command=undo_com, accelerator="Ctrl+Z")
+editmenu.add_command(label="Redo", command=redo_com, accelerator="")
 editmenu.add_separator()
-editmenu.add_command(label="Cut", command=cut_com)
-editmenu.add_command(label="Copy", command=copy_com)  
-editmenu.add_command(label="Paste", command=paste_com) 
+editmenu.add_command(label="Cut", command=cut_com, accelerator="Ctrl+X")
+editmenu.add_command(label="Copy", command=copy_com, accelerator="Ctrl+C")  
+editmenu.add_command(label="Paste", command=paste_com, accelerator="Ctrl+V") 
 editmenu.add_separator()
-editmenu.add_command(label="Select All", command=select_all) 
+editmenu.add_command(label="Select All", command=select_all, accelerator="Ctrl+A") 
 
 
 #view menu
@@ -442,7 +464,7 @@ w['menu'].add_checkbutton(label="Chocolate Mint", onvalue=1, offvalue=0,
 btn_frame = tk.Frame(texpert, bd=0, relief='sunken')
 note = tk.LabelFrame(btn_frame, bd=0, relief='flat')
 tx = tk.Text(note, width=18)
-tx.insert('1.0', "Nothing here is saved..")
+tx.insert('1.0', "Notes are not saved..")
 tx.config(padx=2, pady=2, wrap="word")
 tx.pack(side='top', fill='both', expand=True)
 clear = tk.Button(note, text="Clear", width=4, command=lambda: tx.delete('1.0', 'end-1c'))
