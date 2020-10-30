@@ -52,12 +52,12 @@ line_lbl.pack(side='right', padx=10)
 
 # Menu Functions
 # file menu
-def new_com(): 
-    root.title("Untitled ") 
+def new_com(event=None): 
+    root.title("New Document ") 
     file = None
     texpert.delete('1.0', 'end-1c') 
     
-def open_com():
+def open_com(event=None):
     file = tkFileDialog.askopenfile(parent=root, mode='rb', title='Select File')
     if file is not None:
   	contents = file.read()
@@ -66,10 +66,10 @@ def open_com():
 	texpert.insert('1.0', contents)
 	file.close()
 
-def save_com():
+def save_com(event=None):
     print ("Silent Save")
 
-def saveas_com():
+def saveas_com(event=None):
     file = tkFileDialog.asksaveasfile(mode='w')
     if file is not None:
 	data = texpert.get('1.0', 'end-1c')
@@ -78,10 +78,9 @@ def saveas_com():
 
 #both print and print preview not done
 def print_com():
-    print ("")
+    print ("Printer not found")
 
 def preview_com():
-    print ("Silent Save")
     root.attributes('-zoomed', False)
     root.geometry("740x800+440+175") #experimental
     root.option_add("*Font", "TkDefaultFont 9")
@@ -89,9 +88,8 @@ def preview_com():
     texpert.config(padx=2, pady=2, wrap="word")
     texpert.focus_set()
 
-
-def close_com():
-    root.title('') 
+def close_com(event=None):
+    root.title('Untitled') 
     file = None
     texpert.delete('1.0', 'end-1c') 
     
@@ -129,9 +127,7 @@ def select_all(event=None):
     texpert.mark_set('insert', '1.0')
     texpert.see('insert')
     return 'break'
-texpert.bind("<Control-Key-a>", select_all)
-texpert.bind("<Control-Key-A>", select_all)
-
+texpert.bind("<Control-a>", select_all)
 
 # view menu
 def tool_bar():
@@ -233,7 +229,7 @@ def line_numb():
 
 
 # help menu
-def about_com():
+def about_com(event=None):
     win = tk.Toplevel()
     win.title("About")                                     
     tk.Label(win, text="\n\n\nTexpert\n\nA small text editor designed for Linux\n\nMade in Python with Tkinter\n\n\n").pack()   
@@ -299,14 +295,14 @@ DEALINGS IN THE SOFTWARE.\n\n""").pack()
     win.wait_window()
 
 
-def trouble_com():
+def trouble_com(event=None):
     win = tk.Toplevel()
     win.title("Troubleshooting")                                     
-    tk.Label(win, justify='left', text="\n\nThis program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand may or may not ever be complete.\n\n\nKnown Issues: \n\nLine/Col numbers are not fully functional.\nProblem remains: unfixed.\n\nSave/Save as both work as 'Save as'\n\nPrint preview is not entirely accurate.\n\nAlso, (pay attention because this is important)\nanything typed in note area will not be saved\nalong with other work and/or documents,\n'twas not designed/programmed to do so.\n\n\nAnyway..\n\n").pack()   
+    tk.Label(win, justify='left', text="\n\nThis program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand may or may not ever be complete.\n\n\n\nKnown Issues: \n\nLine/Col numbers are not fully functional.\nProblem remains: unfixed.\n\nSave/Save as both work as 'Save as'\n\nPrint preview is not entirely accurate.\n\nAlso, (pay attention because this is important)\nanything typed in note area will not be saved,\nas it was not designed/programmed to do so.\n\n\nAnyway..\n\n").pack()   
     
     tk.Button(win, text='Close', command=win.destroy).pack()   
     win.transient(root)
-    win.geometry('320x428')
+    win.geometry('324x424')
     win.wait_window()
 
 
@@ -329,10 +325,10 @@ root.config(menu=menu, bd=2)
 #file menu
 filemenu = tk.Menu(menu, tearoff=0)
 menu.add_cascade(label="File ", menu=filemenu)
-filemenu.add_command(label="New", command=new_com) 
-filemenu.add_command(label="Open", command=open_com)
+filemenu.add_command(label="New", command=new_com, accelerator="Ctrl+N") 
+filemenu.add_command(label="Open", command=open_com, accelerator="Ctrl+O")
 filemenu.add_separator()
-filemenu.add_command(label="Save", command=saveas_com)
+filemenu.add_command(label="Save", command=saveas_com, accelerator="Ctrl+S")
 filemenu.add_command(label="Save As", command=saveas_com)
 
 filemenu.add_separator()
@@ -341,7 +337,7 @@ filemenu.add_command(label="Print Preview", command=preview_com)
 
 
 filemenu.add_separator()
-filemenu.add_command(label="Close", command=close_com)
+filemenu.add_command(label="Close", command=close_com, accelerator="Ctrl+W")
 filemenu.add_command(label="Exit", command=exit_com, underline=1, accelerator="Alt+F4")
 
 
@@ -349,7 +345,7 @@ filemenu.add_command(label="Exit", command=exit_com, underline=1, accelerator="A
 editmenu = tk.Menu(menu, tearoff=0)
 menu.add_cascade(label="Edit ", menu=editmenu)
 editmenu.add_command(label="Undo", command=undo_com, accelerator="Ctrl+Z")
-editmenu.add_command(label="Redo", command=redo_com, accelerator="")
+editmenu.add_command(label="Redo", command=redo_com, accelerator="Shift+Ctrl+Z")
 editmenu.add_separator()
 editmenu.add_command(label="Cut", command=cut_com, accelerator="Ctrl+X")
 editmenu.add_command(label="Copy", command=copy_com, accelerator="Ctrl+C")  
@@ -473,8 +469,13 @@ close = tk.Button(note, text="Close", width=4, command=lambda: is_notearea.set(n
 close.pack(side='right', padx=2, pady=2)
 
 
+root.bind_all('<Control-n>', new_com)
+root.bind_all('<Control-o>', open_com)
+root.bind_all('<Control-s>', save_com)
+root.bind_all('<Control-s>', saveas_com)
+root.bind_all('<Control-w>', close_com)
+
 root.protocol("WM_DELETE_WINDOW", exit_com)
 
 Texpert(root).pack()
 root.mainloop()
-
