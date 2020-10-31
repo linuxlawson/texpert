@@ -18,16 +18,10 @@ except:
     import tkinter.filedialog as tkFileDialog
 
 
-root = tk.Tk(className = "Texpert")
+root = tk.Tk()
 root.title("Texpert")
 root.geometry("700x480")
 root.option_add("*Font", "TkDefaultFont 9")
-
-
-class Texpert(tk.Frame):
-    def __init__(self, master):
-        tk.Frame.__init__(self, master)
-	master.title("Texpert")
 
 
 # Main Frame
@@ -47,7 +41,6 @@ mode = tk.Label(statusbar, text=" Mode: Light")
 mode.pack(side='left')
 line_lbl = tk.Label(statusbar, text="Line 1, Col 1")
 line_lbl.pack(side='right', padx=10)
-
 
 
 # Menu Functions
@@ -76,7 +69,7 @@ def saveas_com(event=None):
 	file.write(data)
  	file.close()
 
-#both print and print preview not done
+#print and print preview not done
 def print_com():
     print ("Printer not found")
 
@@ -84,10 +77,11 @@ def preview_com():
     root.attributes('-zoomed', False)
     root.geometry("740x800+440+175") #experimental
     root.option_add("*Font", "TkDefaultFont 9")
-    texpert = tkst.ScrolledText(root, undo=True, font=('Arial 11'))
-    texpert.config(padx=2, pady=2, wrap="word")
+    #texpert = tkst.ScrolledText(root, undo=True, font=('Arial 11'))
+    texpert.config(padx=10, pady=4, wrap="word")
     texpert.focus_set()
-
+    statusbar.pack_forget()
+    
 def close_com(event=None):
     root.title('Untitled') 
     file = None
@@ -191,7 +185,8 @@ def default_view():
     texpert = tkst.ScrolledText(root, undo=True, font=('Arial 11'))
     texpert.config(padx=2, pady=2, wrap="word")
     texpert.focus_set()
-    
+    statusbar.pack(side='bottom', fill='x')
+
 def full_screen():
     root.attributes('-zoomed', True)
     root.option_add("*Font", "TkDefaultFont 9")
@@ -476,6 +471,4 @@ root.bind_all('<Control-s>', saveas_com)
 root.bind_all('<Control-w>', close_com)
 
 root.protocol("WM_DELETE_WINDOW", exit_com)
-
-Texpert(root).pack()
 root.mainloop()
