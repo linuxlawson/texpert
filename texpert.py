@@ -69,15 +69,13 @@ def saveas_com(event=None):
 	file.write(data)
  	file.close()
 
-#print and print preview not done
+#print/print preview not done
 def print_com():
     print ("Printer not found")
 
 def preview_com():
-    root.attributes('-zoomed', False)
     root.geometry("740x800+440+175") #experimental
     root.option_add("*Font", "TkDefaultFont 9")
-    #texpert = tkst.ScrolledText(root, undo=True, font=('Arial 11'))
     texpert.config(padx=10, pady=4, wrap="word")
     texpert.focus_set()
     statusbar.pack_forget()
@@ -121,7 +119,6 @@ def select_all(event=None):
     texpert.mark_set('insert', '1.0')
     texpert.see('insert')
     return 'break'
-texpert.bind("<Control-a>", select_all)
 
 # view menu
 def tool_bar():
@@ -293,11 +290,24 @@ DEALINGS IN THE SOFTWARE.\n\n""").pack()
 def trouble_com(event=None):
     win = tk.Toplevel()
     win.title("Troubleshooting")                                     
-    tk.Label(win, justify='left', text="\n\nThis program was designed for Linux and\nmay not work on other operating systems. \n\nTexpert text editor is a work in progress\nand may or may not ever be complete.\n\n\n\nKnown Issues: \n\nLine/Col numbers are not fully functional.\nProblem remains: unfixed.\n\nSave/Save as both work as 'Save as'\n\nPrint preview is not entirely accurate.\n\nAlso, (pay attention because this is important)\nanything typed in note area will not be saved,\nas it was not designed/programmed to do so.\n\n\nAnyway..\n\n").pack()   
+    tk.Label(win, justify='left', text="""\n
+This program was designed for Linux and
+may not work on other operating systems.\n
+Texpert text editor is a work in progress
+and may or may not ever be completed.\n\n\n
+Known Issues:\n 
+Line/Col numbers are not fully functional.
+Problem remains: unfixed.\n
+Save/Save as both work as 'Save as'\n
+Print preview is not entirely accurate.\n
+Also, (pay attention because this is important)
+anything typed in note area will not be saved
+as it was not designed/programmed to do so.
+\n\nAnyway..\n""").pack()   
     
     tk.Button(win, text='Close', command=win.destroy).pack()   
     win.transient(root)
-    win.geometry('324x424')
+    win.geometry('360x424')
     win.wait_window()
 
 
@@ -325,12 +335,9 @@ filemenu.add_command(label="Open", command=open_com, accelerator="Ctrl+O")
 filemenu.add_separator()
 filemenu.add_command(label="Save", command=saveas_com, accelerator="Ctrl+S")
 filemenu.add_command(label="Save As", command=saveas_com)
-
 filemenu.add_separator()
 filemenu.add_command(label="Print", command=print_com, state="disabled")
 filemenu.add_command(label="Print Preview", command=preview_com)
-
-
 filemenu.add_separator()
 filemenu.add_command(label="Close", command=close_com, accelerator="Ctrl+W")
 filemenu.add_command(label="Exit", command=exit_com, underline=1, accelerator="Alt+F4")
@@ -450,7 +457,6 @@ w['menu'].add_checkbutton(label="Chocolate Mint", onvalue=1, offvalue=0,
                          variable=sixth, command=mint_mode, indicatoron=0)
 
 
-
 # Init Note Area
 btn_frame = tk.Frame(texpert, bd=0, relief='sunken')
 note = tk.LabelFrame(btn_frame, bd=0, relief='flat')
@@ -463,7 +469,7 @@ clear.pack(side='left', padx=2, pady=2)
 close = tk.Button(note, text="Close", width=4, command=lambda: is_notearea.set(not is_notearea.get()))
 close.pack(side='right', padx=2, pady=2)
 
-
+texpert.bind("<Control-a>", select_all)
 root.bind_all('<Control-n>', new_com)
 root.bind_all('<Control-o>', open_com)
 root.bind_all('<Control-s>', save_com)
