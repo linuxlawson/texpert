@@ -23,7 +23,6 @@ root.title("Texpert")
 root.geometry("700x480")
 root.option_add("*Font", "TkDefaultFont 9")
 
-
 # Main Frame
 mainframe = tk.Frame(root, bd=0, relief='flat')
 mainframe.pack(fill='both', expand=True, padx=0, pady=0)
@@ -133,7 +132,8 @@ def status_bar():
     else:
 	statusbar.pack(side='bottom', fill='x')
 
-# sub-menu for: [view > mode]
+# modes for: [view > mode]
+# also statusbar text
 def dark_mode():
     mode["text"] = " Mode: Dark"
     texpert.config(background="#181818", fg="#F5F5F5", insertbackground="#F5F5F5")
@@ -143,20 +143,13 @@ def light_mode():
     texpert.config(background="#F5F5F5", fg="#181818", insertbackground="#181818")
 
 def legal_mode():
-    mode["text"] = " Mode: Legal Pad"
+    mode["text"] = " Mode: Legal"
     texpert.config(background="#FFFFCC", fg="#181818", insertbackground="#181818")
 
 def night_mode():
-    mode["text"] = " Mode: Night Vision"
+    mode["text"] = " Mode: Night"
     texpert.config(background="#181818", fg="#00FF33", insertbackground="#00FF33")
 
-def desert_mode():
-    mode["text"] = " Mode: Desert View"
-    texpert.config(background="#E9DDB3", fg="#40210D", insertbackground="#40210D")
-
-def mint_mode():
-    mode["text"] = " Mode: Chocolate Mint"
-    texpert.config(background="#CCFFCC", fg="#40210D", insertbackground="#40210D")
 
 def transparent():
     if is_transparent.get():
@@ -195,7 +188,7 @@ def full_screen():
 # tools menu
 def time_com():
     ctime = time.strftime('%I:%M %p')
-    texpert.insert('insert', ctime, "a")
+    texpert.insert('insert', ctime, "a", ' ')
 
 def date_com():
     full_date = time.localtime()
@@ -203,7 +196,7 @@ def date_com():
     month = str(full_date.tm_mon)
     year = str(full_date.tm_year)
     date = ""+month+'/'+day+'/'+year
-    texpert.insert('insert', date, "a")
+    texpert.insert('insert', date, "a", ' ')
 
 def note_area():
     if is_notearea.get():
@@ -372,12 +365,10 @@ viewmenu.add_separator()
 #sub-menu for: [view > mode]
 submenu = tk.Menu(menu, tearoff=0)
 viewmenu.add_cascade(label="Mode ", menu=submenu)
-submenu.add_command(label=" Dark", command=dark_mode, activebackground="#181818", activeforeground="#F5F5F5")
-submenu.add_command(label=" Light", command=light_mode, activebackground="#F5F5F5", activeforeground="#181818")
-submenu.add_command(label=" Legal Pad", command=legal_mode, activebackground="#FFFFCC", activeforeground="#181818")
-submenu.add_command(label=" Night Vision", command=night_mode, activebackground="#181818", activeforeground="#00FF33")
-submenu.add_command(label=" Desert View", command=desert_mode, activebackground="#E9DDB3", activeforeground="#40210D")
-submenu.add_command(label=" Chocolate Mint", command=mint_mode, activebackground="#CCFFCC", activeforeground="#40210D")
+submenu.add_command(label=" Dark ", command=dark_mode, activebackground="#181818", activeforeground="#F5F5F5")
+submenu.add_command(label=" Light ", command=light_mode, activebackground="#F5F5F5", activeforeground="#181818")
+submenu.add_command(label=" Legal ", command=legal_mode, activebackground="#FFFFCC", activeforeground="#181818")
+submenu.add_command(label=" Night ", command=night_mode, activebackground="#181818", activeforeground="#00FF33")
 
 is_transparent = tk.BooleanVar()
 is_transparent.trace('w', lambda *args: transparent())
@@ -432,29 +423,21 @@ forth = tk.BooleanVar()
 fifth = tk.BooleanVar()
 sixth = tk.BooleanVar()
 w['menu'].delete('0', 'end')
-w['menu'].add_checkbutton(label="Dark", onvalue=1, offvalue=0, 
+w['menu'].add_checkbutton(label="Dark  ", onvalue=1, offvalue=0, 
                          activebackground="#181818", activeforeground="#F5F5F5", 
                          variable=first, command=dark_mode, indicatoron=0)
 
-w['menu'].add_checkbutton(label="Light", onvalue=1, offvalue=0,
+w['menu'].add_checkbutton(label="Light  ", onvalue=1, offvalue=0,
                          activebackground="#F5F5F5", activeforeground="#181818", 
                          variable=second, command=light_mode, indicatoron=0)
 
-w['menu'].add_checkbutton(label="Legal Pad", onvalue=1, offvalue=0,
+w['menu'].add_checkbutton(label="Legal  ", onvalue=1, offvalue=0,
                          activebackground="#FFFFCC", activeforeground="#181818", 
                          variable=third, command=legal_mode, indicatoron=0)
 
-w['menu'].add_checkbutton(label="Night Vision", onvalue=1, offvalue=0,
+w['menu'].add_checkbutton(label="Night  ", onvalue=1, offvalue=0,
                          activebackground="#181818", activeforeground="#00FF33", 
                          variable=forth, command=night_mode, indicatoron=0)
-
-w['menu'].add_checkbutton(label="Desert View", onvalue=1, offvalue=0,
-                         activebackground="#E9DDB3", activeforeground="#40210D", 
-                         variable=fifth, command=desert_mode, indicatoron=0)
-
-w['menu'].add_checkbutton(label="Chocolate Mint", onvalue=1, offvalue=0,
-                         activebackground="#CCFFCC", activeforeground="#40210D", 
-                         variable=sixth, command=mint_mode, indicatoron=0)
 
 
 # Init Note Area
