@@ -17,7 +17,6 @@ except:
     import tkinter.scrolledtext as tkst
     import tkinter.filedialog as tkFileDialog
 
-
 root = tk.Tk()
 root.title("Texpert")
 root.geometry("700x480")
@@ -78,7 +77,7 @@ def preview_com():
     texpert.config(padx=10, pady=4, wrap="word")
     texpert.focus_set()
     statusbar.pack_forget()
-    
+        
 def close_com(event=None):
     root.title('Untitled') 
     file = None
@@ -167,6 +166,7 @@ def vertical_view():
     texpert = tkst.ScrolledText(root, undo=True, font=('Arial 11'))
     texpert.config(padx=2, pady=2, wrap="word")
     texpert.focus_set()
+    statusbar.pack(side='bottom', fill='x')
 
 def default_view():
     root.attributes('-zoomed', False)
@@ -183,7 +183,8 @@ def full_screen():
     texpert = tkst.ScrolledText(root, undo=True, font=('Arial 11'))
     texpert.config(padx=2, pady=2, wrap="word")
     texpert.focus_set()
-    
+    statusbar.pack(side='bottom', fill='x')
+
 
 # tools menu
 def time_com():
@@ -205,12 +206,6 @@ def note_area():
     else:
         note.pack_forget()
         btn_frame.pack_forget()
-
-def line_numb():
-    if is_linenumb.get():
-        outer_frame.pack(side='left', anchor='w', fill='y')
-    else:
-        outer_frame.pack_forget()
 
 
 # help menu
@@ -300,7 +295,7 @@ as it was not designed/programmed to do so.
     
     tk.Button(win, text='Close', command=win.destroy).pack()   
     win.transient(root)
-    win.geometry('360x424')
+    win.geometry('354x424')
     win.wait_window()
 
 
@@ -320,7 +315,7 @@ texpert.bind("<KeyRelease>", linecount)
 menu = tk.Menu(root, bd=1, relief='flat')
 root.config(menu=menu, bd=2)
 
-#file menu
+# File 
 filemenu = tk.Menu(menu, tearoff=0)
 menu.add_cascade(label="File ", menu=filemenu)
 filemenu.add_command(label="New", command=new_com, accelerator="Ctrl+N") 
@@ -336,7 +331,7 @@ filemenu.add_command(label="Close", command=close_com, accelerator="Ctrl+W")
 filemenu.add_command(label="Exit", command=exit_com, underline=1, accelerator="Alt+F4")
 
 
-#edit menu
+# Edit
 editmenu = tk.Menu(menu, tearoff=0)
 menu.add_cascade(label="Edit ", menu=editmenu)
 editmenu.add_command(label="Undo", command=undo_com, accelerator="Ctrl+Z")
@@ -349,7 +344,7 @@ editmenu.add_separator()
 editmenu.add_command(label="Select All", command=select_all, accelerator="Ctrl+A") 
 
 
-#view menu
+# View
 viewmenu = tk.Menu(menu, tearoff=0)
 menu.add_cascade(label="View ", menu=viewmenu)
 
@@ -382,7 +377,7 @@ viewmenu.add_command(label="Default", command=default_view)
 viewmenu.add_command(label="Fullscreen", command=full_screen)
 
 
-#tool menu
+# Tools
 toolmenu = tk.Menu(menu, tearoff=0)
 menu.add_cascade(label="Tools ", menu=toolmenu)
 toolmenu.add_command(label="Insert Time", command=time_com)
@@ -392,7 +387,7 @@ is_notearea.trace('w', lambda *args: note_area())
 toolmenu.add_checkbutton(label="Note Area", variable=is_notearea)
 
 
-#help menu
+# Help
 helpmenu = tk.Menu(menu, tearoff=0)
 menu.add_cascade(label="Help ", menu=helpmenu)
 helpmenu.add_command(label="About", command=about_com)
@@ -420,8 +415,7 @@ first = tk.BooleanVar()
 second = tk.BooleanVar()
 third = tk.BooleanVar()
 forth = tk.BooleanVar()
-fifth = tk.BooleanVar()
-sixth = tk.BooleanVar()
+
 w['menu'].delete('0', 'end')
 w['menu'].add_checkbutton(label="Dark  ", onvalue=1, offvalue=0, 
                          activebackground="#181818", activeforeground="#F5F5F5", 
