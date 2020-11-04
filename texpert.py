@@ -79,7 +79,7 @@ def preview_com():
     statusbar.pack_forget()
         
 def close_com(event=None):
-    root.title('Untitled') 
+    root.title("Untitled") 
     file = None
     texpert.delete('1.0', 'end-1c') 
     
@@ -89,6 +89,8 @@ def exit_com():
     tk.Label(win, text="\nUnsaved work will be lost.\n\nAre you sure you want to exit?\n").pack()   
     ex = tk.Button(win, text="Exit", width=4, command=root.destroy)
     ex.pack(side='left', padx=24, pady=4)
+    ex.focus_set()
+    ex.bind("<Return>", (lambda event: root.destroy()))
     can = tk.Button(win, text="Cancel", width=4, command=win.destroy)
     can.pack(side='right', padx=24, pady=4)
     win.transient(root)
@@ -163,7 +165,7 @@ def vertical_view():
     root.attributes('-zoomed', False)
     root.geometry("540x600+440+175")
     root.option_add("*Font", "TkDefaultFont 9")
-    texpert = tkst.ScrolledText(root, undo=True, font=('Arial 11'))
+    texpert = tkst.ScrolledText(root, undo=True, font=("Arial 11"))
     texpert.config(padx=2, pady=2, wrap="word")
     texpert.focus_set()
     statusbar.pack(side='bottom', fill='x')
@@ -172,7 +174,7 @@ def default_view():
     root.attributes('-zoomed', False)
     root.geometry("700x480+440+175") #size+position
     root.option_add("*Font", "TkDefaultFont 9")
-    texpert = tkst.ScrolledText(root, undo=True, font=('Arial 11'))
+    texpert = tkst.ScrolledText(root, undo=True, font=("Arial 11"))
     texpert.config(padx=2, pady=2, wrap="word")
     texpert.focus_set()
     statusbar.pack(side='bottom', fill='x')
@@ -180,7 +182,7 @@ def default_view():
 def full_screen():
     root.attributes('-zoomed', True)
     root.option_add("*Font", "TkDefaultFont 9")
-    texpert = tkst.ScrolledText(root, undo=True, font=('Arial 11'))
+    texpert = tkst.ScrolledText(root, undo=True, font=("Arial 11"))
     texpert.config(padx=2, pady=2, wrap="word")
     texpert.focus_set()
     statusbar.pack(side='bottom', fill='x')
@@ -216,7 +218,7 @@ def about_com(event=None):
     
     cre = tk.Button(win, text="Credits", width=4, command=credits_com)
     cre.pack(side='left', padx=8, pady=4)
-    ver = tk.Label(win, text="v 1.0", width=4, bd=0, state='disabled')
+    ver = tk.Label(win, text="v 1.0", width=4, bd=0, state="disabled")
     ver.pack(side='left', padx=8, pady=4, expand='yes')
     clo = tk.Button(win, text="Close", width=4, command=win.destroy)
     clo.pack(side='right', padx=8, pady=4)
@@ -269,7 +271,7 @@ CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
 IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 DEALINGS IN THE SOFTWARE.\n\n""").pack()   
     
-    tk.Button(win, text='Close', command=win.destroy).pack()   
+    tk.Button(win, text="Close", command=win.destroy).pack()   
     win.transient(root)
     win.geometry('480x450')
     win.wait_window()
@@ -293,7 +295,7 @@ anything typed in note area will not be saved
 as it was not designed/programmed to do so.
 \n\nAnyway..\n""").pack()   
     
-    tk.Button(win, text='Close', command=win.destroy).pack()   
+    tk.Button(win, text="Close", command=win.destroy).pack()   
     win.transient(root)
     win.geometry('354x424')
     win.wait_window()
@@ -446,7 +448,7 @@ clear.pack(side='left', padx=2, pady=2)
 close = tk.Button(note, text="Close", width=4, command=lambda: is_notearea.set(not is_notearea.get()))
 close.pack(side='right', padx=2, pady=2)
 
-texpert.bind("<Control-a>", select_all)
+texpert.bind_all('<Control-a>', select_all)
 root.bind_all('<Control-n>', new_com)
 root.bind_all('<Control-o>', open_com)
 root.bind_all('<Control-s>', save_com)
