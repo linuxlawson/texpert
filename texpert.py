@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # Texpert Text Editor 
 # Written by David Lawson
-# using Python/Tkinter (2.7)
+# using Python w/Tkinter
 
 import os
 import sys
@@ -12,11 +12,13 @@ try:
     import Tkinter as tk
     import ScrolledText as tkst
     import tkFileDialog
+    from tkFileDialog import askopenfilename
 except:
     import tkinter as tk
     import tkinter.scrolledtext as tkst
     import tkinter.filedialog as tkFileDialog
-
+    from tkinter.filedialog import askopenfilename
+    
 root = tk.Tk()
 root.title("Texpert")
 root.geometry("700x480")
@@ -49,7 +51,8 @@ def new_com(event=None):
     texpert.delete('1.0', 'end-1c') 
     
 def open_com(event=None):
-    file = tkFileDialog.askopenfile(parent=root, mode='rb', title='Select File')
+    file = tkFileDialog.askopenfile(parent=root, mode='rb', title="Select File")
+    filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")]
     if file is not None:
   	contents = file.read()
 	name = root.title(file.name) #adds path/filename to title
@@ -62,6 +65,7 @@ def save_com(event=None):
 
 def saveas_com(event=None):
     file = tkFileDialog.asksaveasfile(mode='w')
+    filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")]
     if file is not None:
 	data = texpert.get('1.0', 'end-1c')
 	file.write(data)
@@ -72,12 +76,13 @@ def print_com():
     print ("Printer not found")
 
 def preview_com():
-    root.geometry("740x800+440+175") #experimental
-    root.option_add("*Font", "TkDefaultFont 9")
-    texpert.config(padx=10, pady=4, wrap="word")
-    texpert.focus_set()
-    statusbar.pack_forget()
-        
+	root.geometry("740x800+440+175") #experimental
+	root.option_add("*Font", "TkDefaultFont 9")
+	texpert.config(padx=12, pady=2, wrap="word")
+	texpert.focus_set()
+	statusbar.pack_forget()
+	toolbar.pack_forget()
+       
 def close_com(event=None):
     root.title("Untitled") 
     file = None
@@ -169,15 +174,17 @@ def vertical_view():
     texpert.config(padx=2, pady=2, wrap="word")
     texpert.focus_set()
     statusbar.pack(side='bottom', fill='x')
+    toolbar.pack(side='top', anchor='n', fill='x')
 
 def default_view():
-    root.attributes('-zoomed', False)
-    root.geometry("700x480+440+175") #size+position
-    root.option_add("*Font", "TkDefaultFont 9")
-    texpert = tkst.ScrolledText(root, undo=True, font=("Arial 11"))
-    texpert.config(padx=2, pady=2, wrap="word")
-    texpert.focus_set()
-    statusbar.pack(side='bottom', fill='x')
+	root.attributes('-zoomed', False)
+	root.geometry("700x480+440+175") #size+position
+	root.option_add("*Font", "TkDefaultFont 9")
+	texpert = tkst.ScrolledText(root, undo=True, font=("Arial 11"))
+	texpert.config(padx=2, pady=2, wrap="word")
+	texpert.focus_set()
+	statusbar.pack(side='bottom', fill='x')
+	toolbar.pack(side='top', anchor='n', fill='x')
 
 def full_screen():
     root.attributes('-zoomed', True)
@@ -186,6 +193,7 @@ def full_screen():
     texpert.config(padx=2, pady=2, wrap="word")
     texpert.focus_set()
     statusbar.pack(side='bottom', fill='x')
+    toolbar.pack(side='top', anchor='n', fill='x')
 
 
 # tools menu
@@ -288,7 +296,7 @@ and may or may not ever be completed.\n\n\n
 Known Issues:\n 
 Line/Col numbers are not fully functional.
 Problem remains: unfixed.\n
-Save/Save as both work as 'Save as'\n
+Save/Save as both work as 'Save as' (for now)\n
 Print preview is not entirely accurate.\n
 Also, (pay attention because this is important)
 anything typed in note area will not be saved
@@ -327,7 +335,7 @@ filemenu.add_command(label="Save", command=saveas_com, accelerator="Ctrl+S")
 filemenu.add_command(label="Save As", command=saveas_com)
 filemenu.add_separator()
 filemenu.add_command(label="Print", command=print_com, state="disabled")
-filemenu.add_command(label="Print Preview", command=preview_com)
+filemenu.add_command(label="Preview", command=preview_com)
 filemenu.add_separator()
 filemenu.add_command(label="Close", command=close_com, accelerator="Ctrl+W")
 filemenu.add_command(label="Exit", command=exit_com, underline=1, accelerator="Alt+F4")
