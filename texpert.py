@@ -78,11 +78,11 @@ def print_com():
 def preview_com():
 	root.geometry("740x800+440+175") #experimental
 	root.option_add("*Font", "TkDefaultFont 9")
-	texpert.config(padx=12, pady=2, wrap="word")
+	texpert.config(padx=32, pady=20, wrap="word", font = ('Arial 10'))
 	texpert.focus_set()
 	statusbar.pack_forget()
 	toolbar.pack_forget()
-       
+	            
 def close_com(event=None):
     root.title("Untitled") 
     file = None
@@ -170,8 +170,8 @@ def vertical_view():
     root.attributes('-zoomed', False)
     root.geometry("540x600+440+175")
     root.option_add("*Font", "TkDefaultFont 9")
-    texpert = tkst.ScrolledText(root, undo=True, font=("Arial 11"))
-    texpert.config(padx=2, pady=2, wrap="word")
+    #texpert = tkst.ScrolledText(root, undo=True, font=("Arial 11"))
+    texpert.config(padx=2, pady=2, wrap="word", font = ('Arial 11'))
     texpert.focus_set()
     statusbar.pack(side='bottom', fill='x')
     toolbar.pack(side='top', anchor='n', fill='x')
@@ -180,17 +180,17 @@ def default_view():
 	root.attributes('-zoomed', False)
 	root.geometry("700x480+440+175") #size+position
 	root.option_add("*Font", "TkDefaultFont 9")
-	texpert = tkst.ScrolledText(root, undo=True, font=("Arial 11"))
-	texpert.config(padx=2, pady=2, wrap="word")
+	#texpert = tkst.ScrolledText(root, undo=True, font=("Arial 11"))#save
+	texpert.config(padx=2, pady=2, wrap="word", font = ('Arial 11'))
 	texpert.focus_set()
 	statusbar.pack(side='bottom', fill='x')
 	toolbar.pack(side='top', anchor='n', fill='x')
-
+		
 def full_screen():
     root.attributes('-zoomed', True)
     root.option_add("*Font", "TkDefaultFont 9")
-    texpert = tkst.ScrolledText(root, undo=True, font=("Arial 11"))
-    texpert.config(padx=2, pady=2, wrap="word")
+    #texpert = tkst.ScrolledText(root, undo=True, font=("Arial 11"))
+    texpert.config(padx=2, pady=2, wrap="word", font = ('Arial 11'))
     texpert.focus_set()
     statusbar.pack(side='bottom', fill='x')
     toolbar.pack(side='top', anchor='n', fill='x')
@@ -247,7 +247,7 @@ def credits_com():
     cls.pack(side='right', padx=8, pady=4) 
     
     win.transient(root)
-    win.geometry('300x200')
+    win.geometry('300x200+640+484') #here
     win.wait_window()
 
 def license_info():
@@ -296,8 +296,9 @@ and may or may not ever be completed.\n\n\n
 Known Issues:\n 
 Line/Col numbers are not fully functional.
 Problem remains: unfixed.\n
-Save/Save as both work as 'Save as' (for now)\n
-Print preview is not entirely accurate.\n
+Save/Save as both work as 'Save as'\n
+Print preview is not entirely accurate.
+To exit print preview: [view > default]\n
 Also, (pay attention because this is important)
 anything typed in note area will not be saved
 as it was not designed/programmed to do so.
@@ -335,7 +336,7 @@ filemenu.add_command(label="Save", command=saveas_com, accelerator="Ctrl+S")
 filemenu.add_command(label="Save As", command=saveas_com)
 filemenu.add_separator()
 filemenu.add_command(label="Print", command=print_com, state="disabled")
-filemenu.add_command(label="Preview", command=preview_com)
+filemenu.add_command(label="Print Preview", command=preview_com)
 filemenu.add_separator()
 filemenu.add_command(label="Close", command=close_com, accelerator="Ctrl+W")
 filemenu.add_command(label="Exit", command=exit_com, underline=1, accelerator="Alt+F4")
