@@ -82,7 +82,8 @@ def preview_com():
 	texpert.focus_set()
 	statusbar.pack_forget()
 	toolbar.pack_forget()
-	            
+	toolbar2.pack(side='top', anchor='n', fill='x')
+           
 def close_com(event=None):
     root.title("Untitled") 
     file = None
@@ -139,7 +140,6 @@ def status_bar():
 	statusbar.pack(side='bottom', fill='x')
 
 # modes for: [view > mode]
-# also statusbar text
 def dark_mode():
     mode["text"] = " Mode: Dark"
     texpert.config(background="#181818", fg="#F5F5F5", insertbackground="#F5F5F5")
@@ -155,6 +155,20 @@ def legal_mode():
 def night_mode():
     mode["text"] = " Mode: Night"
     texpert.config(background="#181818", fg="#00FF33", insertbackground="#00FF33")
+
+
+# zoom modes for print preview
+def small_mode():
+    texpert.config(padx=34, pady=20, wrap="word", font = ('Arial 9'))
+    
+def big_mode():
+    texpert.config(padx=34, pady=20, wrap="word", font = ('Arial 10'))
+
+def bigger_mode():
+    texpert.config(padx=34, pady=20, wrap="word", font = ('Arial 11'))
+
+def biggest_mode():
+    texpert.config(padx=34, pady=20, wrap="word", font = ('Arial 12'))
 
 
 def transparent():
@@ -174,6 +188,7 @@ def vertical_view():
     texpert.focus_set()
     statusbar.pack(side='bottom', fill='x')
     toolbar.pack(side='top', anchor='n', fill='x')
+    toolbar2.pack_forget()
 
 def default_view():
 	root.attributes('-zoomed', False)
@@ -184,7 +199,8 @@ def default_view():
 	texpert.focus_set()
 	statusbar.pack(side='bottom', fill='x')
 	toolbar.pack(side='top', anchor='n', fill='x')
-		
+	toolbar2.pack_forget()
+	
 def full_screen(event=None):
     root.attributes('-zoomed', True)
     root.option_add("*Font", "TkDefaultFont 9")
@@ -192,6 +208,7 @@ def full_screen(event=None):
     texpert.focus_set()
     statusbar.pack(side='bottom', fill='x')
     toolbar.pack(side='top', anchor='n', fill='x')
+    toolbar2.pack_forget()
 
 
 # tools menu
@@ -295,16 +312,15 @@ Known Issues:\n
 Line/Col numbers are not fully functional.
 Problem remains: unfixed.\n
 Save/Save as both work as 'Save as'\n
-Print preview is not entirely accurate.
-To exit print preview: [view > default]\n
+Print preview is not entirely accurate.\n
 Also, (pay attention because this is important)
 anything typed in note area will not be saved
 as it was not designed/programmed to do so.
-\n\nAnyway..\n""").pack()   
+\n\n\nAnyway..\n""").pack()   
     
     tk.Button(win, text="Close", command=win.destroy).pack()   
     win.transient(root)
-    win.geometry('354x434')
+    win.geometry('354x430')
     win.wait_window()
 
 
@@ -398,7 +414,7 @@ menu.add_cascade(label="Help ", menu=helpmenu)
 helpmenu.add_command(label="About", command=about_com)
 helpmenu.add_command(label="Troubleshooting", command=trouble_com)
 
-# ToolBar
+# ToolBar (main)
 toolbar = tk.Frame(mainframe, bd=2, relief='groove')
 toolbar.pack(side='top', anchor='n', fill='x')
 b1 = tk.Button(toolbar, text="Open", width=4, command=open_com)
@@ -419,23 +435,46 @@ first = tk.BooleanVar()
 second = tk.BooleanVar()
 third = tk.BooleanVar()
 forth = tk.BooleanVar()
-
 w['menu'].delete('0', 'end')
 w['menu'].add_checkbutton(label="Dark  ", onvalue=1, offvalue=0, 
                          activebackground="#181818", activeforeground="#F5F5F5", 
                          variable=first, command=dark_mode, indicatoron=0)
-
 w['menu'].add_checkbutton(label="Light  ", onvalue=1, offvalue=0,
                          activebackground="#F5F5F5", activeforeground="#181818", 
                          variable=second, command=light_mode, indicatoron=0)
-
 w['menu'].add_checkbutton(label="Legal  ", onvalue=1, offvalue=0,
                          activebackground="#FFFFCC", activeforeground="#181818", 
                          variable=third, command=legal_mode, indicatoron=0)
-
 w['menu'].add_checkbutton(label="Night  ", onvalue=1, offvalue=0,
                          activebackground="#181818", activeforeground="#00FF33", 
                          variable=forth, command=night_mode, indicatoron=0)
+
+
+
+# Toolbar2 (shows in print preview)
+toolbar2 = tk.Frame(mainframe, bd=2, relief='groove')
+b2 = tk.Button(toolbar2, text="Close", width=4, command=default_view)
+b2.pack(side='right', padx=8, pady=2)
+
+# Toolbar2 'Zoom' button
+var = tk.StringVar(toolbar2)
+var.set("Zoom")
+w = tk.OptionMenu(toolbar2, variable = var, value='')
+w.config(indicatoron=0, bd=1, width=6, padx=4, pady=5)
+w.pack(side='left', padx=8, pady=2)
+first = tk.BooleanVar()
+second = tk.BooleanVar()
+third = tk.BooleanVar()
+fourth = tk.BooleanVar()
+w['menu'].delete('0', 'end')
+w['menu'].add_checkbutton(label="60% ", onvalue=1, offvalue=0, 
+                         variable=first, command=small_mode, indicatoron=0)
+w['menu'].add_checkbutton(label="75% ", onvalue=1, offvalue=0, 
+                         variable=second, command=big_mode, indicatoron=0)
+w['menu'].add_checkbutton(label="100% ", onvalue=1, offvalue=0,
+                         variable=third, command=bigger_mode, indicatoron=0)
+w['menu'].add_checkbutton(label="125% ", onvalue=1, offvalue=0,
+                         variable=fourth, command=biggest_mode, indicatoron=0)
 
 
 # Init Note Area
