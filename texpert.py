@@ -78,7 +78,7 @@ def print_com():
 def preview_com():
 	root.geometry("740x800+440+175") #experimental
 	root.option_add("*Font", "TkDefaultFont 9")
-	texpert.config(padx=32, pady=20, wrap="word", font = ('Arial 10'))
+	texpert.config(padx=34, pady=20, wrap="word", font = ('Arial 10'))
 	texpert.focus_set()
 	statusbar.pack_forget()
 	toolbar.pack_forget()
@@ -170,7 +170,6 @@ def vertical_view():
     root.attributes('-zoomed', False)
     root.geometry("540x600+440+175")
     root.option_add("*Font", "TkDefaultFont 9")
-    #texpert = tkst.ScrolledText(root, undo=True, font=("Arial 11"))
     texpert.config(padx=2, pady=2, wrap="word", font = ('Arial 11'))
     texpert.focus_set()
     statusbar.pack(side='bottom', fill='x')
@@ -186,10 +185,9 @@ def default_view():
 	statusbar.pack(side='bottom', fill='x')
 	toolbar.pack(side='top', anchor='n', fill='x')
 		
-def full_screen():
+def full_screen(event=None):
     root.attributes('-zoomed', True)
     root.option_add("*Font", "TkDefaultFont 9")
-    #texpert = tkst.ScrolledText(root, undo=True, font=("Arial 11"))
     texpert.config(padx=2, pady=2, wrap="word", font = ('Arial 11'))
     texpert.focus_set()
     statusbar.pack(side='bottom', fill='x')
@@ -247,7 +245,7 @@ def credits_com():
     cls.pack(side='right', padx=8, pady=4) 
     
     win.transient(root)
-    win.geometry('300x200+640+484') #here
+    win.geometry('300x200')
     win.wait_window()
 
 def license_info():
@@ -306,7 +304,7 @@ as it was not designed/programmed to do so.
     
     tk.Button(win, text="Close", command=win.destroy).pack()   
     win.transient(root)
-    win.geometry('354x424')
+    win.geometry('354x434')
     win.wait_window()
 
 
@@ -341,19 +339,17 @@ filemenu.add_separator()
 filemenu.add_command(label="Close", command=close_com, accelerator="Ctrl+W")
 filemenu.add_command(label="Exit", command=exit_com, underline=1, accelerator="Alt+F4")
 
-
 # Edit
 editmenu = tk.Menu(menu, tearoff=0)
 menu.add_cascade(label="Edit ", menu=editmenu)
-editmenu.add_command(label="Undo", command=undo_com, accelerator="Ctrl+Z")
+editmenu.add_command(label="Undo", command=undo_com, accelerator="Ctrl+Z".rjust(15))
 editmenu.add_command(label="Redo", command=redo_com, accelerator="Shift+Ctrl+Z")
 editmenu.add_separator()
-editmenu.add_command(label="Cut", command=cut_com, accelerator="Ctrl+X")
-editmenu.add_command(label="Copy", command=copy_com, accelerator="Ctrl+C")  
-editmenu.add_command(label="Paste", command=paste_com, accelerator="Ctrl+V") 
+editmenu.add_command(label="Cut", command=cut_com, accelerator="Ctrl+X".rjust(15))
+editmenu.add_command(label="Copy", command=copy_com, accelerator="Ctrl+C".rjust(15))  
+editmenu.add_command(label="Paste", command=paste_com, accelerator="Ctrl+V".rjust(15)) 
 editmenu.add_separator()
-editmenu.add_command(label="Select All", command=select_all, accelerator="Ctrl+A") 
-
+editmenu.add_command(label="Select All", command=select_all, accelerator="Ctrl+A".rjust(15)) 
 
 # View
 viewmenu = tk.Menu(menu, tearoff=0)
@@ -385,8 +381,7 @@ viewmenu.add_command(label="Hide in Tray", command=tray_com)
 viewmenu.add_separator()
 viewmenu.add_command(label="Vertical", command=vertical_view)
 viewmenu.add_command(label="Default", command=default_view)
-viewmenu.add_command(label="Fullscreen", command=full_screen)
-
+viewmenu.add_command(label="Fullscreen", command=full_screen, accelerator="F11")
 
 # Tools
 toolmenu = tk.Menu(menu, tearoff=0)
@@ -397,13 +392,11 @@ is_notearea = tk.BooleanVar()
 is_notearea.trace('w', lambda *args: note_area())
 toolmenu.add_checkbutton(label="Note Area", variable=is_notearea)
 
-
 # Help
 helpmenu = tk.Menu(menu, tearoff=0)
 menu.add_cascade(label="Help ", menu=helpmenu)
 helpmenu.add_command(label="About", command=about_com)
 helpmenu.add_command(label="Troubleshooting", command=trouble_com)
-
 
 # ToolBar
 toolbar = tk.Frame(mainframe, bd=2, relief='groove')
@@ -463,6 +456,8 @@ root.bind_all('<Control-o>', open_com)
 root.bind_all('<Control-s>', save_com)
 root.bind_all('<Control-s>', saveas_com)
 root.bind_all('<Control-w>', close_com)
+root.bind('<F11>', full_screen)
+root.bind("<Escape>", lambda event: root.attributes("-zoomed", False))
 
 root.protocol("WM_DELETE_WINDOW", exit_com)
 root.mainloop()
