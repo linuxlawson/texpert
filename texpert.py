@@ -78,7 +78,7 @@ def print_com():
 def preview_com():
 	root.geometry("740x800+440+175") #experimental
 	root.option_add("*Font", "TkDefaultFont 9")
-	texpert.config(padx=34, pady=20, wrap="word", font = ('Arial 10'))
+	texpert.config(padx=34, pady=20, wrap="word", font=('Arial 10'))
 	texpert.focus_set()
 	statusbar.pack_forget()
 	toolbar.pack_forget()
@@ -107,19 +107,14 @@ def exit_com():
 # edit menu
 def undo_com():
     texpert.edit_undo()
-
 def redo_com():
     texpert.edit_redo()
-
 def cut_com(): 
     texpert.event_generate("<<Cut>>")
-
 def copy_com(): 
     texpert.event_generate("<<Copy>>") 
-
 def paste_com(): 
     texpert.event_generate("<<Paste>>")  
-
 def select_all(event=None):
     texpert.tag_add('sel', '1.0', 'end-1c')
     texpert.mark_set('insert', '1.0')
@@ -143,15 +138,12 @@ def status_bar():
 def dark_mode():
     mode["text"] = " Mode: Dark"
     texpert.config(background="#181818", fg="#F5F5F5", insertbackground="#F5F5F5")
-
 def light_mode():
     mode["text"] = " Mode: Light"
     texpert.config(background="#F5F5F5", fg="#181818", insertbackground="#181818")
-
 def legal_mode():
     mode["text"] = " Mode: Legal"
     texpert.config(background="#FFFFCC", fg="#181818", insertbackground="#181818")
-
 def night_mode():
     mode["text"] = " Mode: Night"
     texpert.config(background="#181818", fg="#00FF33", insertbackground="#00FF33")
@@ -159,17 +151,15 @@ def night_mode():
 
 # zoom modes for print preview
 def small_mode():
-    texpert.config(padx=34, pady=20, wrap="word", font = ('Arial 9'))
-    
+    texpert.config(padx=34, pady=20, wrap="word", font=('Arial 9'))
 def big_mode():
-    texpert.config(padx=34, pady=20, wrap="word", font = ('Arial 10'))
-
+    texpert.config(padx=34, pady=20, wrap="word", font=('Arial 10'))
 def bigger_mode():
-    texpert.config(padx=34, pady=20, wrap="word", font = ('Arial 11'))
-
+    texpert.config(padx=34, pady=20, wrap="word", font=('Arial 11'))
 def biggest_mode():
-    texpert.config(padx=34, pady=20, wrap="word", font = ('Arial 12'))
-
+    texpert.config(padx=34, pady=20, wrap="word", font=('Arial 12'))
+def large_mode():
+    texpert.config(padx=34, pady=20, wrap="word", font=('Arial 14'))
 
 def transparent():
     if is_transparent.get():
@@ -238,14 +228,10 @@ def about_com(event=None):
     win = tk.Toplevel()
     win.title("About")                                     
     tk.Label(win, text="\n\n\nTexpert\n\nA small text editor designed for Linux\n\nMade in Python with Tkinter\n\n\n").pack()   
-    
     cre = tk.Button(win, text="Credits", width=4, command=credits_com)
     cre.pack(side='left', padx=8, pady=4)
-    ver = tk.Label(win, text="v 1.0", width=4, bd=0, state="disabled")
-    ver.pack(side='left', padx=8, pady=4, expand='yes')
     clo = tk.Button(win, text="Close", width=4, command=win.destroy)
     clo.pack(side='right', padx=8, pady=4)
-     
     win.transient(root)
     win.geometry('300x200')
     win.wait_window()
@@ -255,12 +241,10 @@ def credits_com():
     win.wm_attributes("-topmost", 0)
     win.title("Credits")                                     
     tk.Label(win, foreground="#404040", text="\n\n\nCreated by David Lawson\n\n\nme = Person()\nwhile (me.awake()):\nme.code()\n\n").pack()   
-    
     lic = tk.Button(win, text="License", width=4, command=license_info)
     lic.pack(side='left', padx=8, pady=4)
     cls = tk.Button(win, text="Close", width=4, command=win.destroy)
     cls.pack(side='right', padx=8, pady=4) 
-    
     win.transient(root)
     win.geometry('300x200')
     win.wait_window()
@@ -317,7 +301,6 @@ Also, (pay attention because this is important)
 anything typed in note area will not be saved
 as it was not designed/programmed to do so.
 \n\n\nAnyway..\n""").pack()   
-    
     tk.Button(win, text="Close", command=win.destroy).pack()   
     win.transient(root)
     win.geometry('354x430')
@@ -428,13 +411,13 @@ b4.pack(side='right', padx=4, pady=2)
 # ToolBar 'Mode' button
 var = tk.StringVar(toolbar)
 var.set("Mode")
-w = tk.OptionMenu(toolbar, variable = var, value='')
+w = tk.OptionMenu(toolbar, variable=var, value='')
 w.config(indicatoron=0, bd=1, width=6, padx=4, pady=5)
 w.pack(side='left', padx=4, pady=2)
 first = tk.BooleanVar()
 second = tk.BooleanVar()
 third = tk.BooleanVar()
-forth = tk.BooleanVar()
+fourth = tk.BooleanVar()
 w['menu'].delete('0', 'end')
 w['menu'].add_checkbutton(label="Dark  ", onvalue=1, offvalue=0, 
                          activebackground="#181818", activeforeground="#F5F5F5", 
@@ -447,34 +430,29 @@ w['menu'].add_checkbutton(label="Legal  ", onvalue=1, offvalue=0,
                          variable=third, command=legal_mode, indicatoron=0)
 w['menu'].add_checkbutton(label="Night  ", onvalue=1, offvalue=0,
                          activebackground="#181818", activeforeground="#00FF33", 
-                         variable=forth, command=night_mode, indicatoron=0)
+                         variable=fourth, command=night_mode, indicatoron=0)
 
 
 
-# Toolbar2 (shows in print preview)
+# Toolbar2 (for print preview)
 toolbar2 = tk.Frame(mainframe, bd=2, relief='groove')
-b2 = tk.Button(toolbar2, text="Close", width=4, command=default_view)
-b2.pack(side='right', padx=8, pady=2)
+b2 = tk.Button(toolbar2, text="Close Preview", width=10, command=default_view)
+b2.pack(side='right', padx=8, pady=4)
 
 # Toolbar2 'Zoom' button
 var = tk.StringVar(toolbar2)
-var.set("Zoom")
-w = tk.OptionMenu(toolbar2, variable = var, value='')
-w.config(indicatoron=0, bd=1, width=6, padx=4, pady=5)
-w.pack(side='left', padx=8, pady=2)
-first = tk.BooleanVar()
-second = tk.BooleanVar()
-third = tk.BooleanVar()
-fourth = tk.BooleanVar()
+var.set("Zoom Level")
+w = tk.OptionMenu(toolbar2, variable=var, value='')
+w.config(indicatoron=0, bd=1, width=12, padx=4, pady=5)
+w.pack(side='left', padx=8, pady=4)
+
 w['menu'].delete('0', 'end')
-w['menu'].add_checkbutton(label="60% ", onvalue=1, offvalue=0, 
-                         variable=first, command=small_mode, indicatoron=0)
-w['menu'].add_checkbutton(label="75% ", onvalue=1, offvalue=0, 
-                         variable=second, command=big_mode, indicatoron=0)
-w['menu'].add_checkbutton(label="100% ", onvalue=1, offvalue=0,
-                         variable=third, command=bigger_mode, indicatoron=0)
-w['menu'].add_checkbutton(label="125% ", onvalue=1, offvalue=0,
-                         variable=fourth, command=biggest_mode, indicatoron=0)
+
+w['menu'].add_radiobutton(label="60% ", variable=var, command=small_mode, indicatoron=1)
+w['menu'].add_radiobutton(label="75% ", variable=var, command=big_mode, indicatoron=1)
+w['menu'].add_radiobutton(label="100% ", variable=var, command=bigger_mode, indicatoron=1)
+w['menu'].add_radiobutton(label="125% ", variable=var, command=biggest_mode, indicatoron=1)
+w['menu'].add_radiobutton(label="150% ", variable=var, command=large_mode, indicatoron=1)
 
 
 # Init Note Area
