@@ -29,6 +29,10 @@ Expandable Note Area!!
 
 Transparency (for those who dont want to see too much).
 
+Keyboard shortcut keys
+
+Print Preview with toolbar/zoom levels
+
   
 **Designed for Linux**   
 
