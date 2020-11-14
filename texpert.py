@@ -29,7 +29,7 @@ mainframe = tk.Frame(root, bd=0, relief='flat')
 mainframe.pack(fill='both', expand=True, padx=0, pady=0)
 
 # Text Area
-texpert = tkst.ScrolledText(mainframe, undo=True, font=('Arial 11'))
+texpert = tkst.ScrolledText(mainframe, undo=True, font=("Arial", "11", "normal"))
 texpert.pack(side='bottom', fill='both', expand=True)
 texpert.config(padx=2, pady=0, wrap="word")
 texpert.focus_set()
@@ -76,10 +76,8 @@ def print_com():
     print ("Printer not found")
 
 def preview_com():
-	root.geometry("740x800+440+175") #experimental
-	root.option_add("*Font", "TkDefaultFont 9")
+	root.geometry("740x800+440+175") 
 	texpert.config(padx=34, pady=20, wrap="word", font=('Arial 10'))
-	texpert.focus_set()
 	statusbar.pack_forget()
 	toolbar.pack_forget()
 	toolbar2.pack(side='top', anchor='n', fill='x')
@@ -92,7 +90,8 @@ def close_com(event=None):
 def exit_com():
     win = tk.Toplevel()
     win.title("Exit")                                     
-    tk.Label(win, text="\nUnsaved work will be lost.\n\nAre you sure you want to exit?\n").pack()   
+    xit = tk.Label(win, text="\nUnsaved work will be lost.\n\nAre you sure you want to exit?\n")
+    xit.pack()   
     ex = tk.Button(win, text="Exit", width=4, command=root.destroy)
     ex.pack(side='left', padx=24, pady=4)
     ex.focus_set()
@@ -100,7 +99,7 @@ def exit_com():
     can = tk.Button(win, text="Cancel", width=4, command=win.destroy)
     can.pack(side='right', padx=24, pady=4)
     win.transient(root)
-    win.geometry('224x120')
+    win.geometry('240x120')
     win.wait_window()
 
 
@@ -150,16 +149,16 @@ def night_mode():
 
 
 # zoom modes for print preview
-def small_mode():
-    texpert.config(padx=34, pady=20, wrap="word", font=('Arial 9'))
-def big_mode():
-    texpert.config(padx=34, pady=20, wrap="word", font=('Arial 10'))
-def bigger_mode():
-    texpert.config(padx=34, pady=20, wrap="word", font=('Arial 11'))
-def biggest_mode():
-    texpert.config(padx=34, pady=20, wrap="word", font=('Arial 12'))
-def large_mode():
-    texpert.config(padx=34, pady=20, wrap="word", font=('Arial 14'))
+def nine_font():
+    texpert.config(font=('Arial 9'))
+def tenn_font():
+    texpert.config(font=('Arial 10'))
+def levn_font():
+    texpert.config(font=('Arial 11'))
+def twev_font():
+    texpert.config(font=('Arial 12'))
+def fort_font():
+    texpert.config(font=('Arial 14'))
 
 def transparent():
     if is_transparent.get():
@@ -171,35 +170,27 @@ def tray_com():
     root.iconify()
 
 def vertical_view():
-    root.attributes('-zoomed', False)
-    root.geometry("540x600+440+175")
-    root.option_add("*Font", "TkDefaultFont 9")
-    texpert.config(padx=2, pady=2, wrap="word", font = ('Arial 11'))
-    texpert.focus_set()
-    statusbar.pack(side='bottom', fill='x')
-    toolbar.pack(side='top', anchor='n', fill='x')
-    toolbar2.pack_forget()
+	root.attributes('-zoomed', False)
+	root.geometry("540x600+440+175")
+	texpert.config(padx=2, pady=2, wrap="word", font = ('Arial 11'))
+	statusbar.pack(side='bottom', fill='x')
+	toolbar.pack(side='top', anchor='n', fill='x')
+	toolbar2.pack_forget()
 
 def default_view():
 	root.attributes('-zoomed', False)
 	root.geometry("700x480+440+175") #size+position
-	root.option_add("*Font", "TkDefaultFont 9")
-	#texpert = tkst.ScrolledText(root, undo=True, font=("Arial 11"))#save
 	texpert.config(padx=2, pady=2, wrap="word", font = ('Arial 11'))
-	texpert.focus_set()
 	statusbar.pack(side='bottom', fill='x')
 	toolbar.pack(side='top', anchor='n', fill='x')
 	toolbar2.pack_forget()
 	
 def full_screen(event=None):
-    root.attributes('-zoomed', True)
-    root.option_add("*Font", "TkDefaultFont 9")
-    texpert.config(padx=2, pady=2, wrap="word", font = ('Arial 11'))
-    texpert.focus_set()
-    statusbar.pack(side='bottom', fill='x')
-    toolbar.pack(side='top', anchor='n', fill='x')
-    toolbar2.pack_forget()
-
+	root.attributes('-zoomed', True)
+	texpert.config(padx=2, pady=2, wrap="word", font = ('Arial 11'))
+	statusbar.pack(side='bottom', fill='x')
+	toolbar.pack(side='top', anchor='n', fill='x')
+	toolbar2.pack_forget()
 
 # tools menu
 def time_com():
@@ -222,12 +213,15 @@ def note_area():
         note.pack_forget()
         btn_frame.pack_forget()
 
-
 # help menu
 def about_com(event=None):
     win = tk.Toplevel()
     win.title("About")                                     
-    tk.Label(win, text="\n\n\nTexpert\n\nA small text editor designed for Linux\n\nMade in Python with Tkinter\n\n\n").pack()   
+    bout = tk.Label(win, 
+    text="""\n\n\nTexpert
+    \nA small text editor designed for Linux
+    \nMade in Python with Tkinter\n\n""")
+    bout.pack()   
     cre = tk.Button(win, text="Credits", width=4, command=credits_com)
     cre.pack(side='left', padx=8, pady=4)
     clo = tk.Button(win, text="Close", width=4, command=win.destroy)
@@ -240,7 +234,10 @@ def credits_com():
     win = tk.Toplevel()
     win.wm_attributes("-topmost", 0)
     win.title("Credits")                                     
-    tk.Label(win, foreground="#404040", text="\n\n\nCreated by David Lawson\n\n\nme = Person()\nwhile (me.awake()):\nme.code()\n\n").pack()   
+    cred = tk.Label(win, foreground="#404040", 
+    text="""\n\n\nCreated by David Lawson
+    \n\nme = Person()\nwhile (me.awake()):\nme.code()\n""")
+    cred.pack()   
     lic = tk.Button(win, text="License", width=4, command=license_info)
     lic.pack(side='left', padx=8, pady=4)
     cls = tk.Button(win, text="Close", width=4, command=win.destroy)
@@ -253,7 +250,8 @@ def license_info():
     win = tk.Toplevel()
     win.wm_attributes("-topmost", 1)
     win.title("License")                                     
-    tk.Label(win, justify='left', text="""\n\nMIT License
+    lic = tk.Label(win, justify='left',
+    text="""\n\nMIT License
 
 Copyright (c) 2019 David Lawson
 
@@ -276,9 +274,10 @@ SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
 CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
 IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-DEALINGS IN THE SOFTWARE.\n\n""").pack()   
-    
-    tk.Button(win, text="Close", command=win.destroy).pack()   
+DEALINGS IN THE SOFTWARE.\n\n""")
+    lic.pack()   
+    cls = tk.Button(win, text="Close", command=win.destroy)
+    cls.pack()   
     win.transient(root)
     win.geometry('480x450')
     win.wait_window()
@@ -287,11 +286,12 @@ DEALINGS IN THE SOFTWARE.\n\n""").pack()
 def trouble_com(event=None):
     win = tk.Toplevel()
     win.title("Troubleshooting")                                     
-    tk.Label(win, justify='left', text="""\n
+    trouble = tk.Label(win, justify='left',
+    text="""\n\n
 This program was designed for Linux and
 may not work on other operating systems.\n
 Texpert text editor is a work in progress
-and may or may not ever be completed.\n\n\n
+and may or may not ever be completed.\n\n
 Known Issues:\n 
 Line/Col numbers are not fully functional.
 Problem remains: unfixed.\n
@@ -300,10 +300,12 @@ Print preview is not entirely accurate.\n
 Also, (pay attention because this is important)
 anything typed in note area will not be saved
 as it was not designed/programmed to do so.
-\n\n\nAnyway..\n""").pack()   
-    tk.Button(win, text="Close", command=win.destroy).pack()   
+\n\nAnyway..\n""")
+    trouble.pack()   
+    cls = tk.Button(win, text="Close", command=win.destroy)
+    cls.pack()   
     win.transient(root)
-    win.geometry('354x430')
+    win.geometry('354x420')
     win.wait_window()
 
 
@@ -437,22 +439,21 @@ w['menu'].add_checkbutton(label="Night  ", onvalue=1, offvalue=0,
 # Toolbar2 (for print preview)
 toolbar2 = tk.Frame(mainframe, bd=2, relief='groove')
 b2 = tk.Button(toolbar2, text="Close Preview", width=10, command=default_view)
-b2.pack(side='right', padx=8, pady=4)
+b2.pack(side='right', padx=12, pady=4)
 
 # Toolbar2 'Zoom' button
 var = tk.StringVar(toolbar2)
 var.set("Zoom Level")
-w = tk.OptionMenu(toolbar2, variable=var, value='')
-w.config(indicatoron=0, bd=1, width=12, padx=4, pady=5)
-w.pack(side='left', padx=8, pady=4)
+w2 = tk.OptionMenu(toolbar2, variable=var, value='1')
+w2.config(indicatoron=0, bd=1, width=12, padx=4, pady=5)
+w2.pack(side='left', padx=12, pady=4)
 
-w['menu'].delete('0', 'end')
-
-w['menu'].add_radiobutton(label="60% ", variable=var, command=small_mode, indicatoron=1)
-w['menu'].add_radiobutton(label="75% ", variable=var, command=big_mode, indicatoron=1)
-w['menu'].add_radiobutton(label="100% ", variable=var, command=bigger_mode, indicatoron=1)
-w['menu'].add_radiobutton(label="125% ", variable=var, command=biggest_mode, indicatoron=1)
-w['menu'].add_radiobutton(label="150% ", variable=var, command=large_mode, indicatoron=1)
+w2['menu'].delete('0', 'end')
+w2['menu'].add_radiobutton(label=" 60% ", variable="", value="1", command=nine_font)
+w2['menu'].add_radiobutton(label=" 75% ", variable="", value="2", command=tenn_font)
+w2['menu'].add_radiobutton(label="100% ", variable="", value="3", command=levn_font)
+w2['menu'].add_radiobutton(label="125% ", variable="", value="4", command=twev_font)
+w2['menu'].add_radiobutton(label="150% ", variable="", value="5", command=fort_font)
 
 
 # Init Note Area
