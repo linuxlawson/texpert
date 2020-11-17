@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # Texpert Text Editor 
 # Written by David Lawson
-# using Python w/Tkinter
+
 
 import os
 import sys
@@ -55,8 +55,8 @@ def open_com(event=None):
     filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")]
     if file is not None:
   	contents = file.read()
-	name = root.title(file.name) #adds path/filename to title
-        texpert.delete('1.0', 'end-1c')
+	name = root.title((file.name) + " - Texpert")
+	texpert.delete('1.0', 'end-1c')
 	texpert.insert('1.0', contents)
 	file.close()
 
@@ -76,7 +76,7 @@ def print_com():
     print ("Printer not found")
 
 def preview_com():
-	root.geometry("740x800+440+175") 
+	root.geometry("760x800+440+175") 
 	texpert.config(padx=34, pady=20, wrap="word", font=('Arial 10'))
 	statusbar.pack_forget()
 	toolbar.pack_forget()
@@ -172,22 +172,22 @@ def tray_com():
 def vertical_view():
 	root.attributes('-zoomed', False)
 	root.geometry("540x600+440+175")
-	texpert.config(padx=2, pady=2, wrap="word", font = ('Arial 11'))
+	texpert.config(padx=2, pady=2, wrap="word", font=('Arial 11'))
 	statusbar.pack(side='bottom', fill='x')
 	toolbar.pack(side='top', anchor='n', fill='x')
 	toolbar2.pack_forget()
 
 def default_view():
 	root.attributes('-zoomed', False)
-	root.geometry("700x480+440+175") #size+position
-	texpert.config(padx=2, pady=2, wrap="word", font = ('Arial 11'))
+	root.geometry("700x480+440+175")
+	texpert.config(padx=2, pady=2, wrap="word", font=('Arial 11'))
 	statusbar.pack(side='bottom', fill='x')
 	toolbar.pack(side='top', anchor='n', fill='x')
 	toolbar2.pack_forget()
 	
 def full_screen(event=None):
 	root.attributes('-zoomed', True)
-	texpert.config(padx=2, pady=2, wrap="word", font = ('Arial 11'))
+	texpert.config(padx=2, pady=2, wrap="word", font=('Arial 11'))
 	statusbar.pack(side='bottom', fill='x')
 	toolbar.pack(side='top', anchor='n', fill='x')
 	toolbar2.pack_forget()
@@ -440,20 +440,22 @@ w['menu'].add_checkbutton(label="Night  ", onvalue=1, offvalue=0,
 toolbar2 = tk.Frame(mainframe, bd=2, relief='groove')
 b2 = tk.Button(toolbar2, text="Close Preview", width=10, command=default_view)
 b2.pack(side='right', padx=12, pady=4)
-
+#xview = tk.Label(toolbar2, text="Print Preview", state='disabled')
+#xview.place(relx = 0.4, rely = 0.5, anchor='w') 
+	
 # Toolbar2 'Zoom' button
 var = tk.StringVar(toolbar2)
 var.set("Zoom Level")
-w2 = tk.OptionMenu(toolbar2, variable=var, value='1')
+w2 = tk.OptionMenu(toolbar2, variable=var, value='')
 w2.config(indicatoron=0, bd=1, width=12, padx=4, pady=5)
 w2.pack(side='left', padx=12, pady=4)
 
 w2['menu'].delete('0', 'end')
-w2['menu'].add_radiobutton(label=" 60% ", variable="", value="1", command=nine_font)
-w2['menu'].add_radiobutton(label=" 75% ", variable="", value="2", command=tenn_font)
-w2['menu'].add_radiobutton(label="100% ", variable="", value="3", command=levn_font)
-w2['menu'].add_radiobutton(label="125% ", variable="", value="4", command=twev_font)
-w2['menu'].add_radiobutton(label="150% ", variable="", value="5", command=fort_font)
+w2['menu'].add_radiobutton(label=" 60% ", variable="", value=1, command=nine_font)
+w2['menu'].add_radiobutton(label=" 75% ", variable="", value=2, command=tenn_font)
+w2['menu'].add_radiobutton(label="100% ", variable="", value=3, command=levn_font)
+w2['menu'].add_radiobutton(label="125% ", variable="", value=4, command=twev_font)
+w2['menu'].add_radiobutton(label="150% ", variable="", value=5, command=fort_font)
 
 
 # Init Note Area
