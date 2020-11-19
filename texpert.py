@@ -46,7 +46,7 @@ line_lbl.pack(side='right', padx=10)
 # Menu Functions
 # file menu
 def new_com(event=None): 
-    root.title("New Document ") 
+    root.title("New Document - Texpert") 
     file = None
     texpert.delete('1.0', 'end-1c') 
     
@@ -83,7 +83,7 @@ def preview_com():
 	toolbar2.pack(side='top', anchor='n', fill='x')
            
 def close_com(event=None):
-    root.title("Untitled") 
+    root.title("Untitled - Texpert") 
     file = None
     texpert.delete('1.0', 'end-1c') 
     
@@ -101,6 +101,18 @@ def exit_com():
     win.transient(root)
     win.geometry('240x120')
     win.wait_window()
+
+# zoom modes for print preview
+def nine_font():
+    texpert.config(font=('Arial 9'))
+def tenn_font():
+    texpert.config(font=('Arial 10'))
+def levn_font():
+    texpert.config(font=('Arial 11'))
+def twev_font():
+    texpert.config(font=('Arial 12'))
+def fort_font():
+    texpert.config(font=('Arial 14'))
 
 
 # edit menu
@@ -147,18 +159,6 @@ def night_mode():
     mode["text"] = " Mode: Night"
     texpert.config(background="#181818", fg="#00FF33", insertbackground="#00FF33")
 
-
-# zoom modes for print preview
-def nine_font():
-    texpert.config(font=('Arial 9'))
-def tenn_font():
-    texpert.config(font=('Arial 10'))
-def levn_font():
-    texpert.config(font=('Arial 11'))
-def twev_font():
-    texpert.config(font=('Arial 12'))
-def fort_font():
-    texpert.config(font=('Arial 14'))
 
 def transparent():
     if is_transparent.get():
@@ -328,23 +328,23 @@ root.config(menu=menu, bd=2)
 # File 
 filemenu = tk.Menu(menu, tearoff=0)
 menu.add_cascade(label="File ", menu=filemenu)
-filemenu.add_command(label="New", command=new_com, accelerator="Ctrl+N") 
-filemenu.add_command(label="Open", command=open_com, accelerator="Ctrl+O")
+filemenu.add_command(label="New", command=new_com, accelerator="Ctrl+N".rjust(15)) 
+filemenu.add_command(label="Open", command=open_com, accelerator="Ctrl+O".rjust(15))
 filemenu.add_separator()
-filemenu.add_command(label="Save", command=saveas_com, accelerator="Ctrl+S")
-filemenu.add_command(label="Save As", command=saveas_com)
+filemenu.add_command(label="Save", command=saveas_com, accelerator="Ctrl+S".rjust(15))
+filemenu.add_command(label="Save As", command=saveas_com, accelerator="Ctrl+Shift+S")
 filemenu.add_separator()
 filemenu.add_command(label="Print", command=print_com, state="disabled")
 filemenu.add_command(label="Print Preview", command=preview_com)
 filemenu.add_separator()
-filemenu.add_command(label="Close", command=close_com, accelerator="Ctrl+W")
-filemenu.add_command(label="Exit", command=exit_com, underline=1, accelerator="Alt+F4")
+filemenu.add_command(label="Close", command=close_com, accelerator="Ctrl+W".rjust(15))
+filemenu.add_command(label="Exit", command=exit_com, underline=1, accelerator="Alt+F4".rjust(15))
 
 # Edit
 editmenu = tk.Menu(menu, tearoff=0)
 menu.add_cascade(label="Edit ", menu=editmenu)
 editmenu.add_command(label="Undo", command=undo_com, accelerator="Ctrl+Z".rjust(15))
-editmenu.add_command(label="Redo", command=redo_com, accelerator="Shift+Ctrl+Z")
+editmenu.add_command(label="Redo", command=redo_com, accelerator="Ctrl+Shift+Z")
 editmenu.add_separator()
 editmenu.add_command(label="Cut", command=cut_com, accelerator="Ctrl+X".rjust(15))
 editmenu.add_command(label="Copy", command=copy_com, accelerator="Ctrl+C".rjust(15))  
@@ -355,11 +355,9 @@ editmenu.add_command(label="Select All", command=select_all, accelerator="Ctrl+A
 # View
 viewmenu = tk.Menu(menu, tearoff=0)
 menu.add_cascade(label="View ", menu=viewmenu)
-
 is_toolbar = tk.BooleanVar()
 is_toolbar.trace('w', lambda *args: tool_bar())
 viewmenu.add_checkbutton(label="Toolbar", variable=is_toolbar, onvalue=0, offvalue=1)
-
 is_statusbar = tk.BooleanVar()
 is_statusbar.trace('w', lambda *args: status_bar())
 viewmenu.add_checkbutton(label="Statusbar", variable=is_statusbar, onvalue=0, offvalue=1)
@@ -449,7 +447,6 @@ var.set("Zoom Level")
 w2 = tk.OptionMenu(toolbar2, variable=var, value='')
 w2.config(indicatoron=0, bd=1, width=12, padx=4, pady=5)
 w2.pack(side='left', padx=12, pady=4)
-
 w2['menu'].delete('0', 'end')
 w2['menu'].add_radiobutton(label=" 60% ", variable="", value=1, command=nine_font)
 w2['menu'].add_radiobutton(label=" 75% ", variable="", value=2, command=tenn_font)
@@ -470,10 +467,11 @@ clear.pack(side='left', padx=2, pady=2)
 close = tk.Button(note, text="Close", width=4, command=lambda: is_notearea.set(not is_notearea.get()))
 close.pack(side='right', padx=2, pady=2)
 
-texpert.bind_all('<Control-a>', select_all)
+root.bind_all('<Control-a>', select_all)
 root.bind_all('<Control-n>', new_com)
 root.bind_all('<Control-o>', open_com)
 root.bind_all('<Control-s>', save_com)
+root.bind("<Control-Shift-S>", saveas_com)
 root.bind_all('<Control-s>', saveas_com)
 root.bind_all('<Control-w>', close_com)
 root.bind('<F11>', full_screen)
