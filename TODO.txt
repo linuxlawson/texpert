@@ -2,14 +2,19 @@ Things to do.
 
 
 File menu (save)
-In the file menu, "save as" works fine. But cannot get "save" to work with one click. Would like it to automatically overwrite file/document without opening up dialog box. Have tried and failed miserably. I think maybe has something to do with how file opens?
+In the file menu, "save as" works fine. But cannot get "save" to work with one click. 
+Would like it to automatically overwrite file/document without opening up dialog box. 
+Have tried and failed miserably. I think maybe has something to do with how file opens?
 Right now, all save and save as buttons are connected to save as.
  
 
-Line/column number only binds to return key. Haven't worked on this too much, it could use improvement. Like arrow keys, mouse bindings.
+Line/column number only binds to return key. 
+Haven't worked on this too much, it could use improvement. 
+Like arrow keys, mouse bindings.
 
 
-Print preview I just started, Trying to figure a way to make border/shadow around text (in preview).
+Print preview I just started, 
+Trying to figure a way to make border/shadow around text (in preview).
 
 
 
