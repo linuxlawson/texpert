@@ -71,7 +71,8 @@ def print_com():
     print ("Printer not found")
 
 def preview_com():
-    root.geometry("760x800+440+175") 
+    root.geometry("760x800+440+175")
+    texpert = tkst.ScrolledText(root, undo=True, font=("Arial 11")) 
     texpert.config(padx=34, pady=20, wrap="word", font=('Arial 10'))
     statusbar.pack_forget()
     toolbar.pack_forget()
@@ -167,6 +168,7 @@ def tray_com():
 def vertical_view():
     root.attributes('-zoomed', False)
     root.geometry("540x600+440+175")
+    texpert = tkst.ScrolledText(root, undo=True, font=("Arial 11"))
     texpert.config(padx=2, pady=2, wrap="word", font=('Arial 11'))
     statusbar.pack(side='bottom', fill='x')
     toolbar.pack(side='top', anchor='n', fill='x')
@@ -175,6 +177,7 @@ def vertical_view():
 def default_view(event=None):
     root.attributes('-zoomed', False)
     root.geometry("700x480+440+175")
+    texpert = tkst.ScrolledText(root, undo=True, font=("Arial 11"))
     texpert.config(padx=2, pady=2, wrap="word", font=('Arial 11'))
     statusbar.pack(side='bottom', fill='x')
     toolbar.pack(side='top', anchor='n', fill='x')
@@ -182,6 +185,7 @@ def default_view(event=None):
 
 def full_screen(event=None):
     root.attributes('-zoomed', True)
+    texpert = tkst.ScrolledText(root, undo=True, font=("Arial 11"))
     texpert.config(padx=2, pady=2, wrap="word", font=('Arial 11'))
     statusbar.pack(side='bottom', fill='x')
     toolbar.pack(side='top', anchor='n', fill='x')
