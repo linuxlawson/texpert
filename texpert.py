@@ -2,11 +2,7 @@
 # Texpert Text Editor 
 # Written by David Lawson
 
-
-import os
-import sys
 import time
-import datetime
 
 try:
     import Tkinter as tk
@@ -218,7 +214,7 @@ def about_com(event=None):
     win.title("About")                                     
     bout = tk.Label(win, 
     text="""\n\n\nTexpert
-    \nA small text editor designed for Linux
+    \nA small and lightweight text editor
     \nMade in Python with Tkinter\n\n""")
     bout.pack()   
     cre = tk.Button(win, text="Credits", width=4, command=credits_com)
