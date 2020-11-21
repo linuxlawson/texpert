@@ -62,7 +62,6 @@ def open_com(event=None):
 
 
 def save_com(event=None):
-    # by @Ksengine
     if current_file:
         file = open(current_file, "w")
         data = texpert.get('1.0', 'end-1c')
