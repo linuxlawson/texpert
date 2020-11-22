@@ -364,7 +364,6 @@ and may or may not ever be completed.\n\n
 Known Issues:\n 
 Line/Col numbers are not fully functional.
 Problem remains: unfixed.\n
-Save/Save as both work as 'Save as'\n
 Print preview is not entirely accurate.\n
 Also, (pay attention because this is important)
 anything typed in note area will not be saved
@@ -374,7 +373,7 @@ as it was not designed/programmed to do so.
     cls = tk.Button(win, text="Close", command=win.destroy)
     cls.pack()
     win.transient(root)
-    win.geometry('354x420')
+    win.geometry('354x400')
     win.wait_window()
 
 
@@ -592,6 +591,11 @@ w2 = tk.OptionMenu(toolbar2, variable=var, value='')
 w2.config(indicatoron=0, bd=1, width=12, padx=4, pady=5)
 w2.pack(side='left', padx=12, pady=4)
 w2['menu'].delete('0', 'end')
+w2['menu'].add_radiobutton(label=" 60% ", variable="", value=1, command=nine_font)
+w2['menu'].add_radiobutton(label=" 75% ", variable="", value=2, command=tenn_font)
+w2['menu'].add_radiobutton(label="100% ", variable="", value=3, command=levn_font)
+w2['menu'].add_radiobutton(label="125% ", variable="", value=4, command=twev_font)
+
 
 #Init Note Area
 btn_frame = tk.Frame(texpert, bd=0, relief='sunken')
