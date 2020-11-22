@@ -24,7 +24,7 @@ mainframe = tk.Frame(root, bd=0, relief='flat')
 mainframe.pack(fill='both', expand=True, padx=0, pady=0)
 
 #Text Area
-texpert = tkst.ScrolledText(mainframe, undo=True, font=("Arial", "11", "normal"))
+texpert = tkst.ScrolledText(mainframe, undo=True, font=("Arial 11"))
 texpert.pack(side='bottom', fill='both', expand=True)
 texpert.config(padx=2, pady=0, wrap="word")
 texpert.focus_set()
@@ -72,8 +72,7 @@ def print_com():
 
 def preview_com():
     root.geometry("760x800+440+175")
-    texpert = tkst.ScrolledText(root, undo=True, font=("Arial 11")) 
-    texpert.config(padx=34, pady=20, wrap="word", font=('Arial 10'))
+    texpert.config(padx=24, pady=4, wrap="word", font=('Arial 10'))
     statusbar.pack_forget()
     toolbar.pack_forget()
     toolbar2.pack(side='top', anchor='n', fill='x')
@@ -169,7 +168,7 @@ def vertical_view():
     root.attributes('-zoomed', False)
     root.geometry("540x600+440+175")
     texpert = tkst.ScrolledText(root, undo=True, font=("Arial 11"))
-    texpert.config(padx=2, pady=2, wrap="word", font=('Arial 11'))
+    texpert.config(padx=2, pady=2, wrap="word")
     statusbar.pack(side='bottom', fill='x')
     toolbar.pack(side='top', anchor='n', fill='x')
     toolbar2.pack_forget()
@@ -178,7 +177,7 @@ def default_view(event=None):
     root.attributes('-zoomed', False)
     root.geometry("700x480+440+175")
     texpert = tkst.ScrolledText(root, undo=True, font=("Arial 11"))
-    texpert.config(padx=2, pady=2, wrap="word", font=('Arial 11'))
+    texpert.config(padx=2, pady=2, wrap="word")
     statusbar.pack(side='bottom', fill='x')
     toolbar.pack(side='top', anchor='n', fill='x')
     toolbar2.pack_forget()
@@ -186,7 +185,7 @@ def default_view(event=None):
 def full_screen(event=None):
     root.attributes('-zoomed', True)
     texpert = tkst.ScrolledText(root, undo=True, font=("Arial 11"))
-    texpert.config(padx=2, pady=2, wrap="word", font=('Arial 11'))
+    texpert.config(padx=2, pady=2, wrap="word")
     statusbar.pack(side='bottom', fill='x')
     toolbar.pack(side='top', anchor='n', fill='x')
     toolbar2.pack_forget()
@@ -449,7 +448,6 @@ w2['menu'].add_radiobutton(label=" 60% ", variable="", value=1, command=nine_fon
 w2['menu'].add_radiobutton(label=" 75% ", variable="", value=2, command=tenn_font)
 w2['menu'].add_radiobutton(label="100% ", variable="", value=3, command=levn_font)
 w2['menu'].add_radiobutton(label="125% ", variable="", value=4, command=twev_font)
-w2['menu'].add_radiobutton(label="150% ", variable="", value=5, command=fort_font)
 
 
 #Init Note Area
