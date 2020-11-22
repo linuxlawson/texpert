@@ -51,12 +51,14 @@ def open_com(event=None):
                                     mode='rb',
                                     title="Select File")
     filetypes = [("Text Files", "*.txt"), ("All Files", "*.*")]
-    if file is not None:
+    if file:
         contents = file.read()
-    name = root.title((file.name) + " - Texpert")
-    texpert.delete('1.0', 'end-1c')
-    texpert.insert('1.0', contents)
-    file.close()
+        name = root.title((file.name) + " - Texpert")
+        texpert.delete('1.0', 'end-1c')
+        texpert.insert('1.0', contents)
+        file.close()
+        global current_file
+        current_file = file.name
 
 
 def save_com(event=None):
