@@ -45,7 +45,6 @@ def new_com(event=None):
     file = None
     texpert.delete('1.0', 'end-1c')
 
-
 def open_com(event=None):
     file = tkFileDialog.askopenfile(parent=root,
                                     mode='rb',
@@ -60,7 +59,6 @@ def open_com(event=None):
         global current_file
         current_file = file.name
 
-
 def save_com(event=None):
     if current_file:
         file = open(current_file, "w")
@@ -69,7 +67,6 @@ def save_com(event=None):
         file.close()
     else:
         saveas_com()
-
 
 def saveas_com(event=None):
     file = tkFileDialog.asksaveasfile(mode='w')
@@ -86,7 +83,6 @@ def saveas_com(event=None):
 def print_com():
     print("Printer not found")
 
-
 def preview_com():
     root.geometry("760x800+440+175")
     texpert.config(padx=24, pady=4, wrap="word", font=('Arial 10'))
@@ -94,20 +90,17 @@ def preview_com():
     toolbar.pack_forget()
     toolbar2.pack(side='top', anchor='n', fill='x')
 
-
 def close_com(event=None):
     root.title("Untitled - Texpert")
     file = None
     texpert.delete('1.0', 'end-1c')
-
 
 def exit_com(event=None):
     win = tk.Toplevel()
     win.title("Exit")
     xit = tk.Label(
         win,
-        text="\nUnsaved work will be lost.\n\nAre you sure you want to exit?\n"
-    )
+        text="\nUnsaved work will be lost.\n\nAre you sure you want to exit?\n")
     xit.pack()
     ex = tk.Button(win, text="Exit", width=4, command=root.destroy)
     ex.pack(side='left', padx=24, pady=4)
@@ -124,18 +117,14 @@ def exit_com(event=None):
 def nine_font():
     texpert.config(font=('Arial 9'))
 
-
 def tenn_font():
     texpert.config(font=('Arial 10'))
-
 
 def levn_font():
     texpert.config(font=('Arial 11'))
 
-
 def twev_font():
     texpert.config(font=('Arial 12'))
-
 
 def fort_font():
     texpert.config(font=('Arial 14'))
@@ -145,22 +134,17 @@ def fort_font():
 def undo_com():
     texpert.edit_undo()
 
-
 def redo_com():
     texpert.edit_redo()
-
 
 def cut_com():
     texpert.event_generate("<<Cut>>")
 
-
 def copy_com():
     texpert.event_generate("<<Copy>>")
 
-
 def paste_com():
     texpert.event_generate("<<Paste>>")
-
 
 def select_all(event=None):
     texpert.tag_add('sel', '1.0', 'end-1c')
@@ -176,7 +160,6 @@ def tool_bar():
     else:
         toolbar.pack(side='top', anchor='n', fill='x')
 
-
 def status_bar():
     if is_statusbar.get():
         statusbar.pack_forget()
@@ -191,13 +174,11 @@ def dark_mode():
                    fg="#F5F5F5",
                    insertbackground="#F5F5F5")
 
-
 def light_mode():
     mode["text"] = " Mode: Light"
     texpert.config(background="#F5F5F5",
                    fg="#181818",
                    insertbackground="#181818")
-
 
 def legal_mode():
     mode["text"] = " Mode: Legal"
@@ -205,20 +186,17 @@ def legal_mode():
                    fg="#181818",
                    insertbackground="#181818")
 
-
 def night_mode():
     mode["text"] = " Mode: Night"
     texpert.config(background="#181818",
                    fg="#00FF33",
                    insertbackground="#00FF33")
 
-
 def transparent():
     if is_transparent.get():
         root.wm_attributes('-alpha', 0.9)
     else:
         root.wm_attributes('-alpha', 1.0)
-
 
 def tray_com():
     root.iconify()
@@ -227,8 +205,7 @@ def tray_com():
 def vertical_view():
     root.attributes('-zoomed', False)
     root.geometry("540x600+440+175")
-    texpert = tkst.ScrolledText(root, undo=True, font=("Arial 11"))
-    texpert.config(padx=2, pady=2, wrap="word")
+    texpert.config(padx=2, pady=2, wrap="word", font=("Arial 11"))
     statusbar.pack(side='bottom', fill='x')
     toolbar.pack(side='top', anchor='n', fill='x')
     toolbar2.pack_forget()
@@ -237,8 +214,7 @@ def vertical_view():
 def default_view(event=None):
     root.attributes('-zoomed', False)
     root.geometry("700x480+440+175")
-    texpert = tkst.ScrolledText(root, undo=True, font=("Arial 11"))
-    texpert.config(padx=2, pady=2, wrap="word")
+    texpert.config(padx=2, pady=2, wrap="word", font=("Arial 11"))
     statusbar.pack(side='bottom', fill='x')
     toolbar.pack(side='top', anchor='n', fill='x')
     toolbar2.pack_forget()
@@ -246,8 +222,7 @@ def default_view(event=None):
 
 def full_screen(event=None):
     root.attributes('-zoomed', True)
-    texpert = tkst.ScrolledText(root, undo=True, font=("Arial 11"))
-    texpert.config(padx=2, pady=2, wrap="word")
+    texpert.config(padx=2, pady=2, wrap="word", font=("Arial 11"))
     statusbar.pack(side='bottom', fill='x')
     toolbar.pack(side='top', anchor='n', fill='x')
     toolbar2.pack_forget()
@@ -268,6 +243,10 @@ def date_com():
     texpert.insert('insert', date, "a", ' ')
 
 
+def fname():
+    texpert.insert('insert', current_file)
+    
+    
 def note_area():
     if is_notearea.get():
         note.pack(side='right', anchor='e', fill='y')
@@ -380,8 +359,6 @@ as it was not designed/programmed to do so.
 #context menu (right-click)
 def r_click(event):
     editmenu.tk_popup(event.x_root, event.y_root)
-
-
 texpert.bind("<Button-3>", r_click)
 
 
@@ -389,9 +366,8 @@ texpert.bind("<Button-3>", r_click)
 def linecount(event):
     (line, char) = map(int, event.widget.index("end-1c").split("."))
     line_lbl['text'] = 'Line {line}, Col {col}'.format(line=line, col=char + 1)
-
-
 texpert.bind("<KeyRelease>", linecount)
+
 
 #Main Menu
 menu = tk.Menu(root, bd=1, relief='flat')
@@ -510,6 +486,7 @@ toolmenu = tk.Menu(menu, tearoff=0)
 menu.add_cascade(label="Tools ", menu=toolmenu)
 toolmenu.add_command(label="Insert Time", command=time_com)
 toolmenu.add_command(label="Insert Date", command=date_com)
+toolmenu.add_command(label="Insert Path/File", command=fname)
 is_notearea = tk.BooleanVar()
 is_notearea.trace('w', lambda *args: note_area())
 toolmenu.add_checkbutton(label="Note Area", variable=is_notearea)
@@ -595,6 +572,7 @@ w2['menu'].add_radiobutton(label=" 60% ", variable="", value=1, command=nine_fon
 w2['menu'].add_radiobutton(label=" 75% ", variable="", value=2, command=tenn_font)
 w2['menu'].add_radiobutton(label="100% ", variable="", value=3, command=levn_font)
 w2['menu'].add_radiobutton(label="125% ", variable="", value=4, command=twev_font)
+w2['menu'].add_radiobutton(label="150% ", variable="", value=5, command=fort_font)
 
 
 #Init Note Area
