@@ -8,7 +8,7 @@ File Menu: New, Open, Save, Save As, Close, and Exit
 
 Edit Menu: Undo/Redo, Cut, Copy, Paste, Select All
 
-View Menu: Hide/Show Toolbar, Mode, Default/Fullscreen, Hide in Tray  
+View Menu: Hide/Show Toolbar, Mode, Vertical/Default/Fullscreen, Hide in Tray 
 
 Tool Menu: Insert Time/Date, Note Area  
 
@@ -23,7 +23,7 @@ Context Menu: (right click)
 
 Toolbar: for quick access to Open, Save, Mode, and Note Area (notes).  
 
-Statusbar: changes according to 'Mode'.
+Statusbar: text changes according to 'Mode' (ie - Mode: Dark)
 
 Expandable Note Area!!  
 
