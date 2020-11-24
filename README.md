@@ -31,7 +31,9 @@ Transparency (for those who dont want to see too much).
 
 Keyboard shortcut keys
 
-Print Preview with toolbar/zoom levels
+Print Preview with toolbar/zoom levels  
+
+
 
 
 
