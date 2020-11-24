@@ -35,7 +35,7 @@ Print Preview with toolbar/zoom levels
 
 
 
-
+  
 
 **Developers**
 <a href="https://github.com/linuxlawson/texpert/graphs/contributors">
