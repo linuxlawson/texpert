@@ -44,7 +44,7 @@ Macs: Should be no problem as long as OS X is installed (since OS X is Unix base
 Windows: Texpert will need to be turned into an executable using PyInstaller or similiar program.  
 Python 2 or 3 will also need to be installed (from within Windows).  
 
-Program uses systems default color schemes, so will look different on each OS.  
+Program uses systems default color scheme, so will look different on each OS.  
 If problems occur, or a black hole forms, please let me know.  
 
 <br>  
