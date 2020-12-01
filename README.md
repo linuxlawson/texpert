@@ -40,7 +40,7 @@ Print Preview with toolbar/zoom levels
 Texpert was desgined with linux for use on linux but can be made to work on other operating systems.  
 
 Macs:   
-Mac users should have no problem as long as OS-x is installed (since OS-x is Unix based).
+Mac users should have no problem as long as OS X is installed (since OS X is Unix based).
 
 Windows:   
 Windows users will need to make program executable using PyInstaller or similiar program.  
