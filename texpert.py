@@ -2,6 +2,7 @@
 # Texpert Text Editor
 # Written by David Lawson
 
+
 import time
 
 try:
@@ -13,11 +14,13 @@ except:
     import tkinter.scrolledtext as tkst
     import tkinter.filedialog as tkFileDialog
 
+
 root = tk.Tk()
 root.title("Texpert")
 root.geometry("700x480")
 root.option_add("*Font", "TkDefaultFont 9")
 current_file = None
+
 
 #Main Frame
 mainframe = tk.Frame(root, bd=0, relief='flat')
@@ -85,7 +88,8 @@ def print_com():
 
 def preview_com():
     root.geometry("760x800+440+175")
-    texpert.config(padx=24, pady=4, wrap="word", font=('Arial 10'))
+    #texpert.insert('1.0 -1c', current_file +' \n\n') #y/n?
+    texpert.config(padx=34, pady=8, wrap="word", font=('Arial 10'))
     statusbar.pack_forget()
     toolbar.pack_forget()
     toolbar2.pack(side='top', anchor='n', fill='x')
@@ -113,7 +117,7 @@ def exit_com(event=None):
     win.wait_window()
 
 
-#zoom modes for print preview
+#for print preview
 def nine_font():
     texpert.config(font=('Arial 9'))
 
@@ -132,10 +136,10 @@ def fort_font():
 
 #edit menu
 def undo_com():
-    texpert.edit_undo()
+    texpert.event_generate("<<Undo>>")
 
 def redo_com():
-    texpert.edit_redo()
+    texpert.event_generate("<<Redo>>")
 
 def cut_com():
     texpert.event_generate("<<Cut>>")
@@ -151,6 +155,11 @@ def select_all(event=None):
     texpert.mark_set('insert', '1.0')
     texpert.see('insert')
     return 'break'
+
+
+def over_write(): #cant figure delete/insert method
+    texpert.config(padx=2, pady=0, wrap="word", blockcursor=True)
+    texpert.insert('end-1c', '', texpert.get('end-1c', '1.0'))
 
 
 #view menu
@@ -192,11 +201,20 @@ def night_mode():
                    fg="#00FF33",
                    insertbackground="#00FF33")
 
+
 def transparent():
     if is_transparent.get():
         root.wm_attributes('-alpha', 0.9)
     else:
         root.wm_attributes('-alpha', 1.0)
+
+
+def line_cursor():
+    texpert.config(padx=2, pady=0, wrap="word", blockcursor=False)
+    
+def block_cursor():
+    texpert.config(padx=2, pady=0, wrap="word", blockcursor=True)
+
 
 def tray_com():
     root.iconify()
@@ -210,7 +228,6 @@ def vertical_view():
     toolbar.pack(side='top', anchor='n', fill='x')
     toolbar2.pack_forget()
 
-
 def default_view(event=None):
     root.attributes('-zoomed', False)
     root.geometry("700x480+440+175")
@@ -218,7 +235,6 @@ def default_view(event=None):
     statusbar.pack(side='bottom', fill='x')
     toolbar.pack(side='top', anchor='n', fill='x')
     toolbar2.pack_forget()
-
 
 def full_screen(event=None):
     root.attributes('-zoomed', True)
@@ -233,7 +249,6 @@ def time_com():
     ctime = time.strftime('%I:%M %p')
     texpert.insert('insert', ctime, "a", ' ')
 
-
 def date_com():
     full_date = time.localtime()
     day = str(full_date.tm_mday)
@@ -242,11 +257,9 @@ def date_com():
     date = "" + month + '/' + day + '/' + year
     texpert.insert('insert', date, "a", ' ')
 
-
 def fname():
     texpert.insert('insert', current_file)
-    
-    
+
 def note_area():
     if is_notearea.get():
         note.pack(side='right', anchor='e', fill='y')
@@ -361,7 +374,6 @@ def r_click(event):
     editmenu.tk_popup(event.x_root, event.y_root)
 texpert.bind("<Button-3>", r_click)
 
-
 #line count (statusbar)
 def linecount(event):
     (line, char) = map(int, event.widget.index("end-1c").split("."))
@@ -425,6 +437,10 @@ editmenu.add_separator()
 editmenu.add_command(label="Select All",
                      command=select_all,
                      accelerator="Ctrl+A".rjust(15))
+                     
+editmenu.add_command(label="Overwrite", state='disable',
+                     command=over_write,
+                     accelerator="".rjust(15))
 
 #View
 viewmenu = tk.Menu(menu, tearoff=0)
@@ -470,6 +486,15 @@ viewmenu.add_checkbutton(label="Transparency",
                          onvalue=1,
                          offvalue=0)
 
+sub = tk.Menu(menu, tearoff=0)
+viewmenu.add_cascade(label="Cursor ", menu=sub)
+sub.add_command(label=" Line Cursor ",
+                    command=line_cursor)
+sub.add_command(label=" Block Cursor ",
+                    command=block_cursor)
+
+
+
 viewmenu.add_separator()
 viewmenu.add_command(label="Hide in Tray", command=tray_com)
 viewmenu.add_separator()
@@ -491,11 +516,13 @@ is_notearea = tk.BooleanVar()
 is_notearea.trace('w', lambda *args: note_area())
 toolmenu.add_checkbutton(label="Note Area", variable=is_notearea)
 
+
 #Help
 helpmenu = tk.Menu(menu, tearoff=0)
 menu.add_cascade(label="Help ", menu=helpmenu)
 helpmenu.add_command(label="About", command=about_com)
 helpmenu.add_command(label="Troubleshooting", command=trouble_com)
+
 
 #ToolBar (main)
 toolbar = tk.Frame(mainframe, bd=2, relief='groove')
@@ -554,12 +581,11 @@ w['menu'].add_checkbutton(label="Night  ",
                           command=night_mode,
                           indicatoron=0)
 
+
 #Toolbar2 (for print preview)
 toolbar2 = tk.Frame(mainframe, bd=2, relief='groove')
 b2 = tk.Button(toolbar2, text="Close Preview", width=10, command=default_view)
 b2.pack(side='right', padx=12, pady=4)
-#xview = tk.Label(toolbar2, text="Print Preview", state='disabled')
-#xview.place(relx = 0.4, rely = 0.5, anchor='w')
 
 #Toolbar2 'Zoom' button
 var = tk.StringVar(toolbar2)
@@ -567,13 +593,22 @@ var.set("Zoom Level")
 w2 = tk.OptionMenu(toolbar2, variable=var, value='')
 w2.config(indicatoron=0, bd=1, width=12, padx=4, pady=5)
 w2.pack(side='left', padx=12, pady=4)
+one = tk.BooleanVar()
+two = tk.BooleanVar()
+three = tk.BooleanVar()
+four = tk.BooleanVar()
+five = tk.BooleanVar()
 w2['menu'].delete('0', 'end')
-w2['menu'].add_radiobutton(label=" 60% ", variable="", value=1, command=nine_font)
-w2['menu'].add_radiobutton(label=" 75% ", variable="", value=2, command=tenn_font)
+w2['menu'].add_radiobutton(label=" 60% ".rjust(6), variable="", value=1, command=nine_font)
+w2['menu'].add_radiobutton(label=" 75% ".rjust(6), variable="", value=2, command=tenn_font)
 w2['menu'].add_radiobutton(label="100% ", variable="", value=3, command=levn_font)
 w2['menu'].add_radiobutton(label="125% ", variable="", value=4, command=twev_font)
 w2['menu'].add_radiobutton(label="150% ", variable="", value=5, command=fort_font)
-
+one.set(False)
+two.set(True)
+three.set(False)
+four.set(False)
+five.set(False)
 
 #Init Note Area
 btn_frame = tk.Frame(texpert, bd=0, relief='sunken')
@@ -593,6 +628,7 @@ close = tk.Button(note,
                   command=lambda: is_notearea.set(not is_notearea.get()))
 close.pack(side='right', padx=2, pady=2)
 
+
 root.bind_all('<Control-a>', select_all)
 root.bind_all('<Control-n>', new_com)
 root.bind_all('<Control-o>', open_com)
@@ -603,6 +639,7 @@ root.bind_all('<Control-q>', exit_com)
 root.bind_all('<F11>', full_screen)
 root.bind_all('<Control-d>', default_view)
 root.bind("<Escape>", lambda event: root.attributes("-zoomed", False))
+
 
 root.protocol("WM_DELETE_WINDOW", exit_com)
 root.mainloop()
