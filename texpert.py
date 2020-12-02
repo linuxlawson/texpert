@@ -369,6 +369,41 @@ as it was not designed/programmed to do so.
     win.wait_window()
 
 
+def shortcut_keys(event=None):
+    win = tk.Toplevel()
+    win.title("Shortcut Keys")
+    shortk = tk.Label(win, 
+                        justify='left',
+                        text="""\n
+List of shortcut keys and their functions.\n\n
+                    Keys             \tFunctions\n  
+File Menu:     Ctrl+N            \tNew File
+                    Ctrl+O            \tOpen File
+                    Ctrl+S            \tSave File
+                    Ctrl+Shift+S    \tSave As
+                    Ctrl+W            \tClose File
+                    Ctrl+Q            \tQuit Program (exit)\n
+
+Edit Menu:    Ctrl+Z            \tUndo
+                    Ctrl+Shift+Z    \tRedo
+                    Ctrl+X            \tCut
+                    Ctrl+C            \tCopy
+                    Ctrl+V            \tPaste
+                    Ctrl+A            \tSelect All\n
+
+View Menu:   Ctrl+D            \tDefault Win Size
+                    F11               \tFullscreen
+                    Escape            \tExits Fullscreen
+\n\n""")
+    shortk.pack()
+    cls = tk.Button(win, text="Close", command=win.destroy)
+    cls.pack()
+    win.transient(root)
+    win.geometry('370x460')
+    win.wait_window()
+
+
+
 #context menu (right-click)
 def r_click(event):
     editmenu.tk_popup(event.x_root, event.y_root)
@@ -487,12 +522,11 @@ viewmenu.add_checkbutton(label="Transparency",
                          offvalue=0)
 
 sub = tk.Menu(menu, tearoff=0)
-viewmenu.add_cascade(label="Cursor ", menu=sub)
+viewmenu.add_cascade(label="Cursor Type ", menu=sub)
 sub.add_command(label=" Line Cursor ",
                     command=line_cursor)
 sub.add_command(label=" Block Cursor ",
                     command=block_cursor)
-
 
 
 viewmenu.add_separator()
@@ -522,6 +556,7 @@ helpmenu = tk.Menu(menu, tearoff=0)
 menu.add_cascade(label="Help ", menu=helpmenu)
 helpmenu.add_command(label="About", command=about_com)
 helpmenu.add_command(label="Troubleshooting", command=trouble_com)
+helpmenu.add_command(label="Shortcut Keys", command=shortcut_keys)
 
 
 #ToolBar (main)
