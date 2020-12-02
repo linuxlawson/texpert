@@ -376,30 +376,30 @@ def shortcut_keys(event=None):
                         justify='left',
                         text="""\n
 List of shortcut keys and their functions.\n\n
-                    Keys             \tFunctions\n  
-File Menu:     Ctrl+N            \tNew File
-                    Ctrl+O            \tOpen File
-                    Ctrl+S            \tSave File
-                    Ctrl+Shift+S    \tSave As
-                    Ctrl+W            \tClose File
-                    Ctrl+Q            \tQuit Program (exit)\n
+Menu \tKeys\t\tFunctions\n  
+File:\tCtrl+N   \t\tNew File
+    \tCtrl+O    \t\tOpen File
+    \tCtrl+S    \t\tSave File
+    \tCtrl+Shift+S \tSave As
+    \tCtrl+W    \t\tClose File
+    \tCtrl+Q    \t\tQuit Program (exit)\n
 
-Edit Menu:    Ctrl+Z            \tUndo
-                    Ctrl+Shift+Z    \tRedo
-                    Ctrl+X            \tCut
-                    Ctrl+C            \tCopy
-                    Ctrl+V            \tPaste
-                    Ctrl+A            \tSelect All\n
+Edit:\tCtrl+Z   \t\tUndo
+    \tCtrl+Shift+Z\tRedo
+    \tCtrl+X    \t\tCut
+    \tCrl+C     \t\tCopy
+    \tCtrl+V    \t\tPaste
+    \tCtrl+A    \t\tSelect All\n
 
-View Menu:   Ctrl+D            \tDefault Win Size
-                    F11               \tFullscreen
-                    Escape            \tExits Fullscreen
+View:\tCtrl+D   \t\tDefault Win Size
+    \tF11       \t\tFullscreen
+    \tEscape    \t\tExits Fullscreen
 \n\n""")
     shortk.pack()
     cls = tk.Button(win, text="Close", command=win.destroy)
     cls.pack()
     win.transient(root)
-    win.geometry('370x460')
+    win.geometry('380x460')
     win.wait_window()
 
 
