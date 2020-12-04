@@ -17,7 +17,7 @@ except:
 
 root = tk.Tk()
 root.title("Texpert")
-root.geometry("700x480")
+root.geometry("700x500")
 root.option_add("*Font", "TkDefaultFont 9")
 current_file = None
 
@@ -88,7 +88,6 @@ def print_com():
 
 def preview_com():
     root.geometry("760x800+440+175")
-    #texpert.insert('1.0 -1c', current_file +' \n\n') #y/n?
     texpert.config(padx=34, pady=8, wrap="word", font=('Arial 10'))
     statusbar.pack_forget()
     toolbar.pack_forget()
@@ -159,7 +158,7 @@ def select_all(event=None):
 
 def over_write(): #cant figure delete/insert method
     texpert.config(padx=2, pady=0, wrap="word", blockcursor=True)
-    texpert.insert('end-1c', '', texpert.get('end-1c', '1.0'))
+    texpert.insert('end', '', texpert.get('end-1c', '1.0'))
 
 
 #view menu
@@ -208,13 +207,11 @@ def transparent():
     else:
         root.wm_attributes('-alpha', 1.0)
 
-
-def line_cursor():
+def line_cursor(event=None):
     texpert.config(padx=2, pady=0, wrap="word", blockcursor=False)
     
-def block_cursor():
+def block_cursor(event=None):
     texpert.config(padx=2, pady=0, wrap="word", blockcursor=True)
-
 
 def tray_com():
     root.iconify()
@@ -222,7 +219,7 @@ def tray_com():
 
 def vertical_view():
     root.attributes('-zoomed', False)
-    root.geometry("540x600+440+175")
+    root.geometry("560x640+440+165")
     texpert.config(padx=2, pady=2, wrap="word", font=("Arial 11"))
     statusbar.pack(side='bottom', fill='x')
     toolbar.pack(side='top', anchor='n', fill='x')
@@ -230,7 +227,7 @@ def vertical_view():
 
 def default_view(event=None):
     root.attributes('-zoomed', False)
-    root.geometry("700x480+440+175")
+    root.geometry("700x500+440+165")
     texpert.config(padx=2, pady=2, wrap="word", font=("Arial 11"))
     statusbar.pack(side='bottom', fill='x')
     toolbar.pack(side='top', anchor='n', fill='x')
@@ -380,20 +377,20 @@ Menu \tKeys\t\tFunctions\n
 File:\tCtrl+N   \t\tNew File
     \tCtrl+O    \t\tOpen File
     \tCtrl+S    \t\tSave File
-    \tCtrl+Shift+S \tSave As
+    \tCtrl+Shift+S\tSave As
     \tCtrl+W    \t\tClose File
     \tCtrl+Q    \t\tQuit Program (exit)\n
 
 Edit:\tCtrl+Z   \t\tUndo
     \tCtrl+Shift+Z\tRedo
     \tCtrl+X    \t\tCut
-    \tCrl+C     \t\tCopy
+    \tCtrl+C     \t\tCopy
     \tCtrl+V    \t\tPaste
     \tCtrl+A    \t\tSelect All\n
 
 View:\tCtrl+D   \t\tDefault Win Size
     \tF11       \t\tFullscreen
-    \tEscape    \t\tExits Fullscreen
+    \tEscape    \t\tExit Fullscreen
 \n\n""")
     shortk.pack()
     cls = tk.Button(win, text="Close", command=win.destroy)
@@ -401,7 +398,6 @@ View:\tCtrl+D   \t\tDefault Win Size
     win.transient(root)
     win.geometry('380x460')
     win.wait_window()
-
 
 
 #context menu (right-click)
@@ -523,11 +519,8 @@ viewmenu.add_checkbutton(label="Transparency",
 
 sub = tk.Menu(menu, tearoff=0)
 viewmenu.add_cascade(label="Cursor Type ", menu=sub)
-sub.add_command(label=" Line Cursor ",
-                    command=line_cursor)
-sub.add_command(label=" Block Cursor ",
-                    command=block_cursor)
-
+sub.add_command(label=" Line Cursor", command=line_cursor)
+sub.add_command(label=" Block Cursor", command=block_cursor)
 
 viewmenu.add_separator()
 viewmenu.add_command(label="Hide in Tray", command=tray_com)
