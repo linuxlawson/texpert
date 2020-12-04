@@ -81,7 +81,6 @@ def saveas_com(event=None):
         global current_file
         current_file = file.name
 
-
 #print/print preview not done
 def print_com():
     print("Printer not found")
@@ -155,7 +154,6 @@ def select_all(event=None):
     texpert.see('insert')
     return 'break'
 
-
 def over_write(): #cant figure delete/insert method
     texpert.config(padx=2, pady=0, wrap="word", blockcursor=True)
     texpert.insert('end', '', texpert.get('end-1c', '1.0'))
@@ -207,11 +205,13 @@ def transparent():
     else:
         root.wm_attributes('-alpha', 1.0)
 
-def line_cursor(event=None):
-    texpert.config(padx=2, pady=0, wrap="word", blockcursor=False)
-    
-def block_cursor(event=None):
-    texpert.config(padx=2, pady=0, wrap="word", blockcursor=True)
+
+def blockcursor():
+    if is_blockcursor.get():
+        texpert.config(padx=2, pady=0, wrap="word", blockcursor=True)
+    else:
+        texpert.config(padx=2, pady=0, wrap="word", blockcursor=False)
+
 
 def tray_com():
     root.iconify()
@@ -384,7 +384,7 @@ File:\tCtrl+N   \t\tNew File
 Edit:\tCtrl+Z   \t\tUndo
     \tCtrl+Shift+Z\tRedo
     \tCtrl+X    \t\tCut
-    \tCtrl+C     \t\tCopy
+    \tCtrl+C    \t\tCopy
     \tCtrl+V    \t\tPaste
     \tCtrl+A    \t\tSelect All\n
 
@@ -510,6 +510,7 @@ submenu.add_command(label=" Night ",
                     activebackground="#181818",
                     activeforeground="#00FF33")
 
+
 is_transparent = tk.BooleanVar()
 is_transparent.trace('w', lambda *args: transparent())
 viewmenu.add_checkbutton(label="Transparency",
@@ -517,10 +518,12 @@ viewmenu.add_checkbutton(label="Transparency",
                          onvalue=1,
                          offvalue=0)
 
-sub = tk.Menu(menu, tearoff=0)
-viewmenu.add_cascade(label="Cursor Type ", menu=sub)
-sub.add_command(label=" Line Cursor", command=line_cursor)
-sub.add_command(label=" Block Cursor", command=block_cursor)
+is_blockcursor = tk.BooleanVar()
+is_blockcursor.trace('w', lambda *args: blockcursor())
+viewmenu.add_checkbutton(label="Block Cursor",
+                         variable=is_blockcursor,
+                         onvalue=1,
+                         offvalue=0)
 
 viewmenu.add_separator()
 viewmenu.add_command(label="Hide in Tray", command=tray_com)
@@ -532,6 +535,7 @@ viewmenu.add_command(label="Default",
 viewmenu.add_command(label="Fullscreen",
                      command=full_screen,
                      accelerator="F11".rjust(8))
+
 
 #Tools
 toolmenu = tk.Menu(menu, tearoff=0)
