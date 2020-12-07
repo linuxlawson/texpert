@@ -262,7 +262,7 @@ def about_com(event=None):
     clo = tk.Button(win, text="Close", width=4, command=win.destroy)
     clo.pack(side='right', padx=8, pady=4)
     win.transient(root)
-    win.geometry('300x200')
+    win.geometry('300x200+638+298')
     win.wait_window()
 
 
@@ -279,7 +279,7 @@ def credits_com():
     cls = tk.Button(win, text="Close", width=4, command=win.destroy)
     cls.pack(side='right', padx=8, pady=4)
     win.transient(root)
-    win.geometry('300x200')
+    win.geometry('300x200+638+298')
     win.wait_window()
 
 
@@ -315,7 +315,7 @@ DEALINGS IN THE SOFTWARE.\n\n""")
     cls = tk.Button(win, text="Close", command=win.destroy)
     cls.pack()
     win.transient(root)
-    win.geometry('480x450')
+    win.geometry('480x450+550+230')
     win.wait_window()
 
 
@@ -339,7 +339,7 @@ as it was not designed/programmed to do so.
     cls = tk.Button(win, text="Close", command=win.destroy)
     cls.pack()
     win.transient(root)
-    win.geometry('354x400')
+    win.geometry('354x400+612+230')
     win.wait_window()
 
 
@@ -372,7 +372,7 @@ View:\tCtrl+D   \t\tDefault Win Size
     cls = tk.Button(win, text="Close", command=win.destroy)
     cls.pack()
     win.transient(root)
-    win.geometry('380x460')
+    win.geometry('380x460+600+230')
     win.wait_window()
 
 
