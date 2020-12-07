@@ -49,9 +49,7 @@ def new_com(event=None):
     texpert.delete('1.0', 'end-1c')
 
 def open_com(event=None):
-    file = tkFileDialog.askopenfile(parent=root,
-                                    mode='rb',
-                                    title="Select File")
+    file = tkFileDialog.askopenfile(parent=root, mode='rb', title="Select File")
     filetypes = [("Text Files", "*.txt"), ("All Files", "*.*")]
     if file:
         contents = file.read()
@@ -100,9 +98,7 @@ def close_com(event=None):
 def exit_com(event=None):
     win = tk.Toplevel()
     win.title("Exit")
-    xit = tk.Label(
-        win,
-        text="\nUnsaved work will be lost.\n\nAre you sure you want to exit?\n")
+    xit = tk.Label(win, text="\nUnsaved work will be lost.\n\nAre you sure you want to exit?\n")
     xit.pack()
     ex = tk.Button(win, text="Exit", width=4, command=root.destroy)
     ex.pack(side='left', padx=24, pady=4)
@@ -118,45 +114,32 @@ def exit_com(event=None):
 #for print preview
 def nine_font():
     texpert.config(font=('Arial 9'))
-
 def tenn_font():
     texpert.config(font=('Arial 10'))
-
 def levn_font():
     texpert.config(font=('Arial 11'))
-
 def twev_font():
     texpert.config(font=('Arial 12'))
-
 def fort_font():
     texpert.config(font=('Arial 14'))
 
 
 #edit menu
 def undo_com():
-    texpert.event_generate("<<Undo>>")
-
+    texpert.edit_undo()
 def redo_com():
-    texpert.event_generate("<<Redo>>")
-
+    texpert.edit_redo()
 def cut_com():
     texpert.event_generate("<<Cut>>")
-
 def copy_com():
     texpert.event_generate("<<Copy>>")
-
 def paste_com():
     texpert.event_generate("<<Paste>>")
-
 def select_all(event=None):
     texpert.tag_add('sel', '1.0', 'end-1c')
     texpert.mark_set('insert', '1.0')
     texpert.see('insert')
     return 'break'
-
-def over_write(): #cant figure delete/insert method
-    texpert.config(padx=2, pady=0, wrap="word", blockcursor=True)
-    texpert.insert('end', '', texpert.get('end-1c', '1.0'))
 
 
 #view menu
@@ -177,26 +160,26 @@ def status_bar():
 def dark_mode():
     mode["text"] = " Mode: Dark"
     texpert.config(background="#181818",
-                   fg="#F5F5F5",
-                   insertbackground="#F5F5F5")
+                    fg="#F5F5F5",
+                    insertbackground="#F5F5F5")
 
 def light_mode():
     mode["text"] = " Mode: Light"
     texpert.config(background="#F5F5F5",
-                   fg="#181818",
-                   insertbackground="#181818")
+                    fg="#181818",
+                    insertbackground="#181818")
 
 def legal_mode():
     mode["text"] = " Mode: Legal"
     texpert.config(background="#FFFFCC",
-                   fg="#181818",
-                   insertbackground="#181818")
+                    fg="#181818",
+                    insertbackground="#181818")
 
 def night_mode():
     mode["text"] = " Mode: Night"
     texpert.config(background="#181818",
-                   fg="#00FF33",
-                   insertbackground="#00FF33")
+                    fg="#00FF33",
+                    insertbackground="#00FF33")
 
 
 def transparent():
@@ -270,8 +253,7 @@ def note_area():
 def about_com(event=None):
     win = tk.Toplevel()
     win.title("About")
-    bout = tk.Label(win,
-                    text="""\n\n\nTexpert
+    bout = tk.Label(win, text="""\n\n\nTexpert
     \nA small and lightweight text editor
     \nMade in Python with Tkinter\n\n""")
     bout.pack()
@@ -288,8 +270,7 @@ def credits_com():
     win = tk.Toplevel()
     win.wm_attributes("-topmost", 0)
     win.title("Credits")
-    cred = tk.Label(win,
-                    foreground="#404040",
+    cred = tk.Label(win, foreground="#404040",
                     text="""\n\n\nCreated by David Lawson
     \n\nme = Person()\nwhile (me.awake()):\nme.code()\n""")
     cred.pack()
@@ -306,9 +287,7 @@ def license_info():
     win = tk.Toplevel()
     win.wm_attributes("-topmost", 1)
     win.title("License")
-    lic = tk.Label(win,
-                   justify='left',
-                   text="""\n\nMIT License
+    lic = tk.Label(win, justify='left', text="""\n\nMIT License
 
 Copyright (c) 2019 David Lawson
 
@@ -343,9 +322,7 @@ DEALINGS IN THE SOFTWARE.\n\n""")
 def trouble_com(event=None):
     win = tk.Toplevel()
     win.title("Troubleshooting")
-    trouble = tk.Label(win,
-                       justify='left',
-                       text="""\n\n
+    trouble = tk.Label(win, justify='left', text="""\n\n
 This program was designed for Linux and
 may not work on other operating systems.\n
 Texpert text editor is a work in progress
@@ -369,9 +346,8 @@ as it was not designed/programmed to do so.
 def shortcut_keys(event=None):
     win = tk.Toplevel()
     win.title("Shortcut Keys")
-    shortk = tk.Label(win, 
-                        justify='left',
-                        text="""\n
+    shortk = tk.Label(win, justify='left',
+                    text="""\n
 List of shortcut keys and their functions.\n\n
 Menu \tKeys\t\tFunctions\n  
 File:\tCtrl+N   \t\tNew File
@@ -420,58 +396,55 @@ root.config(menu=menu, bd=2)
 filemenu = tk.Menu(menu, tearoff=0)
 menu.add_cascade(label="File ", menu=filemenu)
 filemenu.add_command(label="New",
-                     command=new_com,
-                     accelerator="Ctrl+N".rjust(15))
+                    command=new_com,
+                    accelerator="Ctrl+N".rjust(15))
 filemenu.add_command(label="Open",
-                     command=open_com,
-                     underline=0,
-                     accelerator="Ctrl+O".rjust(15))
+                    command=open_com,
+                    underline=0,
+                    accelerator="Ctrl+O".rjust(15))
 filemenu.add_separator()
 filemenu.add_command(label="Save",
-                     command=save_com,
-                     accelerator="Ctrl+S".rjust(15))
+                    command=save_com,
+                    accelerator="Ctrl+S".rjust(15))
 filemenu.add_command(label="Save As",
-                     command=saveas_com,
-                     accelerator="Ctrl+Shift+S")
+                    command=saveas_com,
+                    accelerator="Ctrl+Shift+S")
 filemenu.add_separator()
 filemenu.add_command(label="Print", command=print_com, state="disabled")
 filemenu.add_command(label="Print Preview", command=preview_com)
 filemenu.add_separator()
 filemenu.add_command(label="Close",
-                     command=close_com,
-                     accelerator="Ctrl+W".rjust(15))
+                    command=close_com,
+                    accelerator="Ctrl+W".rjust(15))
 filemenu.add_command(label="Exit",
-                     command=exit_com,
-                     underline=1,
-                     accelerator="Ctrl+Q".rjust(15))
+                    command=exit_com,
+                    underline=1,
+                    accelerator="Ctrl+Q".rjust(15))
 
 #Edit
 editmenu = tk.Menu(menu, tearoff=0)
 menu.add_cascade(label="Edit ", menu=editmenu)
 editmenu.add_command(label="Undo",
-                     command=undo_com,
-                     accelerator="Ctrl+Z".rjust(15))
+                    command=undo_com,
+                    accelerator="Ctrl+Z".rjust(15))
 editmenu.add_command(label="Redo",
-                     command=redo_com,
-                     accelerator="Ctrl+Shift+Z")
+                    command=redo_com,
+                    accelerator="Ctrl+Shift+Z")
 editmenu.add_separator()
 editmenu.add_command(label="Cut",
-                     command=cut_com,
-                     accelerator="Ctrl+X".rjust(15))
+                    command=cut_com,
+                    accelerator="Ctrl+X".rjust(15))
 editmenu.add_command(label="Copy",
-                     command=copy_com,
-                     accelerator="Ctrl+C".rjust(15))
+                    command=copy_com,
+                    accelerator="Ctrl+C".rjust(15))
 editmenu.add_command(label="Paste",
-                     command=paste_com,
-                     accelerator="Ctrl+V".rjust(15))
+                    command=paste_com,
+                    accelerator="Ctrl+V".rjust(15))
 editmenu.add_separator()
 editmenu.add_command(label="Select All",
-                     command=select_all,
-                     accelerator="Ctrl+A".rjust(15))
-                     
-editmenu.add_command(label="Overwrite", state='disable',
-                     command=over_write,
-                     accelerator="".rjust(15))
+                    command=select_all,
+                    accelerator="Ctrl+A".rjust(15))
+
 
 #View
 viewmenu = tk.Menu(menu, tearoff=0)
@@ -479,18 +452,18 @@ menu.add_cascade(label="View ", menu=viewmenu)
 is_toolbar = tk.BooleanVar()
 is_toolbar.trace('w', lambda *args: tool_bar())
 viewmenu.add_checkbutton(label="Toolbar",
-                         variable=is_toolbar,
-                         onvalue=0,
-                         offvalue=1)
+                        variable=is_toolbar,
+                        onvalue=0,
+                        offvalue=1)
 is_statusbar = tk.BooleanVar()
 is_statusbar.trace('w', lambda *args: status_bar())
 viewmenu.add_checkbutton(label="Statusbar",
-                         variable=is_statusbar,
-                         onvalue=0,
-                         offvalue=1)
+                        variable=is_statusbar,
+                        onvalue=0,
+                        offvalue=1)
 viewmenu.add_separator()
 
-#sub-menu for: [view > mode]
+#sub-menu buttons for: [view > mode]
 submenu = tk.Menu(menu, tearoff=0)
 viewmenu.add_cascade(label="Mode ", menu=submenu)
 submenu.add_command(label=" Dark ",
@@ -510,31 +483,27 @@ submenu.add_command(label=" Night ",
                     activebackground="#181818",
                     activeforeground="#00FF33")
 
-
 is_transparent = tk.BooleanVar()
 is_transparent.trace('w', lambda *args: transparent())
 viewmenu.add_checkbutton(label="Transparency",
-                         variable=is_transparent,
-                         onvalue=1,
-                         offvalue=0)
-
+                        variable=is_transparent,
+                        onvalue=1,
+                        offvalue=0)
 is_blockcursor = tk.BooleanVar()
 is_blockcursor.trace('w', lambda *args: blockcursor())
 viewmenu.add_checkbutton(label="Block Cursor",
-                         variable=is_blockcursor,
-                         onvalue=1,
-                         offvalue=0)
+                        variable=is_blockcursor,
+                        onvalue=1,
+                        offvalue=0)
 
 viewmenu.add_separator()
 viewmenu.add_command(label="Hide in Tray", command=tray_com)
 viewmenu.add_separator()
 viewmenu.add_command(label="Vertical", command=vertical_view)
-viewmenu.add_command(label="Default",
-                     command=default_view,
-                     accelerator="Ctrl+D")
-viewmenu.add_command(label="Fullscreen",
-                     command=full_screen,
-                     accelerator="F11".rjust(8))
+viewmenu.add_command(label="Default", command=default_view,
+                    accelerator="Ctrl+D")
+viewmenu.add_command(label="Fullscreen", command=full_screen,
+                    accelerator="F11".rjust(8))
 
 
 #Tools
@@ -559,59 +528,57 @@ helpmenu.add_command(label="Shortcut Keys", command=shortcut_keys)
 #ToolBar (main)
 toolbar = tk.Frame(mainframe, bd=2, relief='groove')
 toolbar.pack(side='top', anchor='n', fill='x')
-b1 = tk.Button(toolbar, text="Open", width=4, command=open_com)
+b1 = tk.Button(toolbar, text="Open", width=5, command=open_com)
 b1.pack(side='left', padx=4, pady=2)
-b2 = tk.Button(toolbar, text="Save", width=4, command=save_com)
+b2 = tk.Button(toolbar, text="Save", width=5, command=save_com)
 b2.pack(side='right', padx=4, pady=2)
-b4 = tk.Button(toolbar,
-               text="Notes",
-               width=4,
-               command=lambda: is_notearea.set(not is_notearea.get()))
+b4 = tk.Button(toolbar, text="Notes", width=5,
+                command=lambda: is_notearea.set(not is_notearea.get()))
 b4.pack(side='right', padx=4, pady=2)
 
-#ToolBar 'Mode' button
+#ToolBar 'Mode' buttons
 var = tk.StringVar(toolbar)
 var.set("Mode")
 w = tk.OptionMenu(toolbar, variable=var, value='')
-w.config(indicatoron=0, bd=1, width=6, padx=4, pady=5)
+w.config(indicatoron=0, bd=1, width=7, padx=4, pady=5)
 w.pack(side='left', padx=4, pady=2)
 first = tk.BooleanVar()
 second = tk.BooleanVar()
 third = tk.BooleanVar()
 fourth = tk.BooleanVar()
 w['menu'].delete('0', 'end')
-w['menu'].add_checkbutton(label="Dark  ",
-                          onvalue=1,
-                          offvalue=0,
-                          activebackground="#181818",
-                          activeforeground="#F5F5F5",
-                          variable=first,
-                          command=dark_mode,
-                          indicatoron=0)
-w['menu'].add_checkbutton(label="Light  ",
-                          onvalue=1,
-                          offvalue=0,
-                          activebackground="#F5F5F5",
-                          activeforeground="#181818",
-                          variable=second,
-                          command=light_mode,
-                          indicatoron=0)
-w['menu'].add_checkbutton(label="Legal  ",
-                          onvalue=1,
-                          offvalue=0,
-                          activebackground="#FFFFCC",
-                          activeforeground="#181818",
-                          variable=third,
-                          command=legal_mode,
-                          indicatoron=0)
-w['menu'].add_checkbutton(label="Night  ",
-                          onvalue=1,
-                          offvalue=0,
-                          activebackground="#181818",
-                          activeforeground="#00FF33",
-                          variable=fourth,
-                          command=night_mode,
-                          indicatoron=0)
+w['menu'].add_checkbutton(label=" Dark  ",
+                            onvalue=1,
+                            offvalue=0,
+                            activebackground="#181818",
+                            activeforeground="#F5F5F5",
+                            variable=first,
+                            command=dark_mode,
+                            indicatoron=0)
+w['menu'].add_checkbutton(label=" Light  ",
+                            onvalue=1,
+                            offvalue=0,
+                            activebackground="#F5F5F5",
+                            activeforeground="#181818",
+                            variable=second,
+                            command=light_mode,
+                            indicatoron=0)
+w['menu'].add_checkbutton(label=" Legal  ",
+                            onvalue=1,
+                            offvalue=0,
+                            activebackground="#FFFFCC",
+                            activeforeground="#181818",
+                            variable=third,
+                            command=legal_mode,
+                            indicatoron=0)
+w['menu'].add_checkbutton(label=" Night  ",
+                            onvalue=1,
+                            offvalue=0,
+                            activebackground="#181818",
+                            activeforeground="#00FF33",
+                            variable=fourth,
+                            command=night_mode,
+                            indicatoron=0)
 
 
 #Toolbar2 (for print preview)
@@ -636,11 +603,7 @@ w2['menu'].add_radiobutton(label=" 75% ".rjust(6), variable="", value=2, command
 w2['menu'].add_radiobutton(label="100% ", variable="", value=3, command=levn_font)
 w2['menu'].add_radiobutton(label="125% ", variable="", value=4, command=twev_font)
 w2['menu'].add_radiobutton(label="150% ", variable="", value=5, command=fort_font)
-one.set(False)
-two.set(True)
-three.set(False)
-four.set(False)
-five.set(False)
+
 
 #Init Note Area
 btn_frame = tk.Frame(texpert, bd=0, relief='sunken')
@@ -649,15 +612,11 @@ tx = tk.Text(note, width=18)
 tx.insert('1.0', "Notes are not saved..")
 tx.config(padx=2, pady=2, wrap="word")
 tx.pack(side='top', fill='both', expand=True)
-clear = tk.Button(note,
-                  text="Clear",
-                  width=4,
-                  command=lambda: tx.delete('1.0', 'end-1c'))
+clear = tk.Button(note, text="Clear", width=4,
+                    command=lambda: tx.delete('1.0', 'end-1c'))
 clear.pack(side='left', padx=2, pady=2)
-close = tk.Button(note,
-                  text="Close",
-                  width=4,
-                  command=lambda: is_notearea.set(not is_notearea.get()))
+close = tk.Button(note, text="Close", width=4,
+                    command=lambda: is_notearea.set(not is_notearea.get()))
 close.pack(side='right', padx=2, pady=2)
 
 
