@@ -1,16 +1,17 @@
 Things to do.
 
 
-Print Preview opens at 75% as it should.
-Ideally, 75% would be selected upon opening. It is not, but not a big deal.
-Also,  zoom selection doesnt forget setting when closing preview (if opened a 2nd time, previous setting selected).
-Working on it..
-Radio buttons sometimes dont cooperate :)
+Would like to include overwrite feature to edit menu, 
+but dont know if that can be done using tkinter, cant find any info, anywhere. 
+
+
+
 
 
 Line/column number only binds to return key. 
 Haven't worked on this too much, it could use improvement. 
 Like arrow keys, mouse bindings.
+
 
 
 To be continued..
