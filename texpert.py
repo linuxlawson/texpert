@@ -23,11 +23,11 @@ current_file = None
 
 
 #Main Frame
-mainframe = tk.Frame(root, bd=0, relief='flat')
+mainframe = tk.Frame(root, bd=1, relief='flat')
 mainframe.pack(fill='both', expand=True, padx=0, pady=0)
 
 #Text Area
-texpert = tkst.ScrolledText(mainframe, undo=True, font=("Arial 11"))
+texpert = tkst.ScrolledText(mainframe, undo=True, bd=0, font=("Arial 11"))
 texpert.pack(side='bottom', fill='both', expand=True)
 texpert.config(padx=2, pady=0, wrap="word")
 texpert.focus_set()
@@ -49,8 +49,8 @@ def new_com(event=None):
     texpert.delete('1.0', 'end-1c')
 
 def open_com(event=None):
-    file = tkFileDialog.askopenfile(parent=root, mode='rb', title="Select File")
-    filetypes = [("Text Files", "*.txt"), ("All Files", "*.*")]
+    file = tkFileDialog.askopenfile(parent=root, mode='rb', title="Select File", 
+    filetypes = (("text files","*.txt"),("all files","*.*")))
     if file:
         contents = file.read()
         name = root.title((file.name) + " - Texpert")
@@ -70,8 +70,7 @@ def save_com(event=None):
         saveas_com()
 
 def saveas_com(event=None):
-    file = tkFileDialog.asksaveasfile(mode='w')
-    filetypes = [("Text Files", "*.txt"), ("All Files", "*.*")]
+    file = tkFileDialog.asksaveasfile(mode='w', filetypes = (("text files","*.txt"),("all files","*.*")))
     if file:
         data = texpert.get('1.0', 'end-1c')
         file.write(data)
@@ -619,7 +618,7 @@ close = tk.Button(note, text="Close", width=4,
                     command=lambda: is_notearea.set(not is_notearea.get()))
 close.pack(side='right', padx=2, pady=2)
 
-
+#bindings
 root.bind_all('<Control-a>', select_all)
 root.bind_all('<Control-n>', new_com)
 root.bind_all('<Control-o>', open_com)
@@ -627,8 +626,8 @@ root.bind_all('<Control-s>', save_com)
 root.bind_all("<Control-Shift-S>", saveas_com)
 root.bind_all('<Control-w>', close_com)
 root.bind_all('<Control-q>', exit_com)
-root.bind_all('<F11>', full_screen)
 root.bind_all('<Control-d>', default_view)
+root.bind_all('<F11>', full_screen)
 root.bind("<Escape>", lambda event: root.attributes("-zoomed", False))
 
 
