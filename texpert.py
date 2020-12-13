@@ -64,6 +64,7 @@ def new_com(event=None):
     file = None
     texpert.delete('1.0', 'end-1c')
 
+
 def open_com(event=None):
     file = tkFileDialog.askopenfile(parent=root, mode='rb', title="Select File", 
     filetypes = (("Text Files", "*.txt"),("All Files", "*.*")))
@@ -76,6 +77,7 @@ def open_com(event=None):
         global current_file
         current_file = file.name
 
+
 def save_com(event=None):
     if current_file:
         file = open(current_file, "w")
@@ -84,6 +86,7 @@ def save_com(event=None):
         file.close()
     else:
         saveas_com()
+
 
 def saveas_com(event=None):
     file = tkFileDialog.asksaveasfile(mode='w', 
@@ -95,9 +98,11 @@ def saveas_com(event=None):
         global current_file
         current_file = file.name
 
+
 #print/print preview not done
 def print_com():
     print("Printer not found")
+
 
 def preview_com():
     root.geometry("760x800+440+175")
@@ -106,10 +111,12 @@ def preview_com():
     toolbar.pack_forget()
     toolbar2.pack(side='top', anchor='n', fill='x')
 
+
 def close_com(event=None):
     root.title("Untitled - Texpert")
     file = None
     texpert.delete('1.0', 'end-1c')
+
 
 def exit_com(event=None):
     win = tk.Toplevel()
@@ -130,12 +137,16 @@ def exit_com(event=None):
 #for print preview
 def nine_font():
     texpert.config(font=('Arial 9'))
+
 def tenn_font():
     texpert.config(font=('Arial 10'))
+
 def levn_font():
     texpert.config(font=('Arial 11'))
+
 def twev_font():
     texpert.config(font=('Arial 12'))
+
 def fort_font():
     texpert.config(font=('Arial 14'))
 
@@ -143,14 +154,19 @@ def fort_font():
 #edit menu
 def undo_com():
     texpert.edit_undo()
+
 def redo_com():
     texpert.edit_redo()
+
 def cut_com():
     texpert.event_generate("<<Cut>>")
+
 def copy_com():
     texpert.event_generate("<<Copy>>")
+
 def paste_com():
     texpert.event_generate("<<Paste>>")
+
 def select_all(event=None):
     texpert.tag_add('sel', '1.0', 'end-1c')
     texpert.mark_set('insert', '1.0')
@@ -165,6 +181,7 @@ def tool_bar():
     else:
         toolbar.pack(side='top', anchor='n', fill='x')
 
+
 def status_bar():
     if is_statusbar.get():
         statusbar.pack_forget()
@@ -177,21 +194,28 @@ def dark_mode():
     mode["text"] = " Mode: Dark"
     texpert.config(bg=darkbg, fg=darkfg,
                     insertbackground="#F5F5F5")
+    tx.config(bg=darkbg, fg=darkfg, insertbackground="#F5F5F5")
+
 
 def light_mode():
     mode["text"] = " Mode: Light"
     texpert.config(bg=lightbg, fg=lightfg,
                     insertbackground="#181818")
-
+    tx.config(bg=lightbg, fg=lightfg, insertbackground="#181818")
+ 
+    
 def legal_mode():
     mode["text"] = " Mode: Legal"
     texpert.config(bg=legalbg, fg=legalfg,
                     insertbackground="#181818")
+    tx.config(bg=legalbg, fg=legalfg, insertbackground="#181818")
+
 
 def night_mode():
     mode["text"] = " Mode: Night"
     texpert.config(bg=nightbg, fg=nightfg,
                     insertbackground="#00FF33")
+    tx.config(bg=nightbg, fg=nightfg, insertbackground="#00FF33")
 
 
 def transparent():
@@ -220,6 +244,7 @@ def vertical_view():
     toolbar.pack(side='top', anchor='n', fill='x')
     toolbar2.pack_forget()
 
+
 def default_view(event=None):
     root.attributes('-zoomed', False)
     root.geometry("700x500+440+165")
@@ -227,6 +252,7 @@ def default_view(event=None):
     statusbar.pack(side='bottom', fill='x')
     toolbar.pack(side='top', anchor='n', fill='x')
     toolbar2.pack_forget()
+
 
 def full_screen(event=None):
     root.attributes('-zoomed', True)
@@ -249,8 +275,10 @@ def date_com():
     date = "" + month + '/' + day + '/' + year
     texpert.insert('insert', date, "a", ' ')
 
+
 def fname():
     texpert.insert('insert', current_file)
+
 
 def note_area():
     if is_notearea.get():
