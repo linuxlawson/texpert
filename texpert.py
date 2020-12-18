@@ -18,16 +18,11 @@ except:
     import tkinter.filedialog as tkFileDialog
 
 
-#theme colors
-darkbg = "#181818"
-lightbg = "#F5F5F5"
-legalbg = "#FFFFCC"
-nightbg = "#181818"
-
-darkfg = "#F5F5F5"
-lightfg = "#181818"
-legalfg = "#181818"
-nightfg = "#00FF33"
+#Mode Colors (mutable)
+darkbg, darkfg, darkins = ("#181818", "#F5F5F5", "#F5F5F5")
+lightbg, lightfg, lightins = ("#F5F5F5", "#181818", "#181818")
+legalbg, legalfg, legalins = ("#FFFFCC", "#181818", "#181818")
+nightbg, nightfg, nightins = ("#181818", "#00FF33", "#00FF33")
 
 
 root = tk.Tk()
@@ -45,7 +40,7 @@ mainframe.pack(fill='both', expand=True, padx=0, pady=0)
 texpert = tkst.ScrolledText(mainframe, undo=True, bd=0, font=("Arial 11"))
 texpert.pack(side='bottom', fill='both', expand=True)
 texpert.config(padx=2, pady=2, wrap="word", bg=lightbg, fg=lightfg, 
-                insertbackground="#181818")
+                insertbackground=lightins)
 texpert.focus_set()
 
 #StatusBar
@@ -192,30 +187,26 @@ def status_bar():
 #modes for: [view > mode]
 def dark_mode():
     mode["text"] = " Mode: Dark"
-    texpert.config(bg=darkbg, fg=darkfg,
-                    insertbackground="#F5F5F5")
-    tx.config(bg=darkbg, fg=darkfg, insertbackground="#F5F5F5")
+    texpert.config(bg=darkbg, fg=darkfg, insertbackground=darkins)
+    tx.config(bg=darkbg, fg=darkfg, insertbackground=darkins)
 
 
 def light_mode():
     mode["text"] = " Mode: Light"
-    texpert.config(bg=lightbg, fg=lightfg,
-                    insertbackground="#181818")
-    tx.config(bg=lightbg, fg=lightfg, insertbackground="#181818")
+    texpert.config(bg=lightbg, fg=lightfg, insertbackground=lightins)
+    tx.config(bg=lightbg, fg=lightfg, insertbackground=lightins)
  
     
 def legal_mode():
     mode["text"] = " Mode: Legal"
-    texpert.config(bg=legalbg, fg=legalfg,
-                    insertbackground="#181818")
-    tx.config(bg=legalbg, fg=legalfg, insertbackground="#181818")
+    texpert.config(bg=legalbg, fg=legalfg, insertbackground=legalins)
+    tx.config(bg=legalbg, fg=legalfg, insertbackground=legalins)
 
 
 def night_mode():
     mode["text"] = " Mode: Night"
-    texpert.config(bg=nightbg, fg=nightfg,
-                    insertbackground="#00FF33")
-    tx.config(bg=nightbg, fg=nightfg, insertbackground="#00FF33")
+    texpert.config(bg=nightbg, fg=nightfg, insertbackground=nightins)
+    tx.config(bg=nightbg, fg=nightfg, insertbackground=nightins)
 
 
 def transparent():
@@ -227,9 +218,9 @@ def transparent():
 
 def blockcursor():
     if is_blockcursor.get():
-        texpert.config(padx=2, pady=0, wrap="word", blockcursor=True)
+        texpert.config(padx=2, pady=2, wrap="word", blockcursor=True)
     else:
-        texpert.config(padx=2, pady=0, wrap="word", blockcursor=False)
+        texpert.config(padx=2, pady=2, wrap="word", blockcursor=False)
 
 
 def tray_com():
@@ -531,6 +522,7 @@ viewmenu.add_checkbutton(label="Transparency",
                         onvalue=1,
                         offvalue=0)
 is_blockcursor = tk.BooleanVar()
+
 is_blockcursor.trace('w', lambda *args: blockcursor())
 viewmenu.add_checkbutton(label="Block Cursor",
                         variable=is_blockcursor,
@@ -641,7 +633,7 @@ w2['menu'].add_radiobutton(label="150% ", variable="", value=5, command=fort_fon
 #Init Note Area
 btn_frame = tk.Frame(texpert, bd=0, relief='sunken')
 note = tk.LabelFrame(btn_frame, bd=0, relief='flat')
-tx = tk.Text(note, width=18)
+tx = tk.Text(note, width=18, undo=True)
 tx.insert('1.0', "Notes are not saved..")
 tx.config(padx=2, pady=2, wrap="word", bg=lightbg, fg=lightfg)
 tx.pack(side='top', fill='both', expand=True)
