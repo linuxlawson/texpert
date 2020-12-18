@@ -53,10 +53,6 @@ If problems occur, or a black hole forms, please let me know.
 <br>  
 
 
-**Developers**
-<a href="https://github.com/linuxlawson/texpert/graphs/contributors">
-  <img src="https://contributors-img.web.app/image?repo=linuxlawson/texpert" />
-</a>
 
 
 
