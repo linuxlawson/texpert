@@ -38,6 +38,7 @@ Print Preview with toolbar/zoom levels
 **Requirements:**  
 
 Texpert was designed with linux for use on linux but can be made to work on other operating systems.  
+Note: Program will render differently on other OS's, and may lose some functionality.
 
 Macs:   
 Mac users should have no problem as long as OS X is installed (since OS X is Unix based).
