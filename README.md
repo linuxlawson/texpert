@@ -6,9 +6,9 @@ Text editor made in Python with Tkinter
 
 File Menu: New, Open, Save, Save As, Close, and Exit  
 
-Edit Menu: Undo/Redo, Cut, Copy, Paste, and Select All
+Edit Menu: Undo/Redo, Cut, Copy, Paste, Select All
 
-View Menu: Hide/Show Toolbar, Mode, Vertical/Default/Fullscreen, Hide in Tray
+View Menu: Hide/Show Toolbar, Mode, Vertical/Default/Fullscreen, Hide
 
 Tool Menu: Insert Time/Date, Insert Path/Filename, Note Area  
 
