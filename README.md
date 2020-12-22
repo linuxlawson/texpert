@@ -6,13 +6,13 @@ Text editor made in Python with Tkinter
 
 File Menu: New, Open, Save, Save As, Close, and Exit  
 
-Edit Menu: Undo/Redo, Cut, Copy, Paste, Select All
+Edit Menu: Undo/Redo, Cut, Copy, Paste, and Select All
 
-View Menu: Hide/Show Toolbar, Mode, Vertical/Default/Fullscreen, Hide in Tray 
+View Menu: Hide/Show Toolbar, Mode, Vertical/Default/Fullscreen, Hide in Tray
 
-Tool Menu: Insert Time/Date, Note Area  
+Tool Menu: Insert Time/Date, Insert Path/Filename, Note Area  
 
-Help Menu: About, Troubleshooting  
+Help Menu: About, Troubleshooting, Shortcut Keys  
 
 Context Menu: (right click)
 
@@ -29,7 +29,7 @@ Expandable Note Area!!
 
 Transparency (for those who dont want to see too much).
 
-Keyboard shortcut keys
+Keyboard Shortcut Keys
 
 Print Preview with toolbar/zoom levels  
 
