@@ -188,25 +188,25 @@ def status_bar():
 def dark_mode():
     mode["text"] = " Mode: Dark"
     texpert.config(bg=darkbg, fg=darkfg, insertbackground=darkins)
-    tx.config(bg=darkbg, fg=darkfg, insertbackground=darkins)
+    tex.config(bg=darkbg, fg=darkfg, insertbackground=darkins)
 
 
 def light_mode():
     mode["text"] = " Mode: Light"
     texpert.config(bg=lightbg, fg=lightfg, insertbackground=lightins)
-    tx.config(bg=lightbg, fg=lightfg, insertbackground=lightins)
+    tex.config(bg=lightbg, fg=lightfg, insertbackground=lightins)
  
     
 def legal_mode():
     mode["text"] = " Mode: Legal"
     texpert.config(bg=legalbg, fg=legalfg, insertbackground=legalins)
-    tx.config(bg=legalbg, fg=legalfg, insertbackground=legalins)
+    tex.config(bg=legalbg, fg=legalfg, insertbackground=legalins)
 
 
 def night_mode():
     mode["text"] = " Mode: Night"
     texpert.config(bg=nightbg, fg=nightfg, insertbackground=nightins)
-    tx.config(bg=nightbg, fg=nightfg, insertbackground=nightins)
+    tex.config(bg=nightbg, fg=nightfg, insertbackground=nightins)
 
 
 def transparent():
@@ -273,11 +273,9 @@ def fname():
 
 def note_area():
     if is_notearea.get():
-        note.pack(side='right', anchor='e', fill='y')
-        btn_frame.pack(side='right', anchor='e', fill='y')
+        note_frame.pack(side='right', anchor='e', fill='y')
     else:
-        note.pack_forget()
-        btn_frame.pack_forget()
+        note_frame.pack_forget()
 
 
 #help menu
@@ -290,8 +288,6 @@ def about_com(event=None):
     bout.pack()
     cre = tk.Button(win, text="Credits", width=4, command=credits_com)
     cre.pack(side='left', padx=8, pady=4)
-    ver = tk.Label(win, text="v2.0", fg='#D9D9D9')
-    ver.pack(side='left', padx=54)
     clo = tk.Button(win, text="Close", width=4, command=win.destroy)
     clo.pack(side='right', padx=8, pady=4)
     win.transient(root)
@@ -357,7 +353,8 @@ def trouble_com(event=None):
     win.title("Troubleshooting")
     trouble = tk.Label(win, justify='left', text="""\n\n
 This program was designed for Linux and
-may not work on other operating systems.\n
+may not work on other operating systems
+(i.e., rendering and/or functionality issues).\n
 Texpert text editor is a work in progress
 and may or may not ever be completed.\n\n
 Known Issues:\n 
@@ -372,7 +369,7 @@ as it was not designed/programmed to do so.
     cls = tk.Button(win, text="Close", command=win.destroy)
     cls.pack()
     win.transient(root)
-    win.geometry('354x400+612+230')
+    win.geometry('354x408+612+230')
     win.wait_window()
 
 
@@ -609,14 +606,14 @@ w['menu'].add_checkbutton(label=" Night  ", onvalue=1, offvalue=0,
 #Toolbar2 (for print preview)
 toolbar2 = tk.Frame(mainframe, bd=2, relief='groove')
 b2 = tk.Button(toolbar2, text="Close Preview", width=10, command=default_view)
-b2.pack(side='right', padx=12, pady=4)
+b2.pack(side='right', padx=28, pady=4)
 
 #Toolbar2 'Zoom' button
 var = tk.StringVar()
 var.set("Zoom Level")
 w2 = tk.OptionMenu(toolbar2, variable=var, value='')
 w2.config(indicatoron=0, bd=1, width=12, padx=4, pady=5)
-w2.pack(side='left', padx=12, pady=4)
+w2.pack(side='left', padx=28, pady=4)
 one = tk.BooleanVar()
 two = tk.BooleanVar()
 three = tk.BooleanVar()
@@ -631,16 +628,15 @@ w2['menu'].add_radiobutton(label="150% ", variable="", value=5, command=fort_fon
 
 
 #Init Note Area
-btn_frame = tk.Frame(texpert, bd=0, relief='sunken')
-note = tk.LabelFrame(btn_frame, bd=0, relief='flat')
-tx = tk.Text(note, width=18, undo=True)
-tx.insert('1.0', "Notes are not saved..")
-tx.config(padx=2, pady=2, wrap="word", bg=lightbg, fg=lightfg)
-tx.pack(side='top', fill='both', expand=True)
-clear = tk.Button(note, text="Clear", width=4,
-                    command=lambda: tx.delete('1.0', 'end-1c'))
+note_frame = tk.Frame(texpert, bd=0, relief='sunken')
+tex = tk.Text(note_frame, width=18, undo=True)
+tex.pack(side='top', fill='both', expand=True)
+tex.config(padx=2, pady=2, wrap="word", bg=lightbg, fg=lightfg)
+tex.insert('1.0', "Notes are not saved..")
+clear = tk.Button(note_frame, text="Clear", width=4,
+                    command=lambda: tex.delete('1.0', 'end-1c'))
 clear.pack(side='left', padx=2, pady=2)
-close = tk.Button(note, text="Close", width=4,
+close = tk.Button(note_frame, text="Close", width=4,
                     command=lambda: is_notearea.set(not is_notearea.get()))
 close.pack(side='right', padx=2, pady=2)
 
