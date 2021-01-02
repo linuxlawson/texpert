@@ -8,7 +8,7 @@ File Menu: New, Open, Save, Save As, Close, and Exit
 
 Edit Menu: Undo/Redo, Cut, Copy, Paste, Select All
 
-View Menu: Hide/Show Toolbar, Mode, Vertical/Default/Fullscreen, Hide
+View Menu: Hide/Show Toolbar, Mode, Vertical/Default/Fullscreen, Hide in Tray
 
 Tool Menu: Insert Time/Date, Insert Path/Filename, Note Area  
 
