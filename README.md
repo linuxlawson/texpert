@@ -54,7 +54,7 @@ If problems occur, or a black hole forms, please let me know.
 
 
 
-<img src="https://img.shields.io/badge/made%20with-python-blue.svg?style=flat" alt="made with python">
+![GitHub](https://img.shields.io/github/license/linuxlawson/texpert?style=plastic)
 
 
 
