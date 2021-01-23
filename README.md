@@ -1,5 +1,5 @@
-# Texpert  
-Text editor made in Python with Tkinter  
+# Texpert Text Editor
+A small and lightweight text editor made in Python with Tkinter  
   
   
 **Features:**
