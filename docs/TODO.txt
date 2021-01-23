@@ -6,8 +6,6 @@ but dont know if that can be done using tkinter, cant find any info, anywhere.
 
 
 
-
-
 Line/column number only binds to return key. 
 Haven't worked on this too much, it could use improvement. 
 Like arrow keys, mouse bindings.
