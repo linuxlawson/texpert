@@ -1,4 +1,4 @@
-## Texpert Text Editor
+## Texpert
 A small and lightweight text editor made in Python with Tkinter  
   
   
