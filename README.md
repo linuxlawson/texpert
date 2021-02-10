@@ -45,7 +45,7 @@ Mac users should have no problem as long as OS X is installed (since OS X is Uni
 
 **Windows:**   
 Windows users will need to make program executable using PyInstaller or similiar program.  
-Python 2 or 3 will also need to be installed.  
+
 
 Program uses systems default color scheme, so will look different on each OS.  
 If problems occur, or a black hole forms, please let me know.  
