@@ -56,42 +56,42 @@ line_lbl.pack(side='right', padx=10)
 #file menu
 def new_com(event=None):
     root.title("New Document - Texpert")
-    file = None
+    f = None
     texpert.delete('1.0', 'end-1c')
 
 
 def open_com(event=None):
-    file = tkFileDialog.askopenfile(parent=root, mode='rb', title="Select File", 
+    f = tkFileDialog.askopenfile(parent=root, mode='rb', title="Select File", 
     filetypes = (("Text Files", "*.txt"),("All Files", "*.*")))
-    if file:
-        contents = file.read()
-        name = root.title((file.name) + " - Texpert")
+    if f:
+        contents = f.read()
+        name = root.title((f.name) + " - Texpert")
         texpert.delete('1.0', 'end-1c')
         texpert.insert('1.0', contents)
-        file.close()
+        f.close()
         global current_file
-        current_file = file.name
+        current_file = f.name
 
 
 def save_com(event=None):
     if current_file:
-        file = open(current_file, "w")
+        f = open(current_file, "w")
         data = texpert.get('1.0', 'end-1c')
-        file.write(data)
-        file.close()
+        f.write(data)
+        f.close()
     else:
         saveas_com()
 
 
 def saveas_com(event=None):
-    file = tkFileDialog.asksaveasfile(mode='w', 
+    f = tkFileDialog.asksaveasfile(mode='w', 
     filetypes = (("Text Files", "*.txt"),("All Files", "*.*")))
-    if file:
+    if f:
         data = texpert.get('1.0', 'end-1c')
-        file.write(data)
-        file.close()
+        f.write(data)
+        f.close()
         global current_file
-        current_file = file.name
+        current_file = f.name
 
 
 #print/print preview not done
@@ -109,7 +109,7 @@ def preview_com():
 
 def close_com(event=None):
     root.title("Untitled - Texpert")
-    file = None
+    f = None
     texpert.delete('1.0', 'end-1c')
 
 
@@ -185,28 +185,29 @@ def status_bar():
 
 
 #modes for: [view > mode]
+#tex.config makes note area match
 def dark_mode():
     mode["text"] = " Mode: Dark"
     texpert.config(bg=darkbg, fg=darkfg, insertbackground=darkins)
-    tex.config(bg=darkbg, fg=darkfg, insertbackground=darkins)
+    #tex.config(bg=darkbg, fg=darkfg, insertbackground=darkins)
 
 
 def light_mode():
     mode["text"] = " Mode: Light"
     texpert.config(bg=lightbg, fg=lightfg, insertbackground=lightins)
-    tex.config(bg=lightbg, fg=lightfg, insertbackground=lightins)
+    #tex.config(bg=lightbg, fg=lightfg, insertbackground=lightins)
  
     
 def legal_mode():
     mode["text"] = " Mode: Legal"
     texpert.config(bg=legalbg, fg=legalfg, insertbackground=legalins)
-    tex.config(bg=legalbg, fg=legalfg, insertbackground=legalins)
+    #tex.config(bg=legalbg, fg=legalfg, insertbackground=legalins)
 
 
 def night_mode():
     mode["text"] = " Mode: Night"
     texpert.config(bg=nightbg, fg=nightfg, insertbackground=nightins)
-    tex.config(bg=nightbg, fg=nightfg, insertbackground=nightins)
+    #tex.config(bg=nightbg, fg=nightfg, insertbackground=nightins)
 
 
 def transparent():
