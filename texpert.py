@@ -1,5 +1,6 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # Texpert Text Editor
+# Python with Tkinter
 # Written by David Lawson
 
 
@@ -18,7 +19,7 @@ except:
     import tkinter.filedialog as tkFileDialog
 
 
-#Mode Colors (mutable)
+#Mode Colors 
 darkbg, darkfg, darkins = ("#181818", "#F5F5F5", "#F5F5F5")
 lightbg, lightfg, lightins = ("#F5F5F5", "#181818", "#181818")
 legalbg, legalfg, legalins = ("#FFFFCC", "#181818", "#181818")
@@ -27,7 +28,7 @@ nightbg, nightfg, nightins = ("#181818", "#00FF33", "#00FF33")
 
 root = tk.Tk()
 root.title("Texpert")
-root.geometry("700x500")
+root.geometry("700x506")
 root.option_add("*Font", "TkDefaultFont 9")
 current_file = None
 
@@ -116,7 +117,8 @@ def close_com(event=None):
 def exit_com(event=None):
     win = tk.Toplevel()
     win.title("Exit")
-    xit = tk.Label(win, text="\nUnsaved work will be lost.\n\nAre you sure you want to exit?\n")
+    xit = tk.Label(win, 
+    text="\nUnsaved work will be lost.\n\nAre you sure you want to exit?\n")
     xit.pack()
     ex = tk.Button(win, text="Exit", width=4, command=root.destroy)
     ex.pack(side='left', padx=24, pady=4)
@@ -125,7 +127,7 @@ def exit_com(event=None):
     can = tk.Button(win, text="Cancel", width=4, command=win.destroy)
     can.pack(side='right', padx=24, pady=4)
     win.transient(root)
-    win.geometry('240x120')
+    win.geometry('240x150')
     win.wait_window()
 
 
@@ -259,6 +261,7 @@ def time_com():
     ctime = time.strftime('%I:%M %p')
     texpert.insert('insert', ctime, "a", ' ')
 
+
 def date_com():
     full_date = time.localtime()
     day = str(full_date.tm_mday)
@@ -266,10 +269,6 @@ def date_com():
     year = str(full_date.tm_year)
     date = "" + month + '/' + day + '/' + year
     texpert.insert('insert', date, "a", ' ')
-
-
-def fname():
-    texpert.insert('insert', current_file)
 
 
 def note_area():
@@ -292,7 +291,7 @@ def about_com(event=None):
     clo = tk.Button(win, text="Close", width=4, command=win.destroy)
     clo.pack(side='right', padx=8, pady=4)
     win.transient(root)
-    win.geometry('300x200+638+298')
+    win.geometry('300x224+638+298')
     win.wait_window()
 
 
@@ -309,7 +308,7 @@ def credits_com():
     cls = tk.Button(win, text="Close", width=4, command=win.destroy)
     cls.pack(side='right', padx=8, pady=4)
     win.transient(root)
-    win.geometry('300x200+638+298')
+    win.geometry('300x224+638+298')
     win.wait_window()
 
 
@@ -345,7 +344,7 @@ DEALINGS IN THE SOFTWARE.\n\n""")
     cls = tk.Button(win, text="Close", command=win.destroy)
     cls.pack()
     win.transient(root)
-    win.geometry('480x450+550+230')
+    win.geometry('480x482+550+230')
     win.wait_window()
 
 
@@ -370,7 +369,7 @@ as it was not designed/programmed to do so.
     cls = tk.Button(win, text="Close", command=win.destroy)
     cls.pack()
     win.transient(root)
-    win.geometry('354x408+612+230')
+    win.geometry('354x432+612+230')
     win.wait_window()
 
 
@@ -401,7 +400,7 @@ View:\tCtrl+D   \t\tDefault Win Size
     cls = tk.Button(win, text="Close", command=win.destroy)
     cls.pack()
     win.transient(root)
-    win.geometry('380x460+600+230')
+    win.geometry('380x488+600+230')
     win.wait_window()
 
 
@@ -413,7 +412,7 @@ texpert.bind("<Button-3>", r_click)
 #line count (statusbar)
 def linecount(event):
     (line, char) = map(int, event.widget.index("end-1c").split("."))
-    line_lbl['text'] = 'Line {line}, Col {col}'.format(line=line, col=char + 1)
+    line_lbl['text']='Line {line}, Col {col}'.format(line=line, col=char+1)
 texpert.bind("<KeyRelease>", linecount)
 
 
@@ -542,7 +541,6 @@ toolmenu = tk.Menu(menu, tearoff=0)
 menu.add_cascade(label="Tools ", menu=toolmenu)
 toolmenu.add_command(label="Insert Time", command=time_com)
 toolmenu.add_command(label="Insert Date", command=date_com)
-toolmenu.add_command(label="Insert Path/File", command=fname)
 is_notearea = tk.BooleanVar()
 is_notearea.trace('w', lambda *args: note_area())
 toolmenu.add_checkbutton(label="Note Area", variable=is_notearea)
