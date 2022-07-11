@@ -17,8 +17,7 @@ Help Menu: About, Troubleshooting, Shortcut Keys
 Context Menu: (right click)
 
 
---------------------------------------------------------------------  
-
+---
 **Added:** 
 
 Toolbar: for quick access to Open, Save, Mode, and Note Area (notes).  
@@ -34,7 +33,7 @@ Keyboard Shortcut Keys
 Print Preview with toolbar/zoom levels  
 
 
---------------------------------------------------------------------
+---
 **Requirements:**  
 
 Texpert was initially designed for linux but can be made to work on other operating systems.  
