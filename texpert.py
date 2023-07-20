@@ -1,36 +1,22 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 # Texpert Text Editor
-# Python with Tkinter
-# Written by David Lawson
 
-
-import os
-import sys
+import tkinter as tk
+import tkinter.scrolledtext as tkst
+import tkinter.filedialog as tkFileDialog
 import time
-
-
-try:
-    import Tkinter as tk
-    import ScrolledText as tkst
-    import tkFileDialog
-except:
-    import tkinter as tk
-    import tkinter.scrolledtext as tkst
-    import tkinter.filedialog as tkFileDialog
-
-
-#Mode Colors 
-darkbg, darkfg, darkins = ("#181818", "#F5F5F5", "#F5F5F5")
-lightbg, lightfg, lightins = ("#F5F5F5", "#181818", "#181818")
-legalbg, legalfg, legalins = ("#FFFFCC", "#181818", "#181818")
-nightbg, nightfg, nightins = ("#181818", "#00FF33", "#00FF33")
-
 
 root = tk.Tk()
 root.title("Texpert")
 root.geometry("700x506")
 root.option_add("*Font", "TkDefaultFont 9")
 current_file = None
+
+#Mode Colors 
+darkbg, darkfg, darkins = ("#181818", "#F5F5F5", "#F5F5F5")
+lightbg, lightfg, lightins = ("#F5F5F5", "#181818", "#181818")
+legalbg, legalfg, legalins = ("#FFFFCC", "#181818", "#181818")
+nightbg, nightfg, nightins = ("#181818", "#00FF33", "#00FF33")
 
 
 #Main Frame
@@ -49,8 +35,10 @@ statusbar = tk.Frame(root, bd=1, relief='sunken')
 statusbar.pack(side='bottom', fill='x')
 mode = tk.Label(statusbar, text=" Mode: Light")
 mode.pack(side='left')
-line_lbl = tk.Label(statusbar, text="Line 1, Col 1")
-line_lbl.pack(side='right', padx=10)
+
+stat_date = time.strftime('%-m/%d/%Y')
+stat_date = tk.Label(statusbar, text=stat_date)
+stat_date.pack(side='right', padx=10)
 
 
 #Menu Functions
@@ -95,7 +83,7 @@ def saveas_com(event=None):
         current_file = f.name
 
 
-#print/print preview not done
+#print/print preview 
 def print_com():
     print("Printer not found")
 
@@ -258,17 +246,13 @@ def full_screen(event=None):
 
 #tools menu
 def time_com():
-    ctime = time.strftime('%I:%M %p')
+    ctime = time.strftime('%-I:%M %p')
     texpert.insert('insert', ctime, "a", ' ')
 
 
 def date_com():
-    full_date = time.localtime()
-    day = str(full_date.tm_mday)
-    month = str(full_date.tm_mon)
-    year = str(full_date.tm_year)
-    date = "" + month + '/' + day + '/' + year
-    texpert.insert('insert', date, "a", ' ')
+    cdate = time.strftime('%-m/%d/%Y')
+    texpert.insert('insert', cdate, "a", ' ')
 
 
 def note_area():
@@ -408,13 +392,6 @@ View:\tCtrl+D   \t\tDefault Win Size
 def r_click(event):
     editmenu.tk_popup(event.x_root, event.y_root)
 texpert.bind("<Button-3>", r_click)
-
-#line count (statusbar)
-def linecount(event):
-    (line, char) = map(int, event.widget.index("end-1c").split("."))
-    line_lbl['text']='Line {line}, Col {col}'.format(line=line, col=char+1)
-texpert.bind("<KeyRelease>", linecount)
-
 
 
 #Main Menu
