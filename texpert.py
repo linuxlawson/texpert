@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 # Texpert Text Editor
+# David Lawson
 
 import tkinter as tk
 import tkinter.scrolledtext as tkst
@@ -17,7 +18,6 @@ darkbg, darkfg, darkins = ("#181818", "#F5F5F5", "#F5F5F5")
 lightbg, lightfg, lightins = ("#F5F5F5", "#181818", "#181818")
 legalbg, legalfg, legalins = ("#FFFFCC", "#181818", "#181818")
 nightbg, nightfg, nightins = ("#181818", "#00FF33", "#00FF33")
-
 
 #Main Frame
 mainframe = tk.Frame(root, bd=1, relief='flat')
@@ -175,7 +175,7 @@ def status_bar():
 
 
 #modes for: [view > mode]
-#tex.config makes note area match
+#config makes note area color match
 def dark_mode():
     mode["text"] = " Mode: Dark"
     texpert.config(bg=darkbg, fg=darkfg, insertbackground=darkins)
@@ -268,12 +268,12 @@ def about_com(event=None):
     win.title("About")
     bout = tk.Label(win, text="""\n\n\nTexpert
     \nA small and lightweight text editor
-    \nMade in Python with Tkinter\n\n""")
+    \nMade in Python with tkinter\n\n""")
     bout.pack()
     cre = tk.Button(win, text="Credits", width=4, command=credits_com)
-    cre.pack(side='left', padx=8, pady=4)
+    cre.pack(side='left', padx=18, pady=4)
     clo = tk.Button(win, text="Close", width=4, command=win.destroy)
-    clo.pack(side='right', padx=8, pady=4)
+    clo.pack(side='right', padx=18, pady=4)
     win.transient(root)
     win.geometry('300x224+638+298')
     win.wait_window()
@@ -287,104 +287,10 @@ def credits_com():
                     text="""\n\n\nCreated by David Lawson
     \n\nme = Person()\nwhile (me.awake()):\nme.code()\n""")
     cred.pack()
-    lic = tk.Button(win, text="License", width=4, command=license_info)
-    lic.pack(side='left', padx=8, pady=4)
     cls = tk.Button(win, text="Close", width=4, command=win.destroy)
-    cls.pack(side='right', padx=8, pady=4)
+    cls.pack(padx=8, pady=8)
     win.transient(root)
     win.geometry('300x224+638+298')
-    win.wait_window()
-
-
-def license_info():
-    win = tk.Toplevel()
-    win.wm_attributes("-topmost", 1)
-    win.title("License")
-    lic = tk.Label(win, justify='left', text="""\n\nMIT License
-
-Copyright (c) 2019 David Lawson
-
-Permission is hereby granted, free of charge, to any person
-obtaining a copy of this software and associated documentation
-files (the "Software"), to deal in the Software without restriction, 
-including without limitation the rights to use, copy, modify, merge, 
-publish, distribute, sublicense, and/or sell copies of the Software, 
-and to permit persons to whom the Software is furnished to do so, 
-subject to the following conditions:
-
-The above copyright notice and this permission notice shall be 
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF 
-ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
-PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT 
-SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY 
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
-IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-DEALINGS IN THE SOFTWARE.\n\n""")
-    lic.pack()
-    cls = tk.Button(win, text="Close", command=win.destroy)
-    cls.pack()
-    win.transient(root)
-    win.geometry('480x482+550+230')
-    win.wait_window()
-
-
-def trouble_com(event=None):
-    win = tk.Toplevel()
-    win.title("Troubleshooting")
-    trouble = tk.Label(win, justify='left', text="""\n\n
-This program was designed for Linux and
-may not work on other operating systems
-(i.e., rendering and/or functionality issues).\n
-Texpert text editor is a work in progress
-and may or may not ever be completed.\n\n
-Known Issues:\n 
-Line/Col numbers are not fully functional.
-Problem remains: unfixed.\n
-Print preview is not entirely accurate.\n
-Also, (pay attention because this is important)
-anything typed in note area will not be saved
-as it was not designed/programmed to do so.
-\n\nAnyway..\n""")
-    trouble.pack()
-    cls = tk.Button(win, text="Close", command=win.destroy)
-    cls.pack()
-    win.transient(root)
-    win.geometry('354x432+612+230')
-    win.wait_window()
-
-
-def shortcut_keys(event=None):
-    win = tk.Toplevel()
-    win.title("Shortcut Keys")
-    shortk = tk.Label(win, justify='left',
-                    text="""\n
-List of shortcut keys and their functions.\n\n
-Menu \tKeys\t\tFunctions\n  
-File:\tCtrl+N   \t\tNew File
-    \tCtrl+O    \t\tOpen File
-    \tCtrl+S    \t\tSave File
-    \tCtrl+Shift+S\tSave As
-    \tCtrl+W    \t\tClose File
-    \tCtrl+Q    \t\tQuit Program (exit)\n\n
-Edit:\tCtrl+Z   \t\tUndo
-    \tCtrl+Shift+Z\tRedo
-    \tCtrl+X    \t\tCut
-    \tCtrl+C    \t\tCopy
-    \tCtrl+V    \t\tPaste
-    \tCtrl+A    \t\tSelect All\n\n
-View:\tCtrl+D   \t\tDefault Win Size
-    \tF11       \t\tFullscreen
-    \tEscape    \t\tExit Fullscreen
-\n\n""")
-    shortk.pack()
-    cls = tk.Button(win, text="Close", command=win.destroy)
-    cls.pack()
-    win.transient(root)
-    win.geometry('380x488+600+230')
     win.wait_window()
 
 
@@ -426,6 +332,7 @@ filemenu.add_command(label="Close",
 filemenu.add_command(label="Exit", 
                     command=exit_com, underline=1,
                     accelerator="Ctrl+Q".rjust(15))
+
 
 #Edit
 editmenu = tk.Menu(menu, tearoff=0)
@@ -527,8 +434,6 @@ toolmenu.add_checkbutton(label="Note Area", variable=is_notearea)
 helpmenu = tk.Menu(menu, tearoff=0)
 menu.add_cascade(label="Help ", menu=helpmenu)
 helpmenu.add_command(label="About", command=about_com)
-helpmenu.add_command(label="Troubleshooting", command=trouble_com)
-helpmenu.add_command(label="Shortcut Keys", command=shortcut_keys)
 
 
 #ToolBar (main)
