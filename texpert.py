@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # Texpert Text Editor
 # David Lawson
 
@@ -8,7 +8,7 @@ import tkinter.filedialog as tkFileDialog
 import time
 
 root = tk.Tk()
-root.title("Texpert")
+root.title("Texpert Text Editor")
 root.geometry("700x506")
 root.option_add("*Font", "TkDefaultFont 9")
 current_file = None
