@@ -1,5 +1,5 @@
 ## Texpert
-A small and lightweight text editor made in Python with Tkinter  
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&size=18&pause=100&color=000000&width=435&lines=Text+Editor+made+with+python+and+tkinter)](https://git.io/typing-svg)  
   
   
 **Features:**
